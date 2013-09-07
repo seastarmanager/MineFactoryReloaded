@@ -1,6 +1,9 @@
 package powercrystals.minefactoryreloaded.tile.base;
 
 import buildcraft.api.gates.IAction;
+import buildcraft.api.transport.IPipeConnection;
+import buildcraft.api.transport.IPipeTile;
+import buildcraft.core.IMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -17,8 +20,7 @@ import powercrystals.minefactoryreloaded.core.BlockNBTManager;
 import powercrystals.minefactoryreloaded.core.MFRLiquidMover;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
-@Implementable("buildcraft.core.IMachine")
-public abstract class TileEntityFactoryInventory extends TileEntityFactory implements ISidedInventory
+public abstract class TileEntityFactoryInventory extends TileEntityFactory implements ISidedInventory, IMachine, IPipeConnection
 {
 	protected Machine machine;
 
@@ -321,30 +323,36 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 		return ret / len;
 	}
 
-	public boolean isActive()
+	@Override
+    public boolean isActive()
 	{
 		return false;
 	}
 
-	public boolean manageFluids()
+	@Override
+    public boolean manageFluids()
 	{
 		return false;
 	}
 
-	public boolean manageSolids()
+	@Override
+    public boolean manageSolids()
 	{
-		return false;
+		return true;
 	}
-	
-	public boolean allowActions()
+
+	@Override
+    public boolean allowAction(IAction _)
 	{
 		return false;
 	}
 
-	public boolean allowAction(IAction _)
-	{
-		return this.allowActions();
-	}
+    @Override
+    public ConnectOverride overridePipeConnection(IPipeTile.PipeType pipeType, ForgeDirection dir) {
+        if (pipeType == IPipeTile.PipeType.ITEM)
+            return ConnectOverride.CONNECT;
+        return ConnectOverride.DISCONNECT;
+    }
 
     /**
      * Returns true if automation is allowed to insert the given stack (ignoring stack size) into the given slot.
