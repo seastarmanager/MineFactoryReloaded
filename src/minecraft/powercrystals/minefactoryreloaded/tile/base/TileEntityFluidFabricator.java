@@ -22,19 +22,16 @@ public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered
 	@Override
 	protected boolean activateMachine()
 	{
-		if(_fluidId < 0)
+		if (_fluidId < 0)
 		{
 			setIdleTicks(getIdleTicksMax());
 			return false;
 		}
 		
-		if(_tank.getFluid() != null && _tank.getCapacity() - _tank.getFluidAmount() < _fluidFabPerTick)
-		{
+		if (_tank.getFluid() != null && _tank.getCapacity() - _tank.getFluidAmount() < _fluidFabPerTick)
 			return false;
-		}
-		
+
 		_tank.fill(new FluidStack(_fluidId, _fluidFabPerTick), true);
-		
 		return true;
 	}
 	

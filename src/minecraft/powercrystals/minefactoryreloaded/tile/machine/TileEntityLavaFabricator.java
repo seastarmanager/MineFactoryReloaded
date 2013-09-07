@@ -1,20 +1,20 @@
 package powercrystals.minefactoryreloaded.tile.machine;
 
-import net.minecraft.block.Block;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fluids.FluidRegistry;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryPowered;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFluidFabricator;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityLavaFabricator extends TileEntityFluidFabricator
 {
 	public TileEntityLavaFabricator()
 	{
-		super(Block.lavaStill.blockID, 20, Machine.LavaFabricator);
+		super(FluidRegistry.LAVA.getID(), 20, Machine.LavaFabricator);
 	}
 	
 	@Override
