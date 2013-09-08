@@ -2,7 +2,6 @@ package powercrystals.minefactoryreloaded.block;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
@@ -13,8 +12,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import powercrystals.core.block.BlockFluidClassic;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -26,7 +25,7 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	
 	public BlockFactoryFluid(int id, String fluidName)
 	{
-		super(id, new Fluid(fluidName), Material.water);
+		super(id, new Fluid(fluidName), Material.water, "mfr.fluid." + fluidName + ".still");
         setUnlocalizedName("mfr.fluid." + fluidName + ".still");
         setHardness(100.0f);
         setLightOpacity(3);

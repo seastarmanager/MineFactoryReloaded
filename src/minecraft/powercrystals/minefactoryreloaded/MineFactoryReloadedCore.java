@@ -441,6 +441,7 @@ public class MineFactoryReloadedCore extends BaseMod
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt)
 	{
+        /*
         FluidRegistry.registerFluid(new Fluid("milk").setUnlocalizedName(milkLiquid.getUnlocalizedName()).setBlockID(milkLiquid).setStillIcon(milkLiquid.getIcon(1, 0)).setFlowingIcon(milkLiquid.getIcon(2, 0)));
         FluidRegistry.registerFluid(new Fluid("sludge").setUnlocalizedName(sludgeLiquid.getUnlocalizedName()).setBlockID(sludgeLiquid).setStillIcon(sludgeLiquid.getIcon(1, 0)).setFlowingIcon(sludgeLiquid.getIcon(2, 0)));
         FluidRegistry.registerFluid(new Fluid("sewage").setUnlocalizedName(sewageLiquid.getUnlocalizedName()).setBlockID(sewageLiquid).setStillIcon(sewageLiquid.getIcon(1, 0)).setFlowingIcon(sewageLiquid.getIcon(2, 0)));
@@ -450,6 +451,7 @@ public class MineFactoryReloadedCore extends BaseMod
         FluidRegistry.registerFluid(new Fluid("pinkslime").setUnlocalizedName(pinkSlimeLiquid.getUnlocalizedName()).setBlockID(pinkSlimeLiquid).setStillIcon(pinkSlimeLiquid.getIcon(1, 0)).setFlowingIcon(pinkSlimeLiquid.getIcon(2, 0)));
         FluidRegistry.registerFluid(new Fluid("chocolatemilk").setUnlocalizedName(chocolateMilkLiquid.getUnlocalizedName()).setBlockID(chocolateMilkLiquid).setStillIcon(chocolateMilkLiquid.getIcon(1, 0)).setFlowingIcon(chocolateMilkLiquid.getIcon(2, 0)));
         FluidRegistry.registerFluid(new Fluid("mushroomsoup").setUnlocalizedName(mushroomSoupLiquid.getUnlocalizedName()).setBlockID(mushroomSoupLiquid).setStillIcon(mushroomSoupLiquid.getIcon(1, 0)).setFlowingIcon(mushroomSoupLiquid.getIcon(2, 0)));
+        */
 
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(milkLiquid.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bucketMilk), new ItemStack(Item.bucketEmpty)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(sludgeLiquid.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sludgeBucketItem), new ItemStack(Item.bucketEmpty)));
