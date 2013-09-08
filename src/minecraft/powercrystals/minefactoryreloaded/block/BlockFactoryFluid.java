@@ -26,6 +26,24 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	{
 		super(id, fluidName, Material.water);
 	}
+
+    @Override
+    public BlockFactoryFluid setUnlocalizedName(String name) {
+        super.setUnlocalizedName(name);
+        return this;
+    }
+
+    @Override
+    public BlockFactoryFluid setHardness(float f) {
+        super.setHardness(f);
+        return this;
+    }
+
+    @Override
+    public BlockFactoryFluid setLightOpacity(int i) {
+        super.setLightOpacity(i);
+        return this;
+    }
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
