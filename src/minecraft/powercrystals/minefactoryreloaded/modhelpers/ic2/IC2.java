@@ -76,9 +76,9 @@ public class IC2
 			
 			Recipes.extractor.addRecipe(new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, rubber);
 		}
-		catch (Exception x)
+		catch (Throwable _)
 		{
-			x.printStackTrace();
+			FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
 		}
 	}
 }
