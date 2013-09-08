@@ -19,16 +19,22 @@ import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
 
 public class BlockFactoryFluid extends BlockFluidClassic implements IConnectableRedNet
 {
+    private String name;
 	private Icon _iconFlowing;
 	private Icon _iconStill;
 	
 	public BlockFactoryFluid(int id, String fluidName)
 	{
 		super(id, fluidName, Material.water);
-		setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+		//setUnlocalizedName("mfr.fluid." + fluidName + ".still");
 		setHardness(100.0F);
 		setLightOpacity(3);
 	}
+
+    public BlockFactoryFluid setUnlocalizedName() {
+        super.setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+        return this;
+    }
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
