@@ -12,10 +12,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import powercrystals.core.asm.relauncher.Implementable;
 import powercrystals.core.util.Util;
 import powercrystals.core.util.UtilInventory;
+import powercrystals.minefactoryreloaded.modhelpers.ic2.IC2;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +34,8 @@ import java.util.List;
  * progress bar correctly.
  */
 
-public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventory implements IPowerReceptor, IEnergySink
+@Implementable("ic2.api.energy.tile.IEnergySink")
+public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventory implements IPowerReceptor
 {	
 	public static final int energyPerEU = 4;
 	public static final int energyPerMJ = 10;
@@ -100,11 +104,11 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 		if(worldObj.isRemote)
 			return;
 		
-		if(_addToNetOnNextTick)
+		if (_addToNetOnNextTick)
 		{
-		    MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-			_addToNetOnNextTick = false;
-			_isAddedToIC2EnergyNet = true;
+            IC2.postTileLoadEvent(this);
+            _addToNetOnNextTick = false;
+            _isAddedToIC2EnergyNet = true;
 		}
 		
 		int energyRequired = Math.min(getEnergyStoredMax() - getEnergyStored(), getMaxEnergyPerTick());
@@ -241,7 +245,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 		{
 			if(!worldObj.isRemote)
 			{
-				MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+				IC2.postTileUnloadEvent(this);
 			}
 			_isAddedToIC2EnergyNet = false;
 		}
@@ -257,7 +261,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 		if(_isAddedToIC2EnergyNet)
 		{
 			_isAddedToIC2EnergyNet = false;
-			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+            IC2.postTileUnloadEvent(this);
 		}
 	}
 	
@@ -370,6 +374,11 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 			}
 		}
 	}
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack s) {
+        return true;
+    }
 	
 	public int getEnergyRequired()
 	{
@@ -377,34 +386,36 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 	}
 	
 	// BC methods
-	/*
-	@Override
-	public int powerRequest(ForgeDirection from)
-	{
-
-		int powerProviderPower = (int)Math.min(_powerProvider.getMaxEnergyStored() - _powerProvider.getEnergyStored(), _powerProvider.getMaxEnergyReceived());
-		return Math.max(powerProviderPower, 0);
-	}
-	*/
 
     public PowerHandler getPowerProvider() {
         return _powerProvider;
+    }
+
+    @Override
+    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection from) {
+        return _powerProvider.getPowerReceiver();
     }
 	
 	@Override
 	public void doWork(PowerHandler handler)
 	{
 	}
+
+    @Override
+    public World getWorld() {
+        return worldObj;
+    }
 	
 	// IC2 methods
-	
-	@Override
+
+    /* IEnergySink */
 	public double demandedEnergyUnits()
 	{
 		return Math.max(getEnergyRequired() / energyPerEU, 0);
 	}
-	
-	@Override
+
+    /* IEnergySink */
+    @SuppressWarnings("UnusedDeclaration")
 	public double injectEnergyUnits(ForgeDirection directionFrom, double amount)
 	{
 		double euInjected = Math.max(Math.min(demandedEnergyUnits(), amount), 0);
@@ -414,30 +425,19 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 		return amount - euInjected;
 	}
 
-    @Override
+    /* IEnergySink */
+    @SuppressWarnings("UnusedDeclaration")
     public boolean acceptsEnergyFrom(TileEntity entity, ForgeDirection from) {
         return true;
     }
 	
-	@Override
-	public int getMaxSafeInput()
+	/* IEnergySink */
+	@SuppressWarnings("UnusedDeclaration")
+    public int getMaxSafeInput()
 	{
 		return 128;
 	}
 
-    @Override
-    public World getWorld() {
-        return worldObj;
-    }
 
-    @Override
-    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection from) {
-        return _powerProvider.getPowerReceiver();
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack s) {
-        return true;
-    }
 
 }
