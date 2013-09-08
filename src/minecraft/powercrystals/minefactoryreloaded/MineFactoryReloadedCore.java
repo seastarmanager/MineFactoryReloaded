@@ -219,15 +219,15 @@ public class MineFactoryReloadedCore extends BaseMod
 		extractLang(new String[] { "en_US", "es_AR", "es_ES", "es_MX", "es_UY", "es_VE", "zh_CN", "zh_TW", "ru_RU", "ko_KR", "de_DE" });
 		loadLang();
 		
-		milkLiquid = new BlockFactoryFluid(MFRConfig.milkStillBlockId.getInt(), "milk").init();
-		sludgeLiquid = new BlockFactoryFluid(MFRConfig.sludgeStillBlockId.getInt(), "sludge").init();
-		sewageLiquid = new BlockFactoryFluid(MFRConfig.sewageStillBlockId.getInt(), "sewage").init();
-		essenceLiquid = new BlockFactoryFluid(MFRConfig.essenceStillBlockId.getInt(), "essence").init();
-		biofuelLiquid = new BlockFactoryFluid(MFRConfig.biofuelStillBlockId.getInt(), "biofuel").init();
-		meatLiquid = new BlockFactoryFluid(MFRConfig.meatStillBlockId.getInt(), "meat").init();
-		pinkSlimeLiquid = new BlockPinkSlimeFluid(MFRConfig.pinkslimeStillBlockId.getInt(), "pinkslime").init();
-		chocolateMilkLiquid = new BlockFactoryFluid(MFRConfig.chocolateMilkStillBlockId.getInt(), "chocolatemilk").init();
-		mushroomSoupLiquid = new BlockFactoryFluid(MFRConfig.mushroomSoupStillBlockId.getInt(), "mushroomsoup").init();
+		milkLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.milkStillBlockId.getInt(), "milk").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "milk" + ".still");
+		sludgeLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.sludgeStillBlockId.getInt(), "sludge").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "sludge" + ".still");
+		sewageLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.sewageStillBlockId.getInt(), "sewage").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "sewage" + ".still");
+		essenceLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.essenceStillBlockId.getInt(), "essence").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "essence" + ".still");
+		biofuelLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.biofuelStillBlockId.getInt(), "biofuel").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "biofuel" + ".still");
+		meatLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.meatStillBlockId.getInt(), "meat").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "meat" + ".still");
+		pinkSlimeLiquid = (BlockFactoryFluid) new BlockPinkSlimeFluid(MFRConfig.pinkslimeStillBlockId.getInt(), "pinkslime").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "pinkslime" + ".still");
+		chocolateMilkLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.chocolateMilkStillBlockId.getInt(), "chocolatemilk").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "chocolatemilk" + ".still");
+		mushroomSoupLiquid = (BlockFactoryFluid) new BlockFactoryFluid(MFRConfig.mushroomSoupStillBlockId.getInt(), "mushroomsoup").setHardness(100f).setLightOpacity(3).setUnlocalizedName("mfr.fluid." + "mushroomsoup" + ".still");
 
 		sewageBucketItem = (new ItemFactoryBucket(MFRConfig.sewageBucketItemId.getInt(), sewageLiquid.blockID)).setUnlocalizedName("mfr.bucket.sewage").setMaxStackSize(1).setContainerItem(Item.bucketEmpty);
 		sludgeBucketItem = (new ItemFactoryBucket(MFRConfig.sludgeBucketItemId.getInt(), sludgeLiquid.blockID)).setUnlocalizedName("mfr.bucket.sludge").setMaxStackSize(1).setContainerItem(Item.bucketEmpty);
