@@ -2,7 +2,6 @@ package powercrystals.minefactoryreloaded.tile.base;
 
 import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
 import buildcraft.energy.PneumaticPowerProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
