@@ -2,10 +2,11 @@ package powercrystals.minefactoryreloaded.modhelpers.ic2;
 
 
 import ic2.api.item.Items;
-import ic2.api.recipe.RecipeInputItemStack;
+import ic2.api.recipe.IRecipeInput;
 import ic2.api.recipe.Recipes;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
@@ -19,6 +20,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import java.lang.reflect.Method;
 
 @Mod(modid = "MineFactoryReloaded|CompatIC2", name = "MFR Compat: IC2", version = MineFactoryReloadedCore.version, dependencies = "after:MineFactoryReloaded;after:IC2")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
@@ -74,11 +76,16 @@ public class IC2
 					Character.valueOf('L'), new ItemStack(MineFactoryReloadedCore.rubberLeavesBlock)
 					} );
 			
-			Recipes.extractor.addRecipe(new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, rubber);
+            try {
+                Method m = Recipes.extractor.getClass().getMethod("addRecipe", IRecipeInput.class, NBTTagCompound.class, ItemStack[].class);
+                m.invoke(Recipes.extractor, new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, new ItemStack[] {rubber});
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
 		}
-		catch (Exception x)
+		catch (Throwable _)
 		{
-			x.printStackTrace();
+            FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
 		}
 	}
 }
