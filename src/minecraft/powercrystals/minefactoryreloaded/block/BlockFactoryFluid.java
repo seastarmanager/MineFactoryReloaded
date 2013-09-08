@@ -27,12 +27,14 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	{
 		super(id, fluidName, Material.water);
 		//setUnlocalizedName("mfr.fluid." + fluidName + ".still");
-		setHardness(100.0F);
-		setLightOpacity(3);
+		//setHardness(100.0F);
+		//setLightOpacity(3);
 	}
 
-    public BlockFactoryFluid setUnlocalizedName() {
+    public BlockFactoryFluid init() {
         super.setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+        super.setHardness(100.0F);
+        super.setLightOpacity(3);
         return this;
     }
 	
