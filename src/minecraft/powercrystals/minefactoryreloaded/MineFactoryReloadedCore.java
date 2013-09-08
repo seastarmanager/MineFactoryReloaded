@@ -318,8 +318,8 @@ public class MineFactoryReloadedCore extends BaseMod
 		needlegunAmmoEmptyItem = (new ItemFactory(MFRConfig.needlegunAmmoEmptyItemId.getInt())).setUnlocalizedName("mfr.needlegun.ammo.empty");
 		needlegunAmmoStandardItem = (new ItemNeedlegunAmmoStandard(MFRConfig.needlegunAmmoStandardItemId.getInt())).setUnlocalizedName("mfr.needlegun.ammo.standard");
 		needlegunAmmoLavaItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoLavaItemId.getInt(), Block.lavaMoving.blockID, 3)).setUnlocalizedName("mfr.needlegun.ammo.lava");
-		needlegunAmmoSludgeItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoSludgeItemId.getInt(), sludgeLiquid.blockID, 6)).setUnlocalizedName("mfr.needlegun.ammo.sludge");
-		needlegunAmmoSewageItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoSewageItemId.getInt(), sewageLiquid.blockID, 6)).setUnlocalizedName("mfr.needlegun.ammo.sewage");
+		needlegunAmmoSludgeItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoSludgeItemId.getInt(), sludgeLiquid.getBlockID(), 6)).setUnlocalizedName("mfr.needlegun.ammo.sludge");
+		needlegunAmmoSewageItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoSewageItemId.getInt(), sewageLiquid.getBlockID(), 6)).setUnlocalizedName("mfr.needlegun.ammo.sewage");
 		needlegunAmmoFireItem = (new ItemNeedlegunAmmoFire(MFRConfig.needlegunAmmoFireItemId.getInt())).setUnlocalizedName("mfr.needlegun.ammo.fire");
 		needlegunAmmoAnvilItem = (new ItemNeedlegunAmmoBlock(MFRConfig.needlegunAmmoAnvilItemId.getInt(), Block.anvil.blockID, 2)).setUnlocalizedName("mfr.needlegun.ammo.anvil").setMaxDamage(0);
 		plasticCup = (ItemFactoryCup)new ItemFactoryCup(MFRConfig.plasticCupItemId.getInt(), 64, 16).setUnlocalizedName("mfr.bucket.plasticcup");
@@ -547,15 +547,15 @@ public class MineFactoryReloadedCore extends BaseMod
 	private ItemStack fillBucket(World world, MovingObjectPosition block)
 	{
 		int blockId = world.getBlockId(block.blockX, block.blockY, block.blockZ);
-		if(blockId == milkLiquid.blockID) return new ItemStack(Item.bucketMilk);
-		else if(blockId == sludgeLiquid.blockID) return new ItemStack(sludgeBucketItem);
-		else if(blockId == sewageLiquid.blockID) return new ItemStack(sewageBucketItem);
-		else if(blockId == essenceLiquid.blockID) return new ItemStack(mobEssenceBucketItem);
-		else if(blockId == biofuelLiquid.blockID) return new ItemStack(bioFuelBucketItem);
-		else if(blockId == meatLiquid.blockID) return new ItemStack(meatBucketItem);
-		else if(blockId == pinkSlimeLiquid.blockID) return new ItemStack(pinkSlimeBucketItem);
-		else if(blockId == chocolateMilkLiquid.blockID) return new ItemStack(chocolateMilkBucketItem);
-		else if(blockId == mushroomSoupLiquid.blockID) return new ItemStack(mushroomSoupBucketItem);
+		if(blockId == milkLiquid.getBlockID()) return new ItemStack(Item.bucketMilk);
+		else if(blockId == sludgeLiquid.getBlockID()) return new ItemStack(sludgeBucketItem);
+		else if(blockId == sewageLiquid.getBlockID()) return new ItemStack(sewageBucketItem);
+		else if(blockId == essenceLiquid.getBlockID()) return new ItemStack(mobEssenceBucketItem);
+		else if(blockId == biofuelLiquid.getBlockID()) return new ItemStack(bioFuelBucketItem);
+		else if(blockId == meatLiquid.getBlockID()) return new ItemStack(meatBucketItem);
+		else if(blockId == pinkSlimeLiquid.getBlockID()) return new ItemStack(pinkSlimeBucketItem);
+		else if(blockId == chocolateMilkLiquid.getBlockID()) return new ItemStack(chocolateMilkBucketItem);
+		else if(blockId == mushroomSoupLiquid.getBlockID()) return new ItemStack(mushroomSoupBucketItem);
 		else return null;
 	}
 	
