@@ -13,7 +13,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import powercrystals.core.block.BlockFluidClassic;
+import net.minecraftforge.fluids.BlockFluidClassic;
+import net.minecraftforge.fluids.Fluid;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -25,29 +26,11 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	
 	public BlockFactoryFluid(int id, String fluidName)
 	{
-		super(id, fluidName, Material.water);
-        this.setUnlocalizedName("mfr.fluid." + fluidName + ".still");
-        this.setHardness(100.0f);
-        this.setLightOpacity(3);
+		super(id, new Fluid(fluidName), Material.water);
+        setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+        setHardness(100.0f);
+        setLightOpacity(3);
 	}
-
-    @Override
-    public Block setUnlocalizedName(String name) {
-        super.setUnlocalizedName(name);
-        return this;
-    }
-
-    @Override
-    public Block setHardness(float f) {
-        super.setHardness(f);
-        return this;
-    }
-
-    @Override
-    public Block setLightOpacity(int i) {
-        super.setLightOpacity(i);
-        return this;
-    }
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity)
