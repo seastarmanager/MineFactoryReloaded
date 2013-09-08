@@ -22,7 +22,7 @@ public class EntitySafariNetRenderer extends Render
 		GL11.glTranslatef((float)x, (float)y, (float)z);
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
-		this.func_110776_a(loc);
+		this.bindTexture(loc);
 		Tessellator var10 = Tessellator.instance;
 		
 		this.renderItemInFlight(var10, ((EntitySafariNet)entity).getIcon());
@@ -31,7 +31,7 @@ public class EntitySafariNetRenderer extends Render
 	}
 
     @Override
-    protected ResourceLocation func_110775_a(Entity entity) {
+    protected ResourceLocation getEntityTexture(Entity entity) {
         return loc;
     }
 

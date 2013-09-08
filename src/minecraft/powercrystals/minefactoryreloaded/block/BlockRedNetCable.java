@@ -198,15 +198,15 @@ public class BlockRedNetCable extends BlockContainer implements IRedNetNetworkCo
 					PacketDispatcher.sendPacketToAllAround(x, y, z, 50, world.provider.dimensionId, cable.getDescriptionPacket());
 					if(mode == 0)
 					{
-						player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Set cable to standard connection mode"));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText("Set cable to standard connection mode"));
 					}
 					else if(mode == 1)
 					{
-						player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Set cable to forced-connection mode"));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText("Set cable to forced-connection mode"));
 					}
 					else if(mode == 2)
 					{
-						player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Set cable to cable-only connection mode"));
+						player.sendChatToPlayer(ChatMessageComponent.createFromText("Set cable to cable-only connection mode"));
 					}
 				}
 			}

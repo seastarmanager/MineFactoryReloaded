@@ -55,11 +55,11 @@ public class RenderTickHandler implements ITickHandler
 			
 			if(MineFactoryReloadedClient.instance.getLockedEntity() != Integer.MIN_VALUE)
 			{
-				mc.renderEngine.func_110577_a(loc_blue);
+				mc.renderEngine.bindTexture(loc_blue);
 			}
 			else
 			{
-				mc.renderEngine.func_110577_a(loc_red);
+				mc.renderEngine.bindTexture(loc_red);
 			}
 			
 			GL11.glPushMatrix();

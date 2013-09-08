@@ -25,11 +25,11 @@ public class ItemRuler extends ItemFactory
 			MovingObjectPosition mop = player.rayTrace(MFRConfig.spyglassRange.getInt(), 1.0F);
 			if(mop == null || (mop.typeOfHit == EnumMovingObjectType.ENTITY && mop.entityHit == null))
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Nothing in sight"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("Nothing in sight"));
 			}
 			else if(mop.typeOfHit == EnumMovingObjectType.ENTITY)
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Hit entity - measurement failed"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("Hit entity - measurement failed"));
 			}
 			else
 			{
@@ -40,7 +40,7 @@ public class ItemRuler extends ItemFactory
 					tag.setInteger("y", mop.blockY);
 					tag.setInteger("z", mop.blockZ);
 					stack.setTagCompound(tag);
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Recorded position 1"));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Recorded position 1"));
 				}
 				else
 				{
@@ -54,10 +54,10 @@ public class ItemRuler extends ItemFactory
 					
 					double distAll = Math.sqrt(Math.pow(distX, 2) + Math.pow(distY, 2) + Math.pow(distZ, 2));
 					
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("X: distance: " + distX + ", count: " + (distX + 1)));
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Y: distance: " + distY + ", count: " + (distY + 1)));
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Z: distance: " + distZ + ", count: " + (distZ + 1)));
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(String.format("Total distance: %.1f", distAll)));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("X: distance: " + distX + ", count: " + (distX + 1)));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Y: distance: " + distY + ", count: " + (distY + 1)));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Z: distance: " + distZ + ", count: " + (distZ + 1)));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Total distance: %.1f", distAll)));
 				}
 			}
 		}

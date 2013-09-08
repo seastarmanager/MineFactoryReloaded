@@ -37,7 +37,7 @@ public class EntityRocketRenderer extends Render
 		
 		if(renderengine != null)
 		{
-			renderengine.func_110577_a(loc);
+			renderengine.bindTexture(loc);
 		}
 		
 		GL11.glPushMatrix();
@@ -60,7 +60,7 @@ public class EntityRocketRenderer extends Render
     }
 
     @Override
-    protected ResourceLocation func_110775_a(Entity entity) {
+    protected ResourceLocation getEntityTexture(Entity entity) {
         return loc;
     }
 }

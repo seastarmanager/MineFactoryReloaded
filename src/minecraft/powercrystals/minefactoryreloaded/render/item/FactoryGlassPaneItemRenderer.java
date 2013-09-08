@@ -64,7 +64,7 @@ public class FactoryGlassPaneItemRenderer implements IItemRenderer
 				GL11.glEnable(GL11.GL_CULL_FACE);
 				GL11.glDepthFunc(GL11.GL_GREATER);
 				GL11.glDepthMask(false);
-				renderEngine.func_110577_a(loc);
+				renderEngine.bindTexture(loc);
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_DST_COLOR);
 				GL11.glColor4f(0.5F, 0.25F, 0.8F, 1.0F);

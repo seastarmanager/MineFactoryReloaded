@@ -28,7 +28,7 @@ public class RedstoneCableRenderer extends TileEntitySpecialRenderer implements 
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float scale)
 	{
 		TileEntityRedNetCable cable = (TileEntityRedNetCable)tileentity;
-        func_110628_a(loc);
+        bindTexture(loc);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5f, (float) z + 0.5F);
 		
@@ -42,7 +42,7 @@ public class RedstoneCableRenderer extends TileEntitySpecialRenderer implements 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        func_110628_a(loc);
+        bindTexture(loc);
 		
 		GL11.glPushMatrix();
 		GL11.glRotatef(90, 0, 1, 0);

@@ -15,7 +15,7 @@ public class ItemSyringeHealth extends ItemSyringe
 	@Override
 	public boolean canInject(World world, EntityLiving entity, ItemStack syringe)
 	{
-		return entity.func_110143_aJ() < entity.func_110138_aP();
+		return entity.getHealth() < entity.getMaxHealth();
 	}
 	
 	@Override

@@ -124,7 +124,7 @@ public class EntityRocket extends Entity
 				EntityPlayer entityplayer = (EntityPlayer)hit.entityHit;
 
 
-				if(entityplayer.capabilities.disableDamage || ((EntityLivingBase)_owner instanceof EntityPlayer && !(((EntityPlayer)(EntityLivingBase)_owner)).func_96122_a(entityplayer)))
+				if(entityplayer.capabilities.disableDamage || ((EntityLivingBase)_owner instanceof EntityPlayer && !(((EntityPlayer)(EntityLivingBase)_owner)).canAttackPlayer(entityplayer)))
 				{
 					hit = null;
 				}

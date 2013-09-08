@@ -76,7 +76,7 @@ public class GuiFactoryInventory extends GuiContainer
 	protected void drawGuiContainerBackgroundLayer(float gameTicks, int mouseX, int mouseY)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.func_110577_a(loc);
+		this.mc.renderEngine.bindTexture(loc);
 		int x = (width - xSize) / 2;
 		int y = (height - ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
@@ -129,7 +129,7 @@ public class GuiFactoryInventory extends GuiContainer
                 fluid = new ResourceLocation("textures/blocks/" + name);
         }
 
-        mc.renderEngine.func_110577_a(fluid);
+        mc.renderEngine.bindTexture(fluid);
 
 		while(level > 0)
 		{
@@ -150,7 +150,7 @@ public class GuiFactoryInventory extends GuiContainer
 			vertOffset = vertOffset + 16;
 		}
 		
-		this.mc.renderEngine.func_110577_a(loc);
+		this.mc.renderEngine.bindTexture(loc);
 		this.drawTexturedModalRect(xOffset, yOffset - 60, 176, 0, 16, 60);
 	}
 	

@@ -39,7 +39,7 @@ public class RedNetHistorianRenderer extends TileEntitySpecialRenderer implement
 		
 		if(renderengine != null)
 		{
-			renderengine.func_110577_a(loc);
+			renderengine.bindTexture(loc);
 		}
 		
 		GL11.glPushMatrix();
@@ -140,7 +140,7 @@ public class RedNetHistorianRenderer extends TileEntitySpecialRenderer implement
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        func_110628_a(loc);
+        bindTexture(loc);
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.12, 0, 0);

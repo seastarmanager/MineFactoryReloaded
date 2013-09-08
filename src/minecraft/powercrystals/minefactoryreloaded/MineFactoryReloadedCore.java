@@ -414,7 +414,7 @@ public class MineFactoryReloadedCore extends BaseMod
 		BlockDispenser.dispenseBehaviorRegistry.putObject(safariNetItem, behavior);
 		BlockDispenser.dispenseBehaviorRegistry.putObject(safariNetSingleItem, behavior);
 		
-		DispenserBehaviors.registerVanillaDispenserBehaviors(); // Work around to make the below behavior actually /exist/ before the server starts.
+		DispenserBehaviors.registerDispenserBehaviours(); // Work around to make the below behavior actually /exist/ before the server starts.
 		behavior = (IBehaviorDispenseItem)BlockDispenser.dispenseBehaviorRegistry.getObject(Item.bucketWater);
 		BlockDispenser.dispenseBehaviorRegistry.putObject(sewageBucketItem, behavior);
 		BlockDispenser.dispenseBehaviorRegistry.putObject(sludgeBucketItem, behavior);

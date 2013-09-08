@@ -34,7 +34,7 @@ public class RedNetCardItemRenderer implements IItemRenderer
 		
 		if(renderengine != null)
 		{
-			renderengine.func_110577_a(new ResourceLocation(MineFactoryReloadedCore.tileEntityFolder + "cards.png"));
+			renderengine.bindTexture(new ResourceLocation(MineFactoryReloadedCore.tileEntityFolder + "cards.png"));
 		}
 		
 		GL11.glPushMatrix();

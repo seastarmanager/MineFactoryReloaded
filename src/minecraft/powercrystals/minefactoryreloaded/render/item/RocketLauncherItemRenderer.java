@@ -50,7 +50,7 @@ public class RocketLauncherItemRenderer implements IItemRenderer
 		
 		if(renderengine != null)
 		{
-			renderengine.func_110577_a(loc);
+			renderengine.bindTexture(loc);
 		}
 		
 		GL11.glPushMatrix();

@@ -322,7 +322,7 @@ public class GuiRedNetLogic extends GuiScreenBase
 		mouseX -= guiLeft;
 		mouseY -= guiTop;
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.renderEngine.func_110577_a(_backgroundTexture);
+		mc.renderEngine.bindTexture(_backgroundTexture);
 		drawLargeTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
 		GL11.glPushMatrix();

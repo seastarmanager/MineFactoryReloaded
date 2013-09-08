@@ -133,7 +133,7 @@ public class TileEntityGrinder extends TileEntityFactoryPowered implements IFlui
 		
 		entityList: for(EntityLiving e : entities)
 		{
-			if(e instanceof EntityAgeable && ((EntityAgeable)e).getGrowingAge() < 0 || e.isEntityInvulnerable() || e.func_110143_aJ() <= 0)
+			if(e instanceof EntityAgeable && ((EntityAgeable)e).getGrowingAge() < 0 || e.isEntityInvulnerable() || e.getHealth() <= 0)
 			{
 				continue;
 			}
@@ -152,7 +152,7 @@ public class TileEntityGrinder extends TileEntityFactoryPowered implements IFlui
                     if(r.processEntity(e))
                     {
                         processMob = true;
-                        if(e.func_110143_aJ() <= 0)
+                        if(e.getHealth() <= 0)
                         {
                             continue;
                         }
@@ -177,7 +177,7 @@ public class TileEntityGrinder extends TileEntityFactoryPowered implements IFlui
 				{
 					e.worldObj.getGameRules().setOrCreateGameRule("doMobLoot", "false");
 					damageEntity(e);
-					if(e.func_110143_aJ() <= 0)
+					if(e.getHealth() <= 0)
 					{
 						_tank.fill(FluidRegistry.getFluidStack("essence", 100), true);
 					}
@@ -190,7 +190,7 @@ public class TileEntityGrinder extends TileEntityFactoryPowered implements IFlui
 				return true;
 			}
 			damageEntity(e);
-			if(e.func_110143_aJ() <= 0)
+			if(e.getHealth() <= 0)
 			{
 				_tank.fill(FluidRegistry.getFluidStack("essence", 100), true);
 				setIdleTicks(20);

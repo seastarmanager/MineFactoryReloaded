@@ -81,15 +81,15 @@ public class IconOverlay implements Icon {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getOriginX() {
+	public int getIconWidth() {
         // TODO: Figure this out
-		return (int)(this.getMinU() * (overlayIcon.getOriginX() + overlayIcon.getMaxU()));
+		return (int)(this.getMinU() * (overlayIcon.getIconWidth() + overlayIcon.getMaxU()));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public int getOriginY() {
-		return (int)(this.getMinV() * (overlayIcon.getOriginY() + overlayIcon.getMaxV()));
+	public int getIconHeight() {
+		return (int)(this.getMinV() * (overlayIcon.getIconHeight() + overlayIcon.getMaxV()));
 	}
 
 	@Override

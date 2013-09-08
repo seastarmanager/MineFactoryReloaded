@@ -40,11 +40,11 @@ public class ItemSafariNetLauncher extends ItemFactory
 			{
 				if(isCaptureMode(stack))
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Changed to capture mode"));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Changed to capture mode"));
 				}
 				else
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Changed to release mode"));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Changed to release mode"));
 				}
 			}
 			return stack;

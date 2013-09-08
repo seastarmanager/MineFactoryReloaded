@@ -1,5 +1,6 @@
 package powercrystals.minefactoryreloaded.tile.machine;
 
+import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.PowerHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -160,13 +161,8 @@ public class TileEntityRancher extends TileEntityFactoryPowered implements IFlui
 	}
 
     @Override
-    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection forgeDirection) {
-        return getPowerProvider().getPowerReceiver();
-    }
-
-    @Override
-    public World getWorld() {
-        return worldObj;
+    public IPowerProvider getPowerProvider() {
+        return super.getPowerProvider();
     }
 
     /**

@@ -47,14 +47,14 @@ public class TileEntitySlaughterhouse extends TileEntityGrinder
 					continue entityList;
 				}
 			}
-			if((e instanceof EntityAgeable && ((EntityAgeable)e).getGrowingAge() < 0) || e.isEntityInvulnerable() || e.func_110143_aJ() <= 0
+			if((e instanceof EntityAgeable && ((EntityAgeable)e).getGrowingAge() < 0) || e.isEntityInvulnerable() || e.getHealth() <= 0
 					|| !_grindingWorld.addEntityForGrinding(e))
 			{
 				continue;
 			}
 			double massFound = Math.pow(e.boundingBox.getAverageEdgeLength(), 2);
 			damageEntity(e);
-			if(e.func_110143_aJ() <= 0)
+			if(e.getHealth() <= 0)
 			{
 				_tank.fill(FluidRegistry.getFluidStack(_rand.nextInt(8) == 0 ? "pinkslime" : "meat", (int) (100 * massFound)), true);
 				setIdleTicks(10);

@@ -17,7 +17,7 @@ public class LaserDrillRenderer extends TileEntitySpecialRenderer
 		TileEntityLaserDrill laserDrill = (TileEntityLaserDrill)tileEntity;
 		if(laserDrill.shouldDrawBeam())
 		{
-			this.func_110628_a(new ResourceLocation("/misc/beam.png"));
+			this.bindTexture(new ResourceLocation("/misc/beam.png"));
 			LaserRendererBase.renderLaser(laserDrill, x, y, z, laserDrill.getBeamHeight(), ForgeDirection.DOWN, partialTicks);
 		}
 	}

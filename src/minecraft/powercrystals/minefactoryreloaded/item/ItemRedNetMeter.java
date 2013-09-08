@@ -38,18 +38,18 @@ public class ItemRedNetMeter extends ItemFactory
 				
 				if(value != 0)
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(_colorNames[i] + ": " + value));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText(_colorNames[i] + ": " + value));
 					foundNonZero = true;
 				}
 			}
 			
 			if(!foundNonZero)
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("All RedNet subnets are 0"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("All RedNet subnets are 0"));
 			}
 			else
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("All other RedNet subnets are 0"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("All other RedNet subnets are 0"));
 			}
 			
 			return true;
@@ -64,25 +64,25 @@ public class ItemRedNetMeter extends ItemFactory
 				
 				if(value != 0)
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Variable " + i +  ": " + value));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Variable " + i +  ": " + value));
 					foundNonZero = true;
 				}
 			}
 			
 			if(!foundNonZero)
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("All variables are 0"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("All variables are 0"));
 			}
 			else
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("All other variables are 0"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("All other variables are 0"));
 			}
 			
 			return true;
 		}
 		else if(world.getBlockId(x, y, z) == Block.redstoneWire.blockID)
 		{
-			player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Dust: " + world.getBlockMetadata(x, y, z)));
+			player.sendChatToPlayer(ChatMessageComponent.createFromText("Dust: " + world.getBlockMetadata(x, y, z)));
 		}
 		return false;
 	}

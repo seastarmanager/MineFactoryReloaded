@@ -47,19 +47,19 @@ public class ItemRedNetMemoryCard extends ItemFactory
 				NBTTagCompound tag = new NBTTagCompound();
 				te.writeToNBT(tag);
 				itemstack.setTagCompound(tag);
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("PRC program uploaded to memory card from PRC"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("PRC program uploaded to memory card from PRC"));
 			}
 			else
 			{
 				int circuitCount = itemstack.getTagCompound().getTagList("circuits").tagCount();
 				if(circuitCount > ((TileEntityRedNetLogic)te).getCircuitCount())
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("PRC contains insufficient circuits to hold this program"));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("PRC contains insufficient circuits to hold this program"));
 				}
 				else
 				{
 					((TileEntityRedNetLogic)te).readCircuitsOnly(itemstack.getTagCompound());
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("PRC program downloaded from memory card to PRC"));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("PRC program downloaded from memory card to PRC"));
 				}
 			}
 			

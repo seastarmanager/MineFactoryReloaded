@@ -26,11 +26,11 @@ public class ItemSpyglass extends ItemFactory
 			MovingObjectPosition mop = rayTrace();
 			if(mop == null || (mop.typeOfHit == EnumMovingObjectType.ENTITY && mop.entityHit == null))
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Nothing in sight"));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText("Nothing in sight"));
 			}
 			else if(mop.typeOfHit == EnumMovingObjectType.ENTITY)
 			{
-				player.sendChatToPlayer(new ChatMessageComponent().func_111079_a(String.format("Found a %s at %.1f, %.1f, %.1f", getEntityName(mop.entityHit), mop.entityHit.posX, mop.entityHit.posY, mop.entityHit.posZ)));
+				player.sendChatToPlayer(ChatMessageComponent.createFromText(String.format("Found a %s at %.1f, %.1f, %.1f", getEntityName(mop.entityHit), mop.entityHit.posX, mop.entityHit.posY, mop.entityHit.posZ)));
 			}
 			else
 			{
@@ -38,12 +38,12 @@ public class ItemSpyglass extends ItemFactory
 						mop.blockZ));
 				if(tempStack.getItem() != null)
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Found " + tempStack.getDisplayName() + " [" + world.getBlockId(mop.blockX, mop.blockY, mop.blockZ) + ":"
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Found " + tempStack.getDisplayName() + " [" + world.getBlockId(mop.blockX, mop.blockY, mop.blockZ) + ":"
 							+ world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ) + "] at " + mop.blockX + ", " + mop.blockY + ", " + mop.blockZ));
 				}
 				else
 				{
-					player.sendChatToPlayer(new ChatMessageComponent().func_111079_a("Found UNKNOWN (bugged mod?) at " + mop.blockX + ", " + mop.blockY + ", " + mop.blockZ));
+					player.sendChatToPlayer(ChatMessageComponent.createFromText("Found UNKNOWN (bugged mod?) at " + mop.blockX + ", " + mop.blockY + ", " + mop.blockZ));
 				}
 			}
 		}

@@ -48,6 +48,6 @@ public class GrindingDamage extends DamageSource
         	}
         }
         String s1 = s + ".player";
-        return entityliving1 != null && StatCollector.func_94522_b(s1) ? new ChatMessageComponent().func_111072_b(StatCollector.translateToLocalFormatted(s1, par1EntityLiving.getTranslatedEntityName(), entityliving1.getTranslatedEntityName())) : new ChatMessageComponent().func_111072_b(StatCollector.translateToLocalFormatted(s, par1EntityLiving.getTranslatedEntityName()));
+        return entityliving1 != null && StatCollector.func_94522_b(s1) ? new ChatMessageComponent().addText(StatCollector.translateToLocalFormatted(s1, par1EntityLiving.getTranslatedEntityName(), entityliving1.getTranslatedEntityName())) : new ChatMessageComponent().addText(StatCollector.translateToLocalFormatted(s, par1EntityLiving.getTranslatedEntityName()));
     }
 }

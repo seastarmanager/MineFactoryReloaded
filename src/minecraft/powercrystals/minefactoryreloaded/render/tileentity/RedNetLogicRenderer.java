@@ -30,7 +30,7 @@ public class RedNetLogicRenderer extends TileEntitySpecialRenderer implements IS
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-        func_110628_a(loc);
+        bindTexture(loc);
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.12, 0, 0);
@@ -61,7 +61,7 @@ public class RedNetLogicRenderer extends TileEntitySpecialRenderer implements IS
 	{
 		TileEntityRedNetLogic logic = (TileEntityRedNetLogic) tileentity;
 		int rotation = tileentity.worldObj.getBlockMetadata(tileentity.xCoord, tileentity.yCoord, tileentity.zCoord);
-        func_110628_a(loc);
+        bindTexture(loc);
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5f, (float) z + 0.5F);
 		
@@ -75,7 +75,7 @@ public class RedNetLogicRenderer extends TileEntitySpecialRenderer implements IS
 		
 		// Manually translate and then render each slot with the cards texture
 		// up
-        func_110628_a(loc2);
+        bindTexture(loc2);
 		GL11.glTranslatef(-0.4375f, -0.375f, -0.390625f);
 		renderCard(logic.getLevelForSlot(0));
 		
