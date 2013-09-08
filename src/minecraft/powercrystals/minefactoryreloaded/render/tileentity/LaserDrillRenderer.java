@@ -11,13 +11,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LaserDrillRenderer extends TileEntitySpecialRenderer
 {
+    private static final ResourceLocation loc = new ResourceLocation("/misc/beam.png");
+
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks)
 	{
 		TileEntityLaserDrill laserDrill = (TileEntityLaserDrill)tileEntity;
 		if(laserDrill.shouldDrawBeam())
 		{
-			this.bindTexture(new ResourceLocation("/misc/beam.png"));
+			this.bindTexture(loc);
 			LaserRendererBase.renderLaser(laserDrill, x, y, z, laserDrill.getBeamHeight(), ForgeDirection.DOWN, partialTicks);
 		}
 	}

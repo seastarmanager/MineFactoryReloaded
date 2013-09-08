@@ -13,6 +13,7 @@ import powercrystals.minefactoryreloaded.render.model.RedNetCardsModel;
 
 public class RedNetCardItemRenderer implements IItemRenderer
 {
+    private static final ResourceLocation loc = new ResourceLocation(MineFactoryReloadedCore.tileEntityFolder + "cards.png");
 	private RedNetCardsModel _cardsModel = new RedNetCardsModel();
 	
 	@Override
@@ -34,7 +35,7 @@ public class RedNetCardItemRenderer implements IItemRenderer
 		
 		if(renderengine != null)
 		{
-			renderengine.bindTexture(new ResourceLocation(MineFactoryReloadedCore.tileEntityFolder + "cards.png"));
+			renderengine.bindTexture(loc);
 		}
 		
 		GL11.glPushMatrix();

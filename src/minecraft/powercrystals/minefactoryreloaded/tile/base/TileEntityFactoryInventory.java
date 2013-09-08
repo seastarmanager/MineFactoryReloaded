@@ -329,10 +329,11 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 		return false;
 	}
 
-    @Override
-    public boolean manageLiquids() {
-        return false;
-    }
+	@Override
+    public boolean manageFluids()
+	{
+		return false;
+	}
 
 	@Override
     public boolean manageSolids()
@@ -347,8 +348,10 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 	}
 
     @Override
-    public boolean isPipeConnected(ForgeDirection dir) {
-        return true;
+    public ConnectOverride overridePipeConnection(IPipeTile.PipeType pipeType, ForgeDirection dir) {
+        if (pipeType == IPipeTile.PipeType.ITEM)
+            return ConnectOverride.CONNECT;
+        return ConnectOverride.DISCONNECT;
     }
 
     /**

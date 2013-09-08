@@ -1,7 +1,7 @@
 package powercrystals.minefactoryreloaded.tile.base;
 
-import buildcraft.api.power.IPowerProvider;
 import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;
@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import powercrystals.core.util.Util;
@@ -53,7 +54,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 	
 	// buildcraft-related fields
 
-	private IPowerProvider _powerProvider;
+	private PowerHandler _powerProvider;
 	
 	// IC2-related fields
 	
@@ -75,19 +76,18 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 	{
 		super(machine);
 		_energyActivation = activationCostMJ * energyPerMJ;
-		//_powerProvider = new PowerHandler(this, PowerHandler.Type.MACHINE);
-        //_powerProvider = new PneumaticPowerProvider();
-		//configurePowerProvider();
+		_powerProvider = new PowerHandler(this, PowerHandler.Type.MACHINE);
+		configurePowerProvider();
 		setIsActive(false);
 	}
 	
 	// local methods
 	
-	protected void configurePowerProvider()
-	{
+	private void configurePowerProvider()
+	{ // TODO: inline into constructor in 2.8
 		int activation = getMaxEnergyPerTick() / energyPerMJ;
 		int maxReceived = Math.min(activation * 20, 1000);
-        _powerProvider.configure(0, 0, maxReceived, activation < 10 ? 1 : 10, 1000);
+		_powerProvider.configure(activation < 10 ? 1F : 10F, maxReceived, 1F, 1000F);
 	}
 	
 	@Override
@@ -111,14 +111,14 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 		
 		if (energyRequired > 0)
 		{
-			IPowerProvider pp = getPowerProvider();
+			PowerHandler pp = getPowerProvider();
 			bcpower: if(pp != null)
 			{
 				int mjRequired = energyRequired / energyPerMJ;
 				if (mjRequired <= 0) break bcpower;
-
-				pp.update(this);
-
+				
+				pp.update();
+				
 				if(pp.useEnergy(0, mjRequired, false) > 0)
 				{
 					int mjGained = (int)(pp.useEnergy(0, mjRequired, true) * energyPerMJ);
@@ -377,28 +377,22 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 	}
 	
 	// BC methods
-
+	/*
 	@Override
 	public int powerRequest(ForgeDirection from)
 	{
+
 		int powerProviderPower = (int)Math.min(_powerProvider.getMaxEnergyStored() - _powerProvider.getEnergyStored(), _powerProvider.getMaxEnergyReceived());
 		return Math.max(powerProviderPower, 0);
 	}
+	*/
 
-
-    @Override
-    public void setPowerProvider(IPowerProvider iPowerProvider) {
-        _powerProvider = iPowerProvider;
-        configurePowerProvider();
-    }
-
-    @Override
-    public IPowerProvider getPowerProvider() {
+    public PowerHandler getPowerProvider() {
         return _powerProvider;
     }
 	
 	@Override
-	public void doWork()
+	public void doWork(PowerHandler handler)
 	{
 	}
 	
@@ -430,6 +424,16 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
 	{
 		return 128;
 	}
+
+    @Override
+    public World getWorld() {
+        return worldObj;
+    }
+
+    @Override
+    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection from) {
+        return _powerProvider.getPowerReceiver();
+    }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack s) {

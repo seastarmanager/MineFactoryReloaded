@@ -1,11 +1,13 @@
 package powercrystals.minefactoryreloaded.tile.machine;
 
-import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.PowerHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.api.IFactoryRanchable;
@@ -158,8 +160,13 @@ public class TileEntityRancher extends TileEntityFactoryPowered implements IFlui
 	}
 
     @Override
-    public IPowerProvider getPowerProvider() {
-        return super.getPowerProvider();
+    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection forgeDirection) {
+        return getPowerProvider().getPowerReceiver();
+    }
+
+    @Override
+    public World getWorld() {
+        return worldObj;
     }
 
     /**

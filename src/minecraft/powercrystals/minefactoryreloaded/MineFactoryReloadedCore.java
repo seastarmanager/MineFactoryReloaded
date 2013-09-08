@@ -441,18 +441,6 @@ public class MineFactoryReloadedCore extends BaseMod
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt)
 	{
-        /*
-        FluidRegistry.registerFluid(new Fluid("milk").setUnlocalizedName(milkLiquid.getUnlocalizedName()).setBlockID(milkLiquid).setStillIcon(milkLiquid.getIcon(1, 0)).setFlowingIcon(milkLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("sludge").setUnlocalizedName(sludgeLiquid.getUnlocalizedName()).setBlockID(sludgeLiquid).setStillIcon(sludgeLiquid.getIcon(1, 0)).setFlowingIcon(sludgeLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("sewage").setUnlocalizedName(sewageLiquid.getUnlocalizedName()).setBlockID(sewageLiquid).setStillIcon(sewageLiquid.getIcon(1, 0)).setFlowingIcon(sewageLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("essence").setUnlocalizedName(essenceLiquid.getUnlocalizedName()).setBlockID(essenceLiquid).setStillIcon(essenceLiquid.getIcon(1, 0)).setFlowingIcon(essenceLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("biofuel").setUnlocalizedName(biofuelLiquid.getUnlocalizedName()).setBlockID(biofuelLiquid).setStillIcon(biofuelLiquid.getIcon(1, 0)).setFlowingIcon(biofuelLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("meat").setUnlocalizedName(meatLiquid.getUnlocalizedName()).setBlockID(meatLiquid).setStillIcon(meatLiquid.getIcon(1, 0)).setFlowingIcon(meatLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("pinkslime").setUnlocalizedName(pinkSlimeLiquid.getUnlocalizedName()).setBlockID(pinkSlimeLiquid).setStillIcon(pinkSlimeLiquid.getIcon(1, 0)).setFlowingIcon(pinkSlimeLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("chocolatemilk").setUnlocalizedName(chocolateMilkLiquid.getUnlocalizedName()).setBlockID(chocolateMilkLiquid).setStillIcon(chocolateMilkLiquid.getIcon(1, 0)).setFlowingIcon(chocolateMilkLiquid.getIcon(2, 0)));
-        FluidRegistry.registerFluid(new Fluid("mushroomsoup").setUnlocalizedName(mushroomSoupLiquid.getUnlocalizedName()).setBlockID(mushroomSoupLiquid).setStillIcon(mushroomSoupLiquid.getIcon(1, 0)).setFlowingIcon(mushroomSoupLiquid.getIcon(2, 0)));
-        */
-
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(milkLiquid.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bucketMilk), new ItemStack(Item.bucketEmpty)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(sludgeLiquid.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sludgeBucketItem), new ItemStack(Item.bucketEmpty)));
         FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(sewageLiquid.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sewageBucketItem), new ItemStack(Item.bucketEmpty)));

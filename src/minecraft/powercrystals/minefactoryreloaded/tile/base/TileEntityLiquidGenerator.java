@@ -1,8 +1,10 @@
 package powercrystals.minefactoryreloaded.tile.base;
 
-import buildcraft.api.power.IPowerProvider;
+import buildcraft.api.power.PowerHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.core.util.Util;
 import powercrystals.minefactoryreloaded.setup.Machine;
@@ -140,8 +142,13 @@ public abstract class TileEntityLiquidGenerator extends TileEntityGenerator impl
 	}
 
     @Override
-    public IPowerProvider getPowerProvider() {
-        return super.getPowerProvider();
+    public World getWorld() {
+        return worldObj;
+    }
+
+    @Override
+    public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection from) {
+        return getPowerProvider().getPowerReceiver();
     }
 
     /**
