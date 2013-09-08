@@ -26,9 +26,9 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	public BlockFactoryFluid(int id, String fluidName)
 	{
 		super(id, new Fluid(fluidName), Material.water, "mfr.fluid." + fluidName + ".still");
-        setUnlocalizedName("mfr.fluid." + fluidName + ".still");
-        setHardness(100.0f);
-        setLightOpacity(3);
+        _setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+        _setHardness(100.0f);
+        _setLightOpacity(3);
 	}
 	
 	@Override
