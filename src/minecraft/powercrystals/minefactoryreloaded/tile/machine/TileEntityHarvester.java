@@ -157,7 +157,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
 		harvestable.postHarvest(worldObj, targetCoords.x, targetCoords.y, targetCoords.z);
 		
 		//_tank.fill(FluidContainerRegistry.getFluidForFilledItem("sludge", 10), true);
-		_tank.fill(new FluidStack(MineFactoryReloadedCore.sludgeLiquid.getFluid(), 10), true);
+		_tank.fill(FluidRegistry.getFluidStack("sludge", 10), true);
 
 		return true;
 	}

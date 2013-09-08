@@ -12,8 +12,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import powercrystals.minefactoryreloaded.fluid.BlockFluidClassic;
+import powercrystals.core.block.BlockFluidClassic;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
@@ -25,10 +24,10 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
 	
 	public BlockFactoryFluid(int id, String fluidName)
 	{
-		super(id, new Fluid(fluidName), Material.water, "mfr.fluid." + fluidName + ".still");
-        _setUnlocalizedName("mfr.fluid." + fluidName + ".still");
-        _setHardness(100.0f);
-        _setLightOpacity(3);
+		super(id, Material.water);
+        setUnlocalizedName("mfr.fluid." + fluidName + ".still");
+        setHardness(100.0f);
+        setLightOpacity(3);
 	}
 	
 	@Override

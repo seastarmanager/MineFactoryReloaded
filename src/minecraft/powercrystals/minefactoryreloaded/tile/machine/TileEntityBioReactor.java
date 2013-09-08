@@ -122,7 +122,7 @@ public class TileEntityBioReactor extends TileEntityFactoryInventory implements 
 			if(_burnTime > 0 && (_tank.getFluid() == null || _tank.getFluidAmount() <= _tank.getCapacity() - _bioFuelPerTick))
 			{
 				_burnTime -= _burnTimeDecreasePerTick;
-                _tank.fill(new FluidStack(MineFactoryReloadedCore.biofuelLiquid.getFluid(), _bioFuelPerTick), true);
+                _tank.fill(FluidRegistry.getFluidStack("biofuel", _bioFuelPerTick), true);
 			}
 		}
 	}
