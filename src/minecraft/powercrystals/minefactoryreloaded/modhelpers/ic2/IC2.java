@@ -42,86 +42,22 @@ public class IC2
     public static void postTileLoadEvent(TileEntityFactoryPowered tefp) {
         if (!isLoaded())
             return;
-        try {
-            Constructor con = EnergyTileLoadEvent.class.getConstructor(IEnergyTile.class);
-            MinecraftForge.EVENT_BUS.post((EnergyTileLoadEvent) con.newInstance(tefp));
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        IC2Helper.postTileLoadEvent(tefp);
     }
 
     public static void postTileUnloadEvent(TileEntityFactoryPowered tefp) {
         if (!isLoaded())
             return;
-        try {
-            Constructor con = EnergyTileUnloadEvent.class.getConstructor(IEnergyTile.class);
-            MinecraftForge.EVENT_BUS.post((EnergyTileUnloadEvent) con.newInstance(tefp));
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
+        IC2Helper.postTileUnloadEvent(tefp);
     }
 
 	@EventHandler
-	public static void load(FMLInitializationEvent e)
-	{
+	public static void load(FMLInitializationEvent e) {
         isLoaded = Loader.isModLoaded("IC2");
-		if(!isLoaded)
-		{
+		if (!isLoaded) {
 			FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
 			return;
 		}
-		try
-		{
-			ItemStack crop = Items.getItem("crop");
-			ItemStack rubber = Items.getItem("rubber");
-			ItemStack rubberSapling = Items.getItem("rubberSapling");
-			ItemStack rubberLeaves = Items.getItem("rubberLeaves");
-			ItemStack rubberWood = Items.getItem("rubberWood");
-			ItemStack stickyResin = Items.getItem("resin");
-			ItemStack plantBall = Items.getItem("plantBall");
-			
-			if(rubberSapling != null)
-			{
-				MFRRegistry.registerPlantable(new PlantableStandard(rubberSapling.itemID, rubberSapling.itemID));
-				MFRRegistry.registerFertilizable(new FertilizableIC2RubberTree(rubberSapling.itemID));
-			}
-			if(rubberLeaves != null)
-			{
-				MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(rubberLeaves.itemID));
-			}
-			if(rubberWood != null)
-			{
-				MFRRegistry.registerHarvestable(new HarvestableIC2RubberWood(rubberWood.itemID, HarvestType.Tree, stickyResin.itemID));
-				MFRRegistry.registerFruitLogBlockId(((ItemBlock)rubberWood.getItem()).getBlockID());
-				MFRRegistry.registerFruit(new FruitIC2Resin(rubberWood, stickyResin));
-			}
-			
-			ItemStack fertilizer = Items.getItem("fertilizer");
-			if(fertilizer != null)
-			{
-				MFRRegistry.registerFertilizer(new FertilizerStandard(fertilizer.itemID, fertilizer.getItemDamage()));
-			}
-			
-			MFRRegistry.registerHarvestable(new HarvestableIC2Crop(crop.itemID));
-			
-			GameRegistry.addShapedRecipe(plantBall, new Object[]
-					{
-					"LLL",
-					"L L",
-					"LLL",
-					Character.valueOf('L'), new ItemStack(MineFactoryReloadedCore.rubberLeavesBlock)
-					} );
-			
-            try {
-                Method m = Recipes.extractor.getClass().getMethod("addRecipe", IRecipeInput.class, NBTTagCompound.class, ItemStack[].class);
-                m.invoke(Recipes.extractor, new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, new ItemStack[] {rubber});
-            } catch (Throwable t) {
-                t.printStackTrace();
-            }
-		}
-		catch (Throwable _)
-		{
-            FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
-		}
+        IC2Helper.init();
 	}
 }
