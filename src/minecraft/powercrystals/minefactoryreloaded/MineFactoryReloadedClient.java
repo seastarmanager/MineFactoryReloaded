@@ -24,6 +24,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import powercrystals.core.position.BlockPosition;
+import powercrystals.minefactoryreloaded.entity.EntityPinkSlime;
 import powercrystals.minefactoryreloaded.render.block.*;
 import powercrystals.core.render.RenderBlockFluidClassic;
 import powercrystals.minefactoryreloaded.core.IHarvestAreaContainer;
@@ -33,6 +34,7 @@ import powercrystals.minefactoryreloaded.item.ItemRocketLauncher;
 import powercrystals.minefactoryreloaded.entity.EntitySafariNet;
 import powercrystals.minefactoryreloaded.render.RenderTickHandler;
 import powercrystals.minefactoryreloaded.render.entity.EntityNeedleRenderer;
+import powercrystals.minefactoryreloaded.render.entity.EntityPinkSlimeRenderer;
 import powercrystals.minefactoryreloaded.render.entity.EntityRocketRenderer;
 import powercrystals.minefactoryreloaded.render.entity.EntitySafariNetRenderer;
 import powercrystals.minefactoryreloaded.render.item.FactoryGlassPaneItemRenderer;
@@ -124,6 +126,7 @@ public class MineFactoryReloadedClient implements IScheduledTickHandler
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityNeedle.class, new EntityNeedleRenderer());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new EntityRocketRenderer());
+        RenderingRegistry.registerEntityRenderingHandler(EntityPinkSlime.class, new EntityPinkSlimeRenderer());
 		
 		TickRegistry.registerScheduledTickHandler(instance, Side.CLIENT);
 		TickRegistry.registerTickHandler(new RenderTickHandler(), Side.CLIENT);
