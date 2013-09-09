@@ -7,16 +7,14 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 
 @Mod(modid = "MineFactoryReloaded|CompatForestryPre", name = "MFR Compat: Forestry (2)", version = MineFactoryReloadedCore.version, dependencies = "before:Forestry")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
-public class ForestryPre
-{
-	@Mod.EventHandler
-	public static void init(FMLInitializationEvent e)
-	{
+public class ForestryPre {
+    @Mod.EventHandler
+    public static void init(FMLInitializationEvent e) {
         /*
-		if(!Loader.isModLoaded("Forestry"))
+        if(!Loader.isModLoaded("Forestry"))
 		{
 			return;
 		}
 		*/
-	}
+    }
 }

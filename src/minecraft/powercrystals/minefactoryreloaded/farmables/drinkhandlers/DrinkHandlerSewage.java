@@ -5,13 +5,11 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import powercrystals.minefactoryreloaded.api.IFluidDrinkHandler;
 
-public class DrinkHandlerSewage implements IFluidDrinkHandler
-{
-	@Override
-	public void onDrink(EntityPlayer player)
-	{
-		player.addPotionEffect(new PotionEffect(Potion.confusion.id, 40 * 20, 0));
-		player.addPotionEffect(new PotionEffect(Potion.poison.id, 40 * 20, 0));
-		player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 40 * 20, 0));
-	}
+public class DrinkHandlerSewage implements IFluidDrinkHandler {
+    @Override
+    public void onDrink(EntityPlayer player) {
+        player.addPotionEffect(new PotionEffect(Potion.confusion.id, 40 * 20, 0));
+        player.addPotionEffect(new PotionEffect(Potion.poison.id, 40 * 20, 0));
+        player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 40 * 20, 0));
+    }
 }

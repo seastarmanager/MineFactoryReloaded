@@ -40,7 +40,7 @@ public class RecipeInputItemStack {
 
     /**
      * List all possible inputs (best effort).
-     *
+     * <p/>
      * The stack size is undefined, use getAmount to get the correct one.
      *
      * @return list of inputs, may be incomplete

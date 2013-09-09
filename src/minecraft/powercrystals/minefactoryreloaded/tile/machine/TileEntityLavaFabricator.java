@@ -10,29 +10,24 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFluidFabricator;
 
-public class TileEntityLavaFabricator extends TileEntityFluidFabricator
-{
-	public TileEntityLavaFabricator()
-	{
-		super(FluidRegistry.LAVA.getID(), 20, Machine.LavaFabricator);
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "lavafab.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerFactoryPowered(this, inventoryPlayer);
-	}
+public class TileEntityLavaFabricator extends TileEntityFluidFabricator {
+    public TileEntityLavaFabricator() {
+        super(FluidRegistry.LAVA.getID(), 20, Machine.LavaFabricator);
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "lavafab.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerFactoryPowered(this, inventoryPlayer);
+    }
 }

@@ -16,138 +16,112 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
-public class TileEntityWeather extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank
-{	
-	private FluidTank _tank;
-	
-	public TileEntityWeather()
-	{
-		super(Machine.WeatherCollector);
-		_tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "weathercollector.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerFactoryPowered(this, inventoryPlayer);
-	}
-	
-	@Override
-	public FluidTank getTank()
-	{
-		return _tank;
-	}
-	
-	@Override
-	public int getEnergyStoredMax()
-	{
-		return 16000;
-	}
-	
-	@Override
-	public int getWorkMax()
-	{
-		return 50;
-	}
-	
-	@Override
-	public int getIdleTicksMax()
-	{
-		return 600;
-	}
-	
-	@Override
-	public boolean activateMachine()
-	{
-		MFRLiquidMover.pumpFluid(_tank, this);
-		
-		if(worldObj.getWorldInfo().isRaining() && canSeeSky())
-		{
-			BiomeGenBase bgb = worldObj.getBiomeGenForCoords(this.xCoord, this.zCoord);
-			
-			if(!bgb.canSpawnLightningBolt() && !bgb.getEnableSnow())
-			{
-				setIdleTicks(getIdleTicksMax());
-				return false;
-			}
-			setWorkDone(getWorkDone() + 1);
-			if(getWorkDone() >= getWorkMax())
-			{
-				if(bgb.getFloatTemperature() >= 0.15F)
-				{
-					//if(_tank.fill(new LiquidStack(Block.waterStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME), true) > 0)
-                    if(_tank.fill(FluidContainerRegistry.getFluidForFilledItem(new ItemStack(Item.bucketWater)), true) > 0)
-					{
-						setWorkDone(0);
-						return true;
-					}
-					else
-					{
-						setWorkDone(getWorkMax());
-						return false;
-					}
-				}
-				else
-				{
-					doDrop(new ItemStack(Item.snowball));
-					setWorkDone(0);
-				}
-			}
-			return true;
-		}
-		setIdleTicks(getIdleTicksMax());
-		return false;
-	}
-	
-	@Override
-	public ForgeDirection getDropDirection()
-	{
-		return ForgeDirection.DOWN;
-	}
-	
-	private boolean canSeeSky()
-	{
-		for(int y = yCoord + 1; y <= 256; y++)
-		{
-			int blockId = worldObj.getBlockId(xCoord, y, zCoord);
-			if(Block.blocksList[blockId] != null && !Block.blocksList[blockId].isAirBlock(worldObj, xCoord, y, zCoord))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean allowBucketDrain()
-	{
-		return true;
-	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 0;
-	}
-	
-	@Override
-	public boolean manageSolids()
-	{
-		return true;
-	}
+public class TileEntityWeather extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+    private FluidTank _tank;
+
+    public TileEntityWeather() {
+        super(Machine.WeatherCollector);
+        _tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "weathercollector.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerFactoryPowered(this, inventoryPlayer);
+    }
+
+    @Override
+    public FluidTank getTank() {
+        return _tank;
+    }
+
+    @Override
+    public int getEnergyStoredMax() {
+        return 16000;
+    }
+
+    @Override
+    public int getWorkMax() {
+        return 50;
+    }
+
+    @Override
+    public int getIdleTicksMax() {
+        return 600;
+    }
+
+    @Override
+    public boolean activateMachine() {
+        MFRLiquidMover.pumpFluid(_tank, this);
+
+        if (worldObj.getWorldInfo().isRaining() && canSeeSky()) {
+            BiomeGenBase bgb = worldObj.getBiomeGenForCoords(this.xCoord, this.zCoord);
+
+            if (!bgb.canSpawnLightningBolt() && !bgb.getEnableSnow()) {
+                setIdleTicks(getIdleTicksMax());
+                return false;
+            }
+            setWorkDone(getWorkDone() + 1);
+            if (getWorkDone() >= getWorkMax()) {
+                if (bgb.getFloatTemperature() >= 0.15F) {
+                    //if(_tank.fill(new LiquidStack(Block.waterStill.blockID, LiquidContainerRegistry.BUCKET_VOLUME), true) > 0)
+                    if (_tank.fill(FluidContainerRegistry.getFluidForFilledItem(new ItemStack(Item.bucketWater)), true) > 0) {
+                        setWorkDone(0);
+                        return true;
+                    } else {
+                        setWorkDone(getWorkMax());
+                        return false;
+                    }
+                } else {
+                    doDrop(new ItemStack(Item.snowball));
+                    setWorkDone(0);
+                }
+            }
+            return true;
+        }
+        setIdleTicks(getIdleTicksMax());
+        return false;
+    }
+
+    @Override
+    public ForgeDirection getDropDirection() {
+        return ForgeDirection.DOWN;
+    }
+
+    private boolean canSeeSky() {
+        for (int y = yCoord + 1; y <= 256; y++) {
+            int blockId = worldObj.getBlockId(xCoord, y, zCoord);
+            if (Block.blocksList[blockId] != null && !Block.blocksList[blockId].isAirBlock(worldObj, xCoord, y, zCoord)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean allowBucketDrain() {
+        return true;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public boolean manageSolids() {
+        return true;
+    }
 
     /**
      * @param container ItemStack which is the fluid container.

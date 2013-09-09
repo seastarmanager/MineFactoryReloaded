@@ -12,8 +12,7 @@ import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
 @Mod(modid = "MineFactoryReloaded|CompatIC2", name = "MFR Compat: IC2", version = MineFactoryReloadedCore.version, dependencies = "after:MineFactoryReloaded;after:IC2")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
-public class IC2
-{
+public class IC2 {
     private static boolean isLoaded;
 
     public static boolean isLoaded() {
@@ -32,13 +31,13 @@ public class IC2
         IC2Helper.postTileUnloadEvent(tefp);
     }
 
-	@EventHandler
-	public static void load(FMLInitializationEvent e) {
+    @EventHandler
+    public static void load(FMLInitializationEvent e) {
         isLoaded = Loader.isModLoaded("IC2");
-		if (!isLoaded) {
-			FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
-			return;
-		}
+        if (!isLoaded) {
+            FMLLog.warning("IC2 missing - MFR IC2 Compat not loading");
+            return;
+        }
         IC2Helper.init();
-	}
+    }
 }

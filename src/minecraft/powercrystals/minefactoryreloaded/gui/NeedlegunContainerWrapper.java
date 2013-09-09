@@ -5,124 +5,99 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class NeedlegunContainerWrapper implements IInventory
-{
-	private ItemStack _stack;
-	
-	public NeedlegunContainerWrapper(ItemStack stack)
-	{
-		_stack = stack;
-	}
-	
-	public ItemStack getStack()
-	{
-		return _stack;
-	}
+public class NeedlegunContainerWrapper implements IInventory {
+    private ItemStack _stack;
 
-	@Override
-	public int getSizeInventory()
-	{
-		return 1;
-	}
+    public NeedlegunContainerWrapper(ItemStack stack) {
+        _stack = stack;
+    }
 
-	@Override
-	public ItemStack getStackInSlot(int i)
-	{
-		if(_stack.getTagCompound().getCompoundTag("ammo") == null || _stack.getTagCompound().getCompoundTag("ammo").hasNoTags())
-		{
-			return null;
-		}
-		else
-		{
-			ItemStack s = new ItemStack(0, 0, 0);
-			s.readFromNBT(_stack.getTagCompound().getCompoundTag("ammo"));
-			return s;
-		}
-	}
+    public ItemStack getStack() {
+        return _stack;
+    }
 
-	@Override
-	public ItemStack decrStackSize(int i, int j)
-	{
-		ItemStack s = new ItemStack(0, 0, 0);
-		s.readFromNBT(_stack.getTagCompound().getCompoundTag("ammo"));
-		s.stackSize -= j;
-		if(s.stackSize <= 0)
-		{
-			_stack.getTagCompound().setCompoundTag("ammo", new NBTTagCompound());
-			s = null;
-		}
-		else
-		{
-			NBTTagCompound t = new NBTTagCompound();
-			s.writeToNBT(t);
-			_stack.getTagCompound().setCompoundTag("ammo", t);
-		}
-		return s;
-	}
+    @Override
+    public int getSizeInventory() {
+        return 1;
+    }
 
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i)
-	{
-		return null;
-	}
+    @Override
+    public ItemStack getStackInSlot(int i) {
+        if (_stack.getTagCompound().getCompoundTag("ammo") == null || _stack.getTagCompound().getCompoundTag("ammo").hasNoTags()) {
+            return null;
+        } else {
+            ItemStack s = new ItemStack(0, 0, 0);
+            s.readFromNBT(_stack.getTagCompound().getCompoundTag("ammo"));
+            return s;
+        }
+    }
 
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack)
-	{
-		if(itemstack == null)
-		{
-			_stack.getTagCompound().setCompoundTag("ammo", new NBTTagCompound());
-		}
-		else
-		{
-			NBTTagCompound t = new NBTTagCompound();
-			itemstack.writeToNBT(t);
-			_stack.getTagCompound().setCompoundTag("ammo", t);
-		}
-	}
+    @Override
+    public ItemStack decrStackSize(int i, int j) {
+        ItemStack s = new ItemStack(0, 0, 0);
+        s.readFromNBT(_stack.getTagCompound().getCompoundTag("ammo"));
+        s.stackSize -= j;
+        if (s.stackSize <= 0) {
+            _stack.getTagCompound().setCompoundTag("ammo", new NBTTagCompound());
+            s = null;
+        } else {
+            NBTTagCompound t = new NBTTagCompound();
+            s.writeToNBT(t);
+            _stack.getTagCompound().setCompoundTag("ammo", t);
+        }
+        return s;
+    }
 
-	@Override
-	public String getInvName()
-	{
-		return "Needlegun";
-	}
+    @Override
+    public ItemStack getStackInSlotOnClosing(int i) {
+        return null;
+    }
 
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
+    @Override
+    public void setInventorySlotContents(int i, ItemStack itemstack) {
+        if (itemstack == null) {
+            _stack.getTagCompound().setCompoundTag("ammo", new NBTTagCompound());
+        } else {
+            NBTTagCompound t = new NBTTagCompound();
+            itemstack.writeToNBT(t);
+            _stack.getTagCompound().setCompoundTag("ammo", t);
+        }
+    }
 
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 1;
-	}
+    @Override
+    public String getInvName() {
+        return "Needlegun";
+    }
 
-	@Override
-	public void onInventoryChanged()
-	{
-	}
+    @Override
+    public boolean isInvNameLocalized() {
+        return false;
+    }
 
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return true;
-	}
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
 
-	@Override
-	public void openChest()
-	{
-	}
+    @Override
+    public void onInventoryChanged() {
+    }
 
-	@Override
-	public void closeChest()
-	{
-	}
+    @Override
+    public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+        return true;
+    }
 
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return true;
-	}
+    @Override
+    public void openChest() {
+    }
+
+    @Override
+    public void closeChest() {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+        return true;
+    }
 }

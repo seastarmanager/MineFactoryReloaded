@@ -16,31 +16,25 @@ import powercrystals.minefactoryreloaded.api.IFactoryRanchable;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RanchableCow implements IFactoryRanchable
-{
-	@Override
-	public Class<? extends EntityLiving> getRanchableEntity()
-	{
-		return EntityCow.class;
-	}
-	
-	@Override
-	public List<ItemStack> ranch(World world, EntityLiving entity, IInventory rancher)
-	{
-		List<ItemStack> drops = new LinkedList<ItemStack>();
-		IInventoryManager manager = InventoryManager.create(rancher, ForgeDirection.UP);
-		int bucketIndex = manager.findItem(new ItemStack(Item.bucketEmpty));
-		if(bucketIndex >= 0)
-		{
-			drops.add(new ItemStack(Item.bucketMilk));
-			rancher.decrStackSize(bucketIndex, 1);
-		}
-		else
-		{
-			FluidStack milk = FluidRegistry.getFluidStack("milk", 1000);
-			drops.add(new ItemStack(milk.fluidID, milk.amount, Integer.MAX_VALUE));
-		}
-		
-		return drops;
-	}
+public class RanchableCow implements IFactoryRanchable {
+    @Override
+    public Class<? extends EntityLiving> getRanchableEntity() {
+        return EntityCow.class;
+    }
+
+    @Override
+    public List<ItemStack> ranch(World world, EntityLiving entity, IInventory rancher) {
+        List<ItemStack> drops = new LinkedList<ItemStack>();
+        IInventoryManager manager = InventoryManager.create(rancher, ForgeDirection.UP);
+        int bucketIndex = manager.findItem(new ItemStack(Item.bucketEmpty));
+        if (bucketIndex >= 0) {
+            drops.add(new ItemStack(Item.bucketMilk));
+            rancher.decrStackSize(bucketIndex, 1);
+        } else {
+            FluidStack milk = FluidRegistry.getFluidStack("milk", 1000);
+            drops.add(new ItemStack(milk.fluidID, milk.amount, Integer.MAX_VALUE));
+        }
+
+        return drops;
+    }
 }

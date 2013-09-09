@@ -16,93 +16,88 @@ import powercrystals.minefactoryreloaded.MFRRegistry;
 import java.util.Properties;
 
 @Implementable("net.minecraftforge.fluids.IFluidContainerItem")
-public class ItemFactoryCup extends ItemFactory
-{
-	private int _maxUses = 0;
-	private boolean _prefix = false;
+public class ItemFactoryCup extends ItemFactory {
+    private int _maxUses = 0;
+    private boolean _prefix = false;
 
-	public ItemFactoryCup(int id, int stackSize, int maxUses)
-	{
-		super(id);
-		this.setMaxStackSize(stackSize);
-		this._maxUses = maxUses;
-		this.setMaxDamage(maxUses);
-		this.setHasSubtypes(true);
-	}
+    public ItemFactoryCup(int id, int stackSize, int maxUses) {
+        super(id);
+        this.setMaxStackSize(stackSize);
+        this._maxUses = maxUses;
+        this.setMaxDamage(maxUses);
+        this.setHasSubtypes(true);
+    }
 
-	@Override
-	public String getUnlocalizedName(ItemStack stack)
-	{
-		if (getFluid(stack) != null)
-			return getUnlocalizedName() + (_prefix ? ".prefix" : ".suffix");
-		return getUnlocalizedName();
-	}
+    @Override
+    public ItemFactoryCup setUnlocalizedName(String name) {
+        super.setUnlocalizedName(name);
+        return this;
+    }
 
-	public String getLocalizedName(String str)
-	{
+    @Override
+    public String getUnlocalizedName(ItemStack stack) {
+        if (getFluid(stack) != null)
+            return getUnlocalizedName() + (_prefix ? ".prefix" : ".suffix");
+        return getUnlocalizedName();
+    }
+
+    public String getLocalizedName(String str) {
         // TODO: Hope this doesn't crash
-		Properties translator = (Properties) StringTranslate.getInstance().languageList;
-		return translator.getProperty(getUnlocalizedName() + "." + str);
-	}
+        Properties translator = (Properties) StringTranslate.getInstance().languageList;
+        return translator.getProperty(getUnlocalizedName() + "." + str);
+    }
 
-	@Override
-	public String getItemDisplayName(ItemStack item)
-	{
-		int id = item.getItemDamage();
-		if (id != 0)
-		{
-			String ret = getFluidName(item), t = getLocalizedName(ret);
-			if (t != null && !t.isEmpty())
-				return EnumChatFormatting.RESET + t + EnumChatFormatting.RESET;
-			if (ret == null)
-			{
-				item.setItemDamage(0);
-				return super.getItemDisplayName(item);
-			}
-			FluidStack fluid = FluidRegistry.getFluidStack(ret, 0);
-			if (fluid != null)
-			{
-				return fluid.getFluid().getLocalizedName();
-			}
-			_prefix = true;
-			t = super.getItemDisplayName(item);
-			_prefix = false;
-			t = t != null ? t.trim() : "";
-			ret = (t.isEmpty() ? "" : t + " ") + ret;
-			t = super.getItemDisplayName(item);
-			t = t != null ? t.trim() : "";
-			ret += t.isEmpty() ? " Cup" : " " + t;
-			return ret;
-		}
-		return super.getItemDisplayName(item);
-	}
+    @Override
+    public String getItemDisplayName(ItemStack item) {
+        int id = item.getItemDamage();
+        if (id != 0) {
+            String ret = getFluidName(item), t = getLocalizedName(ret);
+            if (t != null && !t.isEmpty())
+                return EnumChatFormatting.RESET + t + EnumChatFormatting.RESET;
+            if (ret == null) {
+                item.setItemDamage(0);
+                return super.getItemDisplayName(item);
+            }
+            FluidStack fluid = FluidRegistry.getFluidStack(ret, 0);
+            if (fluid != null) {
+                return fluid.getFluid().getLocalizedName();
+            }
+            _prefix = true;
+            t = super.getItemDisplayName(item);
+            _prefix = false;
+            t = t != null ? t.trim() : "";
+            ret = (t.isEmpty() ? "" : t + " ") + ret;
+            t = super.getItemDisplayName(item);
+            t = t != null ? t.trim() : "";
+            ret += t.isEmpty() ? " Cup" : " " + t;
+            return ret;
+        }
+        return super.getItemDisplayName(item);
+    }
 
-	@Override
-	public ItemStack getContainerItemStack(ItemStack stack)
-	{
-		ItemFactoryCup item = (ItemFactoryCup)stack.getItem();
-		int damage = stack.getItemDamage() + 1;
-		if (item == null || damage >= item._maxUses)
-			return null;
-		stack = new ItemStack(item, 1, 0);
-		stack.setItemDamage(damage);
-		return stack;
-	}
+    @Override
+    public ItemStack getContainerItemStack(ItemStack stack) {
+        ItemFactoryCup item = (ItemFactoryCup) stack.getItem();
+        int damage = stack.getItemDamage() + 1;
+        if (item == null || damage >= item._maxUses)
+            return null;
+        stack = new ItemStack(item, 1, 0);
+        stack.setItemDamage(damage);
+        return stack;
+    }
 
-	public String getFluidName(ItemStack stack)
-	{
-		NBTTagCompound tag = stack.stackTagCompound;
-		return tag == null || !tag.hasKey("fluid") ? null : tag.getCompoundTag("fluid").getString("FluidName");
-	}
+    public String getFluidName(ItemStack stack) {
+        NBTTagCompound tag = stack.stackTagCompound;
+        return tag == null || !tag.hasKey("fluid") ? null : tag.getCompoundTag("fluid").getString("FluidName");
+    }
 
-	// shim
-	public FluidStack getFluid(ItemStack stack)
-	{
-		return null;
-	}
+    // shim
+    public FluidStack getFluid(ItemStack stack) {
+        return null;
+    }
 
 	/*{TODO: migrate to FluidStack/IFluidContainerItem in 1.6
-	@Override
+    @Override
 	public FluidStack getFluid(ItemStack stack)
 	{
 		NBTTagCompound tag = stack.stackTagCompound;
@@ -178,64 +173,53 @@ public class ItemFactoryCup extends ItemFactory
 	}
 	//}*/
 
-	public boolean hasDrinkableFluid(ItemStack stack)
-	{
-		return MFRRegistry.getFluidDrinkHandlers().containsKey(getFluidName(stack));
-	}
+    public boolean hasDrinkableFluid(ItemStack stack) {
+        return MFRRegistry.getFluidDrinkHandlers().containsKey(getFluidName(stack));
+    }
 
-	@Override
-	public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player)
-	{
-		ItemFactoryCup item = (ItemFactoryCup)stack.getItem();
-		if (item == null)
-			return null; // sanity check
+    @Override
+    public ItemStack onEaten(ItemStack stack, World world, EntityPlayer player) {
+        ItemFactoryCup item = (ItemFactoryCup) stack.getItem();
+        if (item == null)
+            return null; // sanity check
 
-		if (hasDrinkableFluid(stack))
-			MFRRegistry.getFluidDrinkHandlers().get(getFluidName(stack)).onDrink(player);
+        if (hasDrinkableFluid(stack))
+            MFRRegistry.getFluidDrinkHandlers().get(getFluidName(stack)).onDrink(player);
 
-		if(!player.capabilities.isCreativeMode)
-		{
-			ItemStack drop = item.getContainerItemStack(stack);
-			if (drop != null)
-			{
-				if (stack.stackSize-- > 1)
-				{
-					if (!player.inventory.addItemStackToInventory(drop))
-						player.dropPlayerItem(drop);
-				}
-				else if (stack.stackSize == 0)
-					return drop;
-			}
-			else
-			{
-				--stack.stackSize;
-				player.renderBrokenItemStack(stack);
-				player.addStat(StatList.objectBreakStats[item.itemID], 1);
-			}
-		}
+        if (!player.capabilities.isCreativeMode) {
+            ItemStack drop = item.getContainerItemStack(stack);
+            if (drop != null) {
+                if (stack.stackSize-- > 1) {
+                    if (!player.inventory.addItemStackToInventory(drop))
+                        player.dropPlayerItem(drop);
+                } else if (stack.stackSize == 0)
+                    return drop;
+            } else {
+                --stack.stackSize;
+                player.renderBrokenItemStack(stack);
+                player.addStat(StatList.objectBreakStats[item.itemID], 1);
+            }
+        }
 
-		if (stack.stackSize <= 0)
-			stack.stackSize = 0;
-		return stack;
-	}
+        if (stack.stackSize <= 0)
+            stack.stackSize = 0;
+        return stack;
+    }
 
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
-		return 32;
-	}
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 32;
+    }
 
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack)
-	{
-		return hasDrinkableFluid(stack) ? EnumAction.drink : EnumAction.none;
-	}
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+        return hasDrinkableFluid(stack) ? EnumAction.drink : EnumAction.none;
+    }
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
-	{
-		if (hasDrinkableFluid(stack))
-			player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-		return stack;
-	}
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+        if (hasDrinkableFluid(stack))
+            player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+        return stack;
+    }
 }

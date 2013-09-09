@@ -2,17 +2,14 @@ package powercrystals.minefactoryreloaded.setup.recipe;
 
 import cpw.mods.fml.common.Loader;
 
-public class ThermalExpansion extends Vanilla
-{
-	@Override
-	protected void registerMachines()
-	{
-		if(!Loader.isModLoaded("ThermalExpansion"))
-		{
-			return;
-		}
+public class ThermalExpansion extends Vanilla {
+    @Override
+    protected void registerMachines() {
+        if (!Loader.isModLoaded("ThermalExpansion")) {
+            return;
+        }
         /*
-		try
+        try
 		{
 			ItemStack conduitLiquid = ItemRegistry.getItem("conduitLiquid", 1);
 			ItemStack lamp = ItemRegistry.getItem("lamp", 1);
@@ -636,5 +633,5 @@ public class ThermalExpansion extends Vanilla
 			x.printStackTrace();
 		}
 		*/
-	}
+    }
 }

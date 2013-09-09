@@ -24,114 +24,96 @@ import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntitySludgeBoiler extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank
-{
-	private FluidTank _tank;
-	private Random _rand;
-	private int _tick;
-	
-	public TileEntitySludgeBoiler()
-	{
-		super(Machine.SludgeBoiler);
-		_tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
-		
-		_rand = new Random();
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "sludgeboiler.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerFactoryPowered(this, inventoryPlayer);
-	}
-	
-	@Override
-	public FluidTank getTank()
-	{
-		return _tank;
-	}
-	
-	@Override
-	public int getEnergyStoredMax()
-	{
-		return 16000;
-	}
-	
-	@Override
-	public int getWorkMax()
-	{
-		return 100;
-	}
-	
-	@Override
-	public int getIdleTicksMax()
-	{
-		return 1;
-	}
-	
-	@Override
-	protected boolean activateMachine()
-	{
-		if(_tank.getFluid() != null && _tank.getFluidAmount() > 10)
-		{
-			_tank.drain(10, true);
-			setWorkDone(getWorkDone() + 1);
-			_tick++;
-			
-			if(getWorkDone() >= getWorkMax())
-			{
-				ItemStack s = ((WeightedRandomItemStack)WeightedRandom.getRandomItem(_rand, MFRRegistry.getSludgeDrops())).getStack();
-				
-				doDrop(s);
-				
-				setWorkDone(0);
-			}
-			
-			if(_tick >= 23)
-			{
-				Area a = new Area(new BlockPosition(this), 3, 3, 3);
-				List<?> entities = worldObj.getEntitiesWithinAABB(EntityLiving.class, a.toAxisAlignedBB());
-				for(Object o : entities)
-				{
-					if(o instanceof EntityPlayer)
-					{
-						((EntityPlayer)o).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 20, 0));
-					}
-					if(o instanceof EntityPlayer)
-					{
-						((EntityPlayer)o).addPotionEffect(new PotionEffect(Potion.poison.id, 6 * 20, 0));
-					}
-				}
-				_tick = 0;
-			}
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public ForgeDirection getDropDirection()
-	{
-		return ForgeDirection.DOWN;
-	}
-	
-	@Override
-	public boolean allowBucketFill()
-	{
-		return true;
-	}
+public class TileEntitySludgeBoiler extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+    private FluidTank _tank;
+    private Random _rand;
+    private int _tick;
+
+    public TileEntitySludgeBoiler() {
+        super(Machine.SludgeBoiler);
+        _tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
+
+        _rand = new Random();
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "sludgeboiler.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerFactoryPowered(this, inventoryPlayer);
+    }
+
+    @Override
+    public FluidTank getTank() {
+        return _tank;
+    }
+
+    @Override
+    public int getEnergyStoredMax() {
+        return 16000;
+    }
+
+    @Override
+    public int getWorkMax() {
+        return 100;
+    }
+
+    @Override
+    public int getIdleTicksMax() {
+        return 1;
+    }
+
+    @Override
+    protected boolean activateMachine() {
+        if (_tank.getFluid() != null && _tank.getFluidAmount() > 10) {
+            _tank.drain(10, true);
+            setWorkDone(getWorkDone() + 1);
+            _tick++;
+
+            if (getWorkDone() >= getWorkMax()) {
+                ItemStack s = ((WeightedRandomItemStack) WeightedRandom.getRandomItem(_rand, MFRRegistry.getSludgeDrops())).getStack();
+
+                doDrop(s);
+
+                setWorkDone(0);
+            }
+
+            if (_tick >= 23) {
+                Area a = new Area(new BlockPosition(this), 3, 3, 3);
+                List<?> entities = worldObj.getEntitiesWithinAABB(EntityLiving.class, a.toAxisAlignedBB());
+                for (Object o : entities) {
+                    if (o instanceof EntityPlayer) {
+                        ((EntityPlayer) o).addPotionEffect(new PotionEffect(Potion.hunger.id, 20 * 20, 0));
+                    }
+                    if (o instanceof EntityPlayer) {
+                        ((EntityPlayer) o).addPotionEffect(new PotionEffect(Potion.poison.id, 6 * 20, 0));
+                    }
+                }
+                _tick = 0;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ForgeDirection getDropDirection() {
+        return ForgeDirection.DOWN;
+    }
+
+    @Override
+    public boolean allowBucketFill() {
+        return true;
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -152,17 +134,13 @@ public class TileEntitySludgeBoiler extends TileEntityFactoryPowered implements 
     }
 
     @Override
-	public int fill(ItemStack container, FluidStack resource, boolean doFill)
-	{
-		if(resource == null || (resource.fluidID != FluidRegistry.getFluidID("sludge")))
-		{
-			return 0;
-		}
-		else
-		{
-			return _tank.fill(resource, doFill);
-		}
-	}
+    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+        if (resource == null || (resource.fluidID != FluidRegistry.getFluidID("sludge"))) {
+            return 0;
+        } else {
+            return _tank.fill(resource, doFill);
+        }
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -214,10 +192,9 @@ public class TileEntitySludgeBoiler extends TileEntityFactoryPowered implements 
     }
 
     @Override
-	public int fill(FluidStack resource, boolean doFill)
-	{
-		return fill(null, resource, doFill);
-	}
+    public int fill(FluidStack resource, boolean doFill) {
+        return fill(null, resource, doFill);
+    }
 
     /**
      * @param maxDrain Maximum amount of fluid to be removed from the container.
@@ -230,15 +207,13 @@ public class TileEntitySludgeBoiler extends TileEntityFactoryPowered implements 
     }
 
     @Override
-	public int getSizeInventory()
-	{
-		return 0;
-	}
-	
-	@Override
-	public boolean manageSolids()
-	{
-		return true;
-	}
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public boolean manageSolids() {
+        return true;
+    }
 
 }

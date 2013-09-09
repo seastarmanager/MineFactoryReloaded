@@ -1,22 +1,18 @@
 package powercrystals.minefactoryreloaded.modhelpers.thermalexpansion;
 
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 
 @Mod(modid = "MineFactoryReloaded|CompatThermalExpansion", name = "MFR Compat: ThermalExpansion", version = MineFactoryReloadedCore.version, dependencies = "after:MineFactoryReloaded;after:ThermalExpansion")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
-public class ThermalExpansion
-{
-	@EventHandler
-	public static void postInit(FMLPostInitializationEvent e)
-	{
+public class ThermalExpansion {
+    @EventHandler
+    public static void postInit(FMLPostInitializationEvent e) {
         /*
-		if(!Loader.isModLoaded("ThermalExpansion"))
+        if(!Loader.isModLoaded("ThermalExpansion"))
 		{
 			FMLLog.warning("ThermalExpansion missing - Thermal Expansion compat not loading");
 			return;
@@ -44,5 +40,5 @@ public class ThermalExpansion
 			x.printStackTrace();
 		}
 		*/
-	}
+    }
 }

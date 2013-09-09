@@ -4,102 +4,87 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
-public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank
-{
-	private int _fluidId;
-	private int _fluidFabPerTick;
-	
-	private FluidTank _tank;
-	
-	protected TileEntityFluidFabricator(int fluidId, int fluidFabPerTick, Machine machine)
-	{
-		super(machine, machine.getActivationEnergyMJ() * fluidFabPerTick);
-		_fluidId = fluidId;
-		_fluidFabPerTick = fluidFabPerTick;
-		_tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
-	}
-	
-	@Override
-	protected boolean activateMachine()
-	{
-		if (_fluidId < 0)
-		{
-			setIdleTicks(getIdleTicksMax());
-			return false;
-		}
-		
-		if (_tank.getFluid() != null && _tank.getCapacity() - _tank.getFluidAmount() < _fluidFabPerTick)
-			return false;
+public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+    private int _fluidId;
+    private int _fluidFabPerTick;
 
-		_tank.fill(new FluidStack(_fluidId, _fluidFabPerTick), true);
-		return true;
-	}
-	
-	@Override
-	public int getEnergyStoredMax()
-	{
-		return 16000;
-	}
-	
-	@Override
-	public int getWorkMax()
-	{
-		return 0;
-	}
-	
-	@Override
-	public int getIdleTicksMax()
-	{
-		return 200;
-	}
-	
-	@Override
-	public FluidTank getTank()
-	{
-		return _tank;
-	}
-	
-	@Override
-	protected boolean shouldPumpFluid()
-	{
-		return true;
-	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 0;
-	}
-	
-	@Override // IFluidTank
-	public int fill(FluidStack resource, boolean doFill)
-	{
-		return 0;
-	}
-	
-	@Override // IFluidContainerItem
-	public int fill(ItemStack container, FluidStack resource, boolean doFill)
-	{
-		return 0;
-	}
-	
-	@Override
-	public boolean allowBucketDrain()
-	{
-		return true;
-	}
-	
-	@Override // IFluidTank
-	public FluidStack drain(int maxDrain, boolean doDrain)
-	{
-		return null;
-	}
-	
-	@Override // IFluidContainerItem
-	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain)
-	{
-		return null;
-	}
+    private FluidTank _tank;
+
+    protected TileEntityFluidFabricator(int fluidId, int fluidFabPerTick, Machine machine) {
+        super(machine, machine.getActivationEnergyMJ() * fluidFabPerTick);
+        _fluidId = fluidId;
+        _fluidFabPerTick = fluidFabPerTick;
+        _tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME);
+    }
+
+    @Override
+    protected boolean activateMachine() {
+        if (_fluidId < 0) {
+            setIdleTicks(getIdleTicksMax());
+            return false;
+        }
+
+        if (_tank.getFluid() != null && _tank.getCapacity() - _tank.getFluidAmount() < _fluidFabPerTick)
+            return false;
+
+        _tank.fill(new FluidStack(_fluidId, _fluidFabPerTick), true);
+        return true;
+    }
+
+    @Override
+    public int getEnergyStoredMax() {
+        return 16000;
+    }
+
+    @Override
+    public int getWorkMax() {
+        return 0;
+    }
+
+    @Override
+    public int getIdleTicksMax() {
+        return 200;
+    }
+
+    @Override
+    public FluidTank getTank() {
+        return _tank;
+    }
+
+    @Override
+    protected boolean shouldPumpFluid() {
+        return true;
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override // IFluidTank
+    public int fill(FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    @Override // IFluidContainerItem
+    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+        return 0;
+    }
+
+    @Override
+    public boolean allowBucketDrain() {
+        return true;
+    }
+
+    @Override // IFluidTank
+    public FluidStack drain(int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    @Override // IFluidContainerItem
+    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+        return null;
+    }
 
     /**
      * @param container ItemStack which is the fluid container.

@@ -13,33 +13,28 @@ import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
  * 5: tank meta
  */
 
-public class ContainerFactoryPowered extends ContainerFactoryInventory
-{
-	public ContainerFactoryPowered(TileEntityFactoryPowered te, InventoryPlayer inv)
-	{
-		super(te, inv);
-	}
-	
-	@Override
-	public void detectAndSendChanges()
-	{
-		super.detectAndSendChanges();
-		for(int i = 0; i < crafters.size(); i++)
-		{
+public class ContainerFactoryPowered extends ContainerFactoryInventory {
+    public ContainerFactoryPowered(TileEntityFactoryPowered te, InventoryPlayer inv) {
+        super(te, inv);
+    }
+
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+        for (int i = 0; i < crafters.size(); i++) {
             ICrafting crafter = (ICrafting) crafters.get(i);
-			crafter.sendProgressBarUpdate(this, 0, ((TileEntityFactoryPowered)_te).getWorkDone());
-			crafter.sendProgressBarUpdate(this, 1, ((TileEntityFactoryPowered)_te).getEnergyStored());
-			crafter.sendProgressBarUpdate(this, 2, ((TileEntityFactoryPowered)_te).getIdleTicks());
-		}
-	}
-	
-	@Override
-	public void updateProgressBar(int var, int value)
-	{
-		super.updateProgressBar(var, value);
-		
-		if(var == 0) ((TileEntityFactoryPowered)_te).setWorkDone(value);
-		else if(var == 1) ((TileEntityFactoryPowered)_te).setEnergyStored(value);
-		else if(var == 2) ((TileEntityFactoryPowered)_te).setIdleTicks(value);
-	}
+            crafter.sendProgressBarUpdate(this, 0, ((TileEntityFactoryPowered) _te).getWorkDone());
+            crafter.sendProgressBarUpdate(this, 1, ((TileEntityFactoryPowered) _te).getEnergyStored());
+            crafter.sendProgressBarUpdate(this, 2, ((TileEntityFactoryPowered) _te).getIdleTicks());
+        }
+    }
+
+    @Override
+    public void updateProgressBar(int var, int value) {
+        super.updateProgressBar(var, value);
+
+        if (var == 0) ((TileEntityFactoryPowered) _te).setWorkDone(value);
+        else if (var == 1) ((TileEntityFactoryPowered) _te).setEnergyStored(value);
+        else if (var == 2) ((TileEntityFactoryPowered) _te).setIdleTicks(value);
+    }
 }

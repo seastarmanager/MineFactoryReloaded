@@ -19,174 +19,146 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
-public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank
-{
-	private static final int _spawnRange = 4;
-	private FluidTank _tank;
-	private boolean _spawnExact = false;
-	
-	public TileEntityAutoSpawner()
-	{
-		super(Machine.AutoSpawner);
-		_tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 4);
-	}
-	
-	public boolean getSpawnExact()
-	{
-		return _spawnExact;
-	}
-	
-	public void setSpawnExact(boolean spawnExact)
-	{
-		_spawnExact = spawnExact;
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "autospawner.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiAutoSpawner(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerAutoSpawner getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerAutoSpawner(this, inventoryPlayer);
-	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 1;
-	}
-	
-	@Override
-	protected boolean activateMachine()
-	{
-		ItemStack item = getStackInSlot(0);
-		if(!isStackValidForSlot(0, item))
-		{
-			setWorkDone(0);
-			return false;
-		}
-		NBTTagCompound itemTag = item.getTagCompound();
-		String entityID = itemTag.getString("id");
-		boolean isBlackListed = MFRRegistry.getAutoSpawnerBlacklist().contains(entityID);
-		blackList: if (!isBlackListed)
-		{
-			Class<?> e = (Class<?>)EntityList.stringToClassMapping.get(entityID);
-			if (e == null)
-			{
-				isBlackListed = true;
-				break blackList;
-			}
-			for (Class<?> t : MFRRegistry.getAutoSpawnerClassBlacklist())
-			{
-				if(t.isAssignableFrom(e))
-				{
-					isBlackListed = true;
-					break blackList;
-				}
-			}
-		}
-		if (isBlackListed)
-		{
-			setWorkDone(0);
-			return false;
-		}
-		if(getWorkDone() < getWorkMax())
-		{
-			if(_tank.getFluid() != null && _tank.getFluidAmount() >= 10)
-			{
-				_tank.getFluid().amount -= 10;
-				setWorkDone(getWorkDone() + 1);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			Entity spawnedEntity = EntityList.createEntityByName(entityID, worldObj);
-			
-			if(!(spawnedEntity instanceof EntityLiving))
-			{
-				return false;
-			}
-			
-			EntityLiving spawnedLiving = (EntityLiving)spawnedEntity;
-			
-			if(_spawnExact)
-			{
-				NBTTagCompound tag = (NBTTagCompound)itemTag.copy();
+public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+    private static final int _spawnRange = 4;
+    private FluidTank _tank;
+    private boolean _spawnExact = false;
+
+    public TileEntityAutoSpawner() {
+        super(Machine.AutoSpawner);
+        _tank = new FluidTank(FluidContainerRegistry.BUCKET_VOLUME * 4);
+    }
+
+    public boolean getSpawnExact() {
+        return _spawnExact;
+    }
+
+    public void setSpawnExact(boolean spawnExact) {
+        _spawnExact = spawnExact;
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "autospawner.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiAutoSpawner(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerAutoSpawner getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerAutoSpawner(this, inventoryPlayer);
+    }
+
+    @Override
+    public int getSizeInventory() {
+        return 1;
+    }
+
+    @Override
+    protected boolean activateMachine() {
+        ItemStack item = getStackInSlot(0);
+        if (!isStackValidForSlot(0, item)) {
+            setWorkDone(0);
+            return false;
+        }
+        NBTTagCompound itemTag = item.getTagCompound();
+        String entityID = itemTag.getString("id");
+        boolean isBlackListed = MFRRegistry.getAutoSpawnerBlacklist().contains(entityID);
+        blackList:
+        if (!isBlackListed) {
+            Class<?> e = (Class<?>) EntityList.stringToClassMapping.get(entityID);
+            if (e == null) {
+                isBlackListed = true;
+                break blackList;
+            }
+            for (Class<?> t : MFRRegistry.getAutoSpawnerClassBlacklist()) {
+                if (t.isAssignableFrom(e)) {
+                    isBlackListed = true;
+                    break blackList;
+                }
+            }
+        }
+        if (isBlackListed) {
+            setWorkDone(0);
+            return false;
+        }
+        if (getWorkDone() < getWorkMax()) {
+            if (_tank.getFluid() != null && _tank.getFluidAmount() >= 10) {
+                _tank.getFluid().amount -= 10;
+                setWorkDone(getWorkDone() + 1);
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            Entity spawnedEntity = EntityList.createEntityByName(entityID, worldObj);
+
+            if (!(spawnedEntity instanceof EntityLiving)) {
+                return false;
+            }
+
+            EntityLiving spawnedLiving = (EntityLiving) spawnedEntity;
+
+            if (_spawnExact) {
+                NBTTagCompound tag = (NBTTagCompound) itemTag.copy();
                 spawnedLiving.writeToNBT(tag);
                 /*
-				spawnedLiving.readEntityFromNBT(tag);
+                spawnedLiving.readEntityFromNBT(tag);
 				for (int i = 0; i < 5; ++i)
 				{
 					spawnedLiving.func_96120_a(i, 0);
 				}
 				*/
-			}
-			
-			double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * _spawnRange;
-			double y = yCoord + worldObj.rand.nextInt(3) - 1;
-			double z = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * _spawnRange;
-			
-			spawnedLiving.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
-			
-			if(!worldObj.checkNoEntityCollision(spawnedLiving.boundingBox) ||
-					!worldObj.getCollidingBoundingBoxes(spawnedLiving, spawnedLiving.boundingBox).isEmpty() ||
-					(worldObj.isAnyLiquid(spawnedLiving.boundingBox) != (spawnedLiving instanceof EntityWaterMob)))
-			{
-				return false;
-			}
-			
-			if (!_spawnExact)
-			{
-				spawnedLiving.entityInit();
-			}
-			
-			worldObj.spawnEntityInWorld(spawnedLiving);
-			worldObj.playAuxSFX(2004, this.xCoord, this.yCoord, this.zCoord, 0);
-			
-			spawnedLiving.spawnExplosionParticle();
-			setWorkDone(0);
-			return true;
-		}
-	}
-	
-	@Override
-	public int getEnergyStoredMax()
-	{
-		return 32000;
-	}
-	
-	@Override
-	public int getWorkMax()
-	{
-		return _spawnExact ? MFRConfig.autospawnerCostExact.getInt() : MFRConfig.autospawnerCostStandard.getInt();
-	}
-	
-	@Override
-	public int getIdleTicksMax()
-	{
-		return 200;
-	}
-	
-	@Override
-	public FluidTank getTank()
-	{
-		return _tank;
-	}
+            }
+
+            double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * _spawnRange;
+            double y = yCoord + worldObj.rand.nextInt(3) - 1;
+            double z = zCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * _spawnRange;
+
+            spawnedLiving.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
+
+            if (!worldObj.checkNoEntityCollision(spawnedLiving.boundingBox) ||
+                    !worldObj.getCollidingBoundingBoxes(spawnedLiving, spawnedLiving.boundingBox).isEmpty() ||
+                    (worldObj.isAnyLiquid(spawnedLiving.boundingBox) != (spawnedLiving instanceof EntityWaterMob))) {
+                return false;
+            }
+
+            if (!_spawnExact) {
+                spawnedLiving.entityInit();
+            }
+
+            worldObj.spawnEntityInWorld(spawnedLiving);
+            worldObj.playAuxSFX(2004, this.xCoord, this.yCoord, this.zCoord, 0);
+
+            spawnedLiving.spawnExplosionParticle();
+            setWorkDone(0);
+            return true;
+        }
+    }
+
+    @Override
+    public int getEnergyStoredMax() {
+        return 32000;
+    }
+
+    @Override
+    public int getWorkMax() {
+        return _spawnExact ? MFRConfig.autospawnerCostExact.getInt() : MFRConfig.autospawnerCostStandard.getInt();
+    }
+
+    @Override
+    public int getIdleTicksMax() {
+        return 200;
+    }
+
+    @Override
+    public FluidTank getTank() {
+        return _tank;
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -207,14 +179,12 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
     }
 
     @Override
-	public int fill(ItemStack container, FluidStack resource, boolean doFill)
-	{
-		if(resource == null || resource.fluidID != FluidRegistry.getFluidID("essence"))
-		{
-			return 0;
-		}
-		return _tank.fill(resource, doFill);
-	}
+    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+        if (resource == null || resource.fluidID != FluidRegistry.getFluidID("essence")) {
+            return 0;
+        }
+        return _tank.fill(resource, doFill);
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -266,10 +236,9 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
     }
 
     @Override
-	public int fill(FluidStack resource, boolean doFill)
-	{
-		return fill(null, resource, doFill);
-	}
+    public int fill(FluidStack resource, boolean doFill) {
+        return fill(null, resource, doFill);
+    }
 
     /**
      * @param maxDrain Maximum amount of fluid to be removed from the container.
@@ -282,36 +251,31 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
     }
 
     @Override
-	public boolean allowBucketFill()
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
-	{
-		return isStackValidForSlot(slot, itemstack);
-	}
+    public boolean allowBucketFill() {
+        return true;
+    }
 
-	@Override
-	public boolean isStackValidForSlot(int i, ItemStack itemstack)
-	{
-		return ItemSafariNet.isSafariNet(itemstack) &&
-				!ItemSafariNet.isSingleUse(itemstack) &&
-				!ItemSafariNet.isEmpty(itemstack);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
-	{
-		super.readFromNBT(nbttagcompound);
-		_spawnExact = nbttagcompound.getBoolean("spawnExact");
-	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
-	{
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("spawnExact", _spawnExact);
-	}
+    @Override
+    public boolean canInsertItem(int slot, ItemStack itemstack, int side) {
+        return isStackValidForSlot(slot, itemstack);
+    }
+
+    @Override
+    public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+        return ItemSafariNet.isSafariNet(itemstack) &&
+                !ItemSafariNet.isSingleUse(itemstack) &&
+                !ItemSafariNet.isEmpty(itemstack);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
+        _spawnExact = nbttagcompound.getBoolean("spawnExact");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
+        nbttagcompound.setBoolean("spawnExact", _spawnExact);
+    }
 }

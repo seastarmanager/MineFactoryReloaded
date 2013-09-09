@@ -1,39 +1,33 @@
 package powercrystals.minefactoryreloaded.modhelpers.thaumcraft;
 
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.Item;
+import net.minecraft.world.World;
+import powercrystals.minefactoryreloaded.api.IFactoryGrindable2;
+import powercrystals.minefactoryreloaded.api.MobDrop;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
+public class GrindableWisp implements IFactoryGrindable2 {
+    private Class<?> _wispClass;
+    private Item _wispEssence;
 
-import powercrystals.minefactoryreloaded.api.IFactoryGrindable2;
-import powercrystals.minefactoryreloaded.api.MobDrop;
+    public GrindableWisp() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+        _wispClass = Class.forName("thaumcraft.common.entities.monster.EntityWisp");
+        _wispEssence = (Item) Class.forName("thaumcraft.common.Config").getField("itemWispEssence").get(null);
+    }
 
-public class GrindableWisp implements IFactoryGrindable2
-{
-	private Class<?> _wispClass;
-	private Item _wispEssence;
+    @Override
+    public Class<?> getGrindableEntity() {
+        return _wispClass;
+    }
 
-	public GrindableWisp() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
-	{
-		_wispClass = Class.forName("thaumcraft.common.entities.monster.EntityWisp");
-		_wispEssence = (Item)Class.forName("thaumcraft.common.Config").getField("itemWispEssence").get(null);
-	}
-
-	@Override
-	public Class<?> getGrindableEntity()
-	{
-		return _wispClass;
-	}
-
-	@Override
-	public List<MobDrop> grind(World world, EntityLiving entity, Random random)
-	{
+    @Override
+    public List<MobDrop> grind(World world, EntityLiving entity, Random random) {
         /*
-		List<MobDrop> drops = new ArrayList<MobDrop>();
+        List<MobDrop> drops = new ArrayList<MobDrop>();
 
 		byte wispType;
 		try
@@ -54,11 +48,10 @@ public class GrindableWisp implements IFactoryGrindable2
 		return drops;
 		*/
         return new ArrayList<MobDrop>();
-	}
+    }
 
-	@Override
-	public boolean processEntity(EntityLiving e)
-	{
-		return true;
-	}
+    @Override
+    public boolean processEntity(EntityLiving e) {
+        return true;
+    }
 }

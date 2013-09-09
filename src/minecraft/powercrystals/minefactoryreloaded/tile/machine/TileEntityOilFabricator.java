@@ -11,29 +11,24 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFluidFabricator;
 
-public class TileEntityOilFabricator extends TileEntityFluidFabricator
-{
-	public TileEntityOilFabricator()
-	{
-		super(FluidRegistry.getFluid("Oil") == null ? Block.waterStill.blockID : FluidRegistry.getFluidID("Oil"), 1, Machine.OilFabricator);
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "oilfab.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerFactoryPowered(this, inventoryPlayer);
-	}
+public class TileEntityOilFabricator extends TileEntityFluidFabricator {
+    public TileEntityOilFabricator() {
+        super(FluidRegistry.getFluid("Oil") == null ? Block.waterStill.blockID : FluidRegistry.getFluidID("Oil"), 1, Machine.OilFabricator);
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "oilfab.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerFactoryPowered(this, inventoryPlayer);
+    }
 }

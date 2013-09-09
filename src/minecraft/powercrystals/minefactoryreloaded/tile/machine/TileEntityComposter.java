@@ -13,88 +13,74 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
-public class TileEntityComposter extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank
-{
-	private FluidTank _tank;
-	
-	public TileEntityComposter()
-	{
-		super(Machine.Composter);
-		_tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
-	}
-	
-	@Override
-	public String getGuiBackground()
-	{
-		return "composter.png";
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer)
-	{
-		return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
-	}
-	
-	@Override
-	public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer)
-	{
-		return new ContainerFactoryPowered(this, inventoryPlayer);
-	}
-	
-	@Override
-	public FluidTank getTank()
-	{
-		return _tank;
-	}
-	
-	@Override
-	protected boolean activateMachine()
-	{
-		if(_tank.getFluid() != null && _tank.getFluidAmount() >= 20)
-		{
-			setWorkDone(getWorkDone() + 1);
-			
-			if(getWorkDone() >= getWorkMax())
-			{
-				doDrop(new ItemStack(MineFactoryReloadedCore.fertilizerItem));
-				setWorkDone(0);
-			}
-			_tank.drain(20, true);
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public ForgeDirection getDropDirection()
-	{
-		return ForgeDirection.UP;
-	}
-	
-	@Override
-	public int getEnergyStoredMax()
-	{
-		return 16000;
-	}
-	
-	@Override
-	public int getWorkMax()
-	{
-		return 100;
-	}
-	
-	@Override
-	public int getIdleTicksMax()
-	{
-		return 1;
-	}
-	
-	@Override
-	public boolean allowBucketFill()
-	{
-		return true;
-	}
+public class TileEntityComposter extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+    private FluidTank _tank;
+
+    public TileEntityComposter() {
+        super(Machine.Composter);
+        _tank = new FluidTank(4 * FluidContainerRegistry.BUCKET_VOLUME);
+    }
+
+    @Override
+    public String getGuiBackground() {
+        return "composter.png";
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public GuiFactoryInventory getGui(InventoryPlayer inventoryPlayer) {
+        return new GuiFactoryPowered(getContainer(inventoryPlayer), this);
+    }
+
+    @Override
+    public ContainerFactoryPowered getContainer(InventoryPlayer inventoryPlayer) {
+        return new ContainerFactoryPowered(this, inventoryPlayer);
+    }
+
+    @Override
+    public FluidTank getTank() {
+        return _tank;
+    }
+
+    @Override
+    protected boolean activateMachine() {
+        if (_tank.getFluid() != null && _tank.getFluidAmount() >= 20) {
+            setWorkDone(getWorkDone() + 1);
+
+            if (getWorkDone() >= getWorkMax()) {
+                doDrop(new ItemStack(MineFactoryReloadedCore.fertilizerItem));
+                setWorkDone(0);
+            }
+            _tank.drain(20, true);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ForgeDirection getDropDirection() {
+        return ForgeDirection.UP;
+    }
+
+    @Override
+    public int getEnergyStoredMax() {
+        return 16000;
+    }
+
+    @Override
+    public int getWorkMax() {
+        return 100;
+    }
+
+    @Override
+    public int getIdleTicksMax() {
+        return 1;
+    }
+
+    @Override
+    public boolean allowBucketFill() {
+        return true;
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -115,17 +101,13 @@ public class TileEntityComposter extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-	public int fill(ItemStack container, FluidStack resource, boolean doFill)
-	{
-		if(resource == null || (resource.fluidID != FluidRegistry.getFluidID("sewage")))
-		{
-			return 0;
-		}
-		else
-		{
-			return _tank.fill(resource, doFill);
-		}
-	}
+    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+        if (resource == null || (resource.fluidID != FluidRegistry.getFluidID("sewage"))) {
+            return 0;
+        } else {
+            return _tank.fill(resource, doFill);
+        }
+    }
 
     /**
      * @param container ItemStack which is the fluid container.
@@ -177,10 +159,9 @@ public class TileEntityComposter extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-	public int fill(FluidStack resource, boolean doFill)
-	{
-		return fill(null, resource, doFill);
-	}
+    public int fill(FluidStack resource, boolean doFill) {
+        return fill(null, resource, doFill);
+    }
 
     /**
      * @param maxDrain Maximum amount of fluid to be removed from the container.
@@ -193,14 +174,12 @@ public class TileEntityComposter extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-	public int getSizeInventory()
-	{
-		return 0;
-	}
-	
-	@Override
-	public boolean manageSolids()
-	{
-		return true;
-	}
+    public int getSizeInventory() {
+        return 0;
+    }
+
+    @Override
+    public boolean manageSolids() {
+        return true;
+    }
 }

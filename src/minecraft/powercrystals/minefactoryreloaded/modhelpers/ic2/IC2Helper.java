@@ -38,25 +38,21 @@ class IC2Helper {
             ItemStack stickyResin = Items.getItem("resin");
             ItemStack plantBall = Items.getItem("plantBall");
 
-            if(rubberSapling != null)
-            {
+            if (rubberSapling != null) {
                 MFRRegistry.registerPlantable(new PlantableStandard(rubberSapling.itemID, rubberSapling.itemID));
                 MFRRegistry.registerFertilizable(new FertilizableIC2RubberTree(rubberSapling.itemID));
             }
-            if(rubberLeaves != null)
-            {
+            if (rubberLeaves != null) {
                 MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(rubberLeaves.itemID));
             }
-            if(rubberWood != null)
-            {
+            if (rubberWood != null) {
                 MFRRegistry.registerHarvestable(new HarvestableIC2RubberWood(rubberWood.itemID, HarvestType.Tree, stickyResin.itemID));
-                MFRRegistry.registerFruitLogBlockId(((ItemBlock)rubberWood.getItem()).getBlockID());
+                MFRRegistry.registerFruitLogBlockId(((ItemBlock) rubberWood.getItem()).getBlockID());
                 MFRRegistry.registerFruit(new FruitIC2Resin(rubberWood, stickyResin));
             }
 
             ItemStack fertilizer = Items.getItem("fertilizer");
-            if(fertilizer != null)
-            {
+            if (fertilizer != null) {
                 MFRRegistry.registerFertilizer(new FertilizerStandard(fertilizer.itemID, fertilizer.getItemDamage()));
             }
 
@@ -72,12 +68,11 @@ class IC2Helper {
 
             try {
                 Method m = Recipes.extractor.getClass().getMethod("addRecipe", IRecipeInput.class, NBTTagCompound.class, ItemStack[].class);
-                m.invoke(Recipes.extractor, new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, new ItemStack[] {rubber});
+                m.invoke(Recipes.extractor, new RecipeInputItemStack(new ItemStack(MineFactoryReloadedCore.rubberSaplingBlock)), null, new ItemStack[]{rubber});
             } catch (Throwable t) {
                 t.printStackTrace();
             }
-        }
-        catch (Throwable t) {
+        } catch (Throwable t) {
             FMLLog.warning("IC2 API is not up to date!");
             t.printStackTrace();
         }
