@@ -10,7 +10,7 @@ import powercrystals.minefactoryreloaded.tile.machine.TileEntityLaserDrill;
 
 @SideOnly(Side.CLIENT)
 public class LaserDrillRenderer extends TileEntitySpecialRenderer {
-    private static final ResourceLocation loc = new ResourceLocation("/misc/beam.png");
+    static final ResourceLocation loc = new ResourceLocation("textures/entity/beacon_beam.png");
 
     @Override
     public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float partialTicks) {
