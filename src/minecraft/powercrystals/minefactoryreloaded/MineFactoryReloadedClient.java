@@ -5,6 +5,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.IScheduledTickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -15,10 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,6 +24,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import org.lwjgl.opengl.GL11;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.core.render.RenderBlockFluidClassic;
+import powercrystals.core.updater.UpdateManager;
 import powercrystals.minefactoryreloaded.core.IHarvestAreaContainer;
 import powercrystals.minefactoryreloaded.entity.EntityNeedle;
 import powercrystals.minefactoryreloaded.entity.EntityPinkSlime;
@@ -121,8 +120,11 @@ public class MineFactoryReloadedClient implements IScheduledTickHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new EntityRocketRenderer());
         RenderingRegistry.registerEntityRenderingHandler(EntityPinkSlime.class, new EntityPinkSlimeRenderer());
 
+        VillagerRegistry.instance().registerVillagerSkin(MFRConfig.zoolologistEntityId.getInt(), new ResourceLocation(MineFactoryReloadedCore.villagerFolder + "zoologist.png"));
+
         TickRegistry.registerScheduledTickHandler(instance, Side.CLIENT);
         TickRegistry.registerTickHandler(new RenderTickHandler(), Side.CLIENT);
+        TickRegistry.registerScheduledTickHandler(new UpdateManager(MineFactoryReloadedCore.instance), Side.CLIENT);
 
         MinecraftForge.EVENT_BUS.register(instance);
     }

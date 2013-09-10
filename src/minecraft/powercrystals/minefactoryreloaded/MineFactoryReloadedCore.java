@@ -410,12 +410,11 @@ public class MineFactoryReloadedCore extends BaseMod {
         ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(safariNetSingleItem), 1, 1, 25));
 
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreationHandler());
-        VillagerRegistry.instance().registerVillagerSkin(MFRConfig.zoolologistEntityId.getInt(), new ResourceLocation(villagerFolder + "zoologist.png"));
+
         VillagerRegistry.instance().registerVillageTradeHandler(MFRConfig.zoolologistEntityId.getInt(), new VillageTradeHandler());
 
         MinecraftForge.EVENT_BUS.register(new powercrystals.minefactoryreloaded.EventHandler());
         GameRegistry.registerWorldGenerator(new MineFactoryReloadedWorldGen());
-        TickRegistry.registerScheduledTickHandler(new UpdateManager(this), Side.CLIENT);
     }
 
     @EventHandler
