@@ -11,9 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StringTranslate;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.*;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.minefactoryreloaded.core.BlockNBTManager;
 import powercrystals.minefactoryreloaded.core.MFRLiquidMover;
@@ -280,7 +278,7 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 
     @Override
     public boolean manageSolids() {
-        return true;
+        return false;
     }
 
     @Override
@@ -291,6 +289,8 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
     @Override
     public ConnectOverride overridePipeConnection(IPipeTile.PipeType pipeType, ForgeDirection dir) {
         if (pipeType == IPipeTile.PipeType.ITEM)
+            return ConnectOverride.CONNECT;
+        if ((pipeType == IPipeTile.PipeType.FLUID) && ((this instanceof IFluidTank) || (this instanceof IFluidContainerItem)))
             return ConnectOverride.CONNECT;
         return ConnectOverride.DISCONNECT;
     }

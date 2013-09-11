@@ -3,10 +3,8 @@ package powercrystals.minefactoryreloaded.core;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidTank;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.*;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.core.util.UtilInventory;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
@@ -66,13 +64,14 @@ public abstract class MFRLiquidMover {
     }
 
     public static void pumpFluid(IFluidTank tank, TileEntityFactory from) {
-        if (tank != null && tank.getFluid() != null && tank.getFluidAmount() > 0) {
+        if (tank != null && tank.getFluidAmount() > 0) {
             FluidStack l = tank.getFluid().copy();
             l.amount = Math.min(l.amount, FluidContainerRegistry.BUCKET_VOLUME);
             for (BlockPosition adj : new BlockPosition(from).getAdjacent(true)) {
                 TileEntity tile = from.worldObj.getBlockTileEntity(adj.x, adj.y, adj.z);
-                if (tile instanceof IFluidTank) {
-                    int filled = ((IFluidTank) tile).fill(l, true);
+                TankClassWrapper wrapper = TankClassWrapper.newInstance(adj.orientation.getOpposite(), tile);
+                if (wrapper != null) {
+                    int filled = wrapper.fill(l, true);
                     tank.drain(filled, true);
 
                     l.amount -= filled;
@@ -81,6 +80,40 @@ public abstract class MFRLiquidMover {
                     }
                 }
             }
+        }
+    }
+
+    private static class TankClassWrapper {
+
+        private ForgeDirection direction;
+        private boolean useTankA;
+
+        private IFluidTank tankA;
+        private IFluidHandler tankB;
+
+        public static TankClassWrapper newInstance(ForgeDirection dir, TileEntity tile) {
+            if (tile instanceof IFluidTank)
+                return new TankClassWrapper((IFluidTank) tile);
+            else if (tile instanceof IFluidHandler)
+                return new TankClassWrapper(dir, (IFluidHandler) tile);
+            return null;
+        }
+
+        public TankClassWrapper(IFluidTank tank) {
+            tankA = tank;
+            useTankA = true;
+        }
+
+        public TankClassWrapper(ForgeDirection direction, IFluidHandler tank) {
+            this.direction = direction;
+            tankB = tank;
+            useTankA = false;
+        }
+
+        public int fill(FluidStack resource, boolean doFill) {
+            if (useTankA)
+                return tankA.fill(resource, doFill);
+            return tankB.fill(direction, resource, doFill);
         }
     }
 
