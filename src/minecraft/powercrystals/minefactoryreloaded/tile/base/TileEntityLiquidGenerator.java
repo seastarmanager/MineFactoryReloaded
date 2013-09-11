@@ -86,9 +86,10 @@ public abstract class TileEntityLiquidGenerator extends TileEntityGenerator impl
 
     @Override
     public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-        if (resource == null || container.itemID != getFluidType().fluidID || resource.fluidID != getFluidType().fluidID) {
+        if ((resource == null) || (!getFluidType().isFluidEqual(resource)))
             return 0;
-        }
+        if (!((getFluidType().isFluidEqual(container)) && (FluidContainerRegistry.isFilledContainer(container))))
+            return 0;
         return _tank.fill(resource, doFill);
     }
 
