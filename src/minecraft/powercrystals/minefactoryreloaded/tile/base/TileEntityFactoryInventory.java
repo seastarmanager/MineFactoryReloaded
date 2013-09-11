@@ -32,7 +32,7 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 
     @Override
     public String getInvName() {
-        return _hasInvName ? _invName : StringTranslate.getInstance().translateKey(machine.getInternalName());
+        return _hasInvName ? _invName : StringTranslate.getInstance().translateKey(machine.getInternalName() + ".name");
     }
 
     @Override
