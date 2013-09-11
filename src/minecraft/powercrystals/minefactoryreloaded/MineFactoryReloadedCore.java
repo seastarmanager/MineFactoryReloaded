@@ -15,6 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.common.registry.VillagerRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.DispenserBehaviors;
@@ -26,9 +27,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fluids.Fluid;
@@ -187,6 +190,16 @@ public class MineFactoryReloadedCore extends BaseMod {
     public static Item needlegunAmmoAnvilItem;
     public static Item rocketLauncherItem;
     public static Item rocketItem;
+
+    public static Fluid milkFluid;
+    public static Fluid sludgeFluid;
+    public static Fluid sewageFluid;
+    public static Fluid essenceFluid;
+    public static Fluid biofuelFluid;
+    public static Fluid meatFluid;
+    public static Fluid pinkSlimeFluid;
+    public static Fluid chocolateMilkFluid;
+    public static Fluid mushroomSoupFluid;
 
     public static ItemFactoryCup plasticCup;
 
@@ -414,40 +427,39 @@ public class MineFactoryReloadedCore extends BaseMod {
         VillagerRegistry.instance().registerVillageTradeHandler(MFRConfig.zoolologistEntityId.getInt(), new VillageTradeHandler());
 
         MinecraftForge.EVENT_BUS.register(new powercrystals.minefactoryreloaded.EventHandler());
+        MinecraftForge.EVENT_BUS.register(instance);
         GameRegistry.registerWorldGenerator(new MineFactoryReloadedWorldGen());
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        Fluid fluid;
+        FluidRegistry.registerFluid(milkFluid = new Fluid("milk").setUnlocalizedName(milkLiquid.getUnlocalizedName()).setBlockID(milkLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(milkFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bucketMilk), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("milk").setUnlocalizedName(milkLiquid.getUnlocalizedName()).setBlockID(milkLiquid).setStillIcon(milkLiquid.getIcon(1, 0)).setFlowingIcon(milkLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bucketMilk), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(sludgeFluid = new Fluid("sludge").setUnlocalizedName(sludgeLiquid.getUnlocalizedName()).setBlockID(sludgeLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(sludgeFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sludgeBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("sludge").setUnlocalizedName(sludgeLiquid.getUnlocalizedName()).setBlockID(sludgeLiquid).setStillIcon(sludgeLiquid.getIcon(1, 0)).setFlowingIcon(sludgeLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sludgeBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(sewageFluid = new Fluid("sewage").setUnlocalizedName(sewageLiquid.getUnlocalizedName()).setBlockID(sewageLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(sewageFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sewageBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("sewage").setUnlocalizedName(sewageLiquid.getUnlocalizedName()).setBlockID(sewageLiquid).setStillIcon(sewageLiquid.getIcon(1, 0)).setFlowingIcon(sewageLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(sewageBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(essenceFluid = new Fluid("essence").setUnlocalizedName(essenceLiquid.getUnlocalizedName()).setBlockID(essenceLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(essenceFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(mobEssenceBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("essence").setUnlocalizedName(essenceLiquid.getUnlocalizedName()).setBlockID(essenceLiquid).setStillIcon(essenceLiquid.getIcon(1, 0)).setFlowingIcon(essenceLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(mobEssenceBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(biofuelFluid = new Fluid("biofuel").setUnlocalizedName(biofuelLiquid.getUnlocalizedName()).setBlockID(biofuelLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(biofuelFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(bioFuelBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("biofuel").setUnlocalizedName(biofuelLiquid.getUnlocalizedName()).setBlockID(biofuelLiquid).setStillIcon(biofuelLiquid.getIcon(1, 0)).setFlowingIcon(biofuelLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(bioFuelBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(meatFluid = new Fluid("meat").setUnlocalizedName(meatLiquid.getUnlocalizedName()).setBlockID(meatLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(meatFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(meatBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("meat").setUnlocalizedName(meatLiquid.getUnlocalizedName()).setBlockID(meatLiquid).setStillIcon(meatLiquid.getIcon(1, 0)).setFlowingIcon(meatLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(meatBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(pinkSlimeFluid = new Fluid("pinkslime").setUnlocalizedName(pinkSlimeLiquid.getUnlocalizedName()).setBlockID(pinkSlimeLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(pinkSlimeFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(pinkSlimeBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("pinkslime").setUnlocalizedName(pinkSlimeLiquid.getUnlocalizedName()).setBlockID(pinkSlimeLiquid).setStillIcon(pinkSlimeLiquid.getIcon(1, 0)).setFlowingIcon(pinkSlimeLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(pinkSlimeBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidRegistry.registerFluid(chocolateMilkFluid = new Fluid("chocolatemilk").setUnlocalizedName(chocolateMilkLiquid.getUnlocalizedName()).setBlockID(chocolateMilkLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(chocolateMilkFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(chocolateMilkBucketItem), new ItemStack(Item.bucketEmpty)));
 
-        FluidRegistry.registerFluid(fluid = new Fluid("chocolatemilk").setUnlocalizedName(chocolateMilkLiquid.getUnlocalizedName()).setBlockID(chocolateMilkLiquid).setStillIcon(chocolateMilkLiquid.getIcon(1, 0)).setFlowingIcon(chocolateMilkLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(chocolateMilkBucketItem), new ItemStack(Item.bucketEmpty)));
-
-        FluidRegistry.registerFluid(fluid = new Fluid("mushroomsoup").setUnlocalizedName(mushroomSoupLiquid.getUnlocalizedName()).setBlockID(mushroomSoupLiquid).setStillIcon(mushroomSoupLiquid.getIcon(1, 0)).setFlowingIcon(mushroomSoupLiquid.getIcon(2, 0)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(mushroomSoupBucketItem), new ItemStack(Item.bucketEmpty)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bowlSoup), new ItemStack(Item.bowlEmpty)));
+        FluidRegistry.registerFluid(mushroomSoupFluid = new Fluid("mushroomsoup").setUnlocalizedName(mushroomSoupLiquid.getUnlocalizedName()).setBlockID(mushroomSoupLiquid));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(mushroomSoupFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(mushroomSoupBucketItem), new ItemStack(Item.bucketEmpty)));
+        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(mushroomSoupFluid, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(Item.bowlSoup), new ItemStack(Item.bowlEmpty)));
 
         TileEntityUnifier.updateUnifierFluids();
 
@@ -485,6 +497,22 @@ public class MineFactoryReloadedCore extends BaseMod {
         FacadeManager.addFacade(new ItemStack(factoryRoadBlock.blockID, 1, 0));
         FacadeManager.addFacade(new ItemStack(factoryRoadBlock.blockID, 1, 1));
         FacadeManager.addFacade(new ItemStack(factoryRoadBlock.blockID, 1, 4));
+    }
+
+    @ForgeSubscribe
+    @SideOnly(Side.CLIENT)
+    public void textureHook(TextureStitchEvent.Post event) {
+        if (event.map.textureType == 0) {
+            milkFluid.setIcons(milkLiquid.getIcon(1, 0), milkLiquid.getIcon(2, 0));
+            sludgeFluid.setIcons(sludgeLiquid.getIcon(1, 0), sludgeLiquid.getIcon(2, 0));
+            sewageFluid.setIcons(sewageLiquid.getIcon(1, 0), sewageLiquid.getIcon(2, 0));
+            essenceFluid.setIcons(essenceLiquid.getIcon(1, 0), essenceLiquid.getIcon(2, 0));
+            biofuelFluid.setIcons(biofuelLiquid.getIcon(1, 0), biofuelLiquid.getIcon(2, 0));
+            meatFluid.setIcons(meatLiquid.getIcon(1, 0), meatLiquid.getIcon(2, 0));
+            pinkSlimeFluid.setIcons(pinkSlimeLiquid.getIcon(1, 0), pinkSlimeLiquid.getIcon(2, 0));
+            chocolateMilkFluid.setIcons(chocolateMilkLiquid.getIcon(1, 0), chocolateMilkLiquid.getIcon(2, 0));
+            mushroomSoupFluid.setIcons(mushroomSoupLiquid.getIcon(1, 0), mushroomSoupLiquid.getIcon(2, 0));
+        }
     }
 
     @Override
