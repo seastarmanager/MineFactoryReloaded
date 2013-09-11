@@ -8,6 +8,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidTank;
 import powercrystals.core.asm.relauncher.Implementable;
 import powercrystals.core.util.Util;
 import powercrystals.core.util.UtilInventory;
@@ -287,19 +291,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
         _energyStored = Math.min(tag.getInteger("energyStored"), getEnergyStoredMax());
         _workDone = Math.min(tag.getInteger("workDone"), getWorkMax());
         _ueBuffer = tag.getInteger("ueBuffer");
-        if (tag.hasKey("powerProvider")) {
-            _powerProvider.readFromNBT(tag.getCompoundTag("powerProvider"));
-        } else // TODO: remove legacy code (below) in 2.8, losses from upgrades 2.6 or below acceptable
-        {
-            _powerProvider.readFromNBT(tag);
-            configurePowerProvider();
-            tag.removeTag("latency");
-            tag.removeTag("minEnergyReceived");
-            tag.removeTag("maxEnergyReceived");
-            tag.removeTag("maxStoreEnergy");
-            tag.removeTag("minActivationEnergy");
-            tag.removeTag("storedEnergy");
-        }
+        _powerProvider.readFromNBT(tag.getCompoundTag("powerProvider"));
 
         if (tag.hasKey("DropItems")) {
             List<ItemStack> drops = new ArrayList<ItemStack>();

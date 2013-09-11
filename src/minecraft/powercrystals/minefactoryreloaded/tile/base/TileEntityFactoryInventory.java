@@ -163,14 +163,12 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 
         FluidTank tank;
         if ((tank = getTank()) != null) {
-            int tankFluidId = nbttagcompound.getInteger("tankFluidId");
-            int tankAmount = nbttagcompound.getInteger("tankAmount");
-            FluidStack fluid = FluidRegistry.getFluidStack(FluidRegistry.getFluidName(tankFluidId), tankAmount);
-            if (fluid != null) {
-                if (fluid.amount > tank.getCapacity())
-                    fluid.amount = tank.getCapacity();
+            NBTTagCompound fluidInfo = nbttagcompound.getCompoundTag("Fluid");
+            String fluidName = fluidInfo.getString("Name");
+            int tankAmount = fluidInfo.getInteger("Amount");
+            FluidStack fluid = FluidRegistry.getFluidStack(fluidName, Math.min(tankAmount, tank.getCapacity()));
+            if (fluid != null)
                 tank.setFluid(fluid);
-            }
         }
 
         for (int i = 0; i < getSizeInventory(); i++) {
@@ -199,8 +197,10 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
             }
         }
         if (getTank() != null && getTank().getFluid() != null) {
-            nbttagcompound.setInteger("tankAmount", getTank().getFluidAmount());
-            nbttagcompound.setInteger("tankFluidId", getTank().getFluid().fluidID);
+            NBTTagCompound fluidInfo = new NBTTagCompound();
+            nbttagcompound.setString("Name", FluidRegistry.getFluidName(getTank().getFluid()));
+            nbttagcompound.setInteger("Amount", getTank().getFluidAmount());
+            nbttagcompound.setCompoundTag("Fluid", fluidInfo);
         }
 
         if (this.isInvNameLocalized()) {
