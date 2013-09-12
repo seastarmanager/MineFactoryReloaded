@@ -17,14 +17,14 @@ import java.util.List;
 
 public class EntityRocket extends Entity {
     private int _ticksAlive = 0;
-    private EntityLiving _owner;
+    private EntityLivingBase _owner;
     private Entity _target;
 
     public EntityRocket(World world) {
         super(world);
     }
 
-    public EntityRocket(World world, EntityLiving owner) {
+    public EntityRocket(World world, EntityLivingBase owner) {
         this(world);
         setSize(1.0F, 1.0F);
         setLocationAndAngles(owner.posX, owner.posY + owner.getEyeHeight(), owner.posZ, owner.rotationYaw, owner.rotationPitch);
@@ -33,7 +33,7 @@ public class EntityRocket extends Entity {
         _owner = owner;
     }
 
-    public EntityRocket(World world, EntityLiving owner, Entity target) {
+    public EntityRocket(World world, EntityLivingBase owner, Entity target) {
         this(world, owner);
         _target = target;
     }

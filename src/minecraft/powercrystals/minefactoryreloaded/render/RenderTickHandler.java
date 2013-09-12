@@ -8,14 +8,15 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedClient;
+import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.item.ItemRocketLauncher;
 
 import java.util.EnumSet;
 
 public class RenderTickHandler implements ITickHandler {
 
-    private static ResourceLocation loc_red = new ResourceLocation("/powercrystals/minefactoryreloaded/textures/hud/lockon_red.png");
-    private static ResourceLocation loc_blue = new ResourceLocation("/powercrystals/minefactoryreloaded/textures/hud/lockon_blue.png");
+    private static ResourceLocation loc_red = new ResourceLocation(MineFactoryReloadedCore.modId + ":" + "textures/hud/lockon_red.png");
+    private static ResourceLocation loc_blue = new ResourceLocation(MineFactoryReloadedCore.modId + ":" + "textures/hud/lockon_blue.png");
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData) {

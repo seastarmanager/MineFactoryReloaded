@@ -10,6 +10,7 @@ import net.minecraft.world.World;
 import powercrystals.core.net.PacketWrapper;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedClient;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
+import powercrystals.minefactoryreloaded.entity.EntityRocket;
 import powercrystals.minefactoryreloaded.net.Packets;
 
 public class ItemRocketLauncher extends ItemFactory {
@@ -25,6 +26,10 @@ public class ItemRocketLauncher extends ItemFactory {
             if (world.isRemote) {
                 PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.RocketLaunchWithLock, new Object[]
                         {player.entityId, MineFactoryReloadedClient.instance.getLockedEntity()}));
+            }
+            if (!player.worldObj.isRemote) {
+                EntityRocket rocket = new EntityRocket(world, player);
+                world.spawnEntityInWorld(rocket);
             }
         }
         return stack;

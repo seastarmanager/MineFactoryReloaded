@@ -10,11 +10,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
 import net.minecraftforge.client.model.IModelCustom;
 import org.lwjgl.opengl.GL11;
+import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.entity.EntityRocket;
 
 @SideOnly(Side.CLIENT)
 public class EntityRocketRenderer extends Render {
-    private static ResourceLocation loc = new ResourceLocation("/textures/itemmodels/powercrystals/minefactoryreloaded/Rocket.png");
+    private static ResourceLocation loc = new ResourceLocation(MineFactoryReloadedCore.modId + ":" + "textures/itemmodels/Rocket.png");
     private IModelCustom _model;
 
     public EntityRocketRenderer() {
