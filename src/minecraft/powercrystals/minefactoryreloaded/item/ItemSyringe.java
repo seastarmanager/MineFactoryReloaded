@@ -33,8 +33,8 @@ public abstract class ItemSyringe extends ItemFactory implements ISyringe {
 
     @Override
     public boolean onEntitySwing(EntityLivingBase e, ItemStack s) {
-        if (!e.worldObj.isRemote && canInject(e.worldObj, (EntityLiving) e, s)) {
-            if (inject(e.worldObj, (EntityLiving) e, s)) {
+        if (!e.worldObj.isRemote && canInject(e.worldObj, e, s)) {
+            if (inject(e.worldObj, e, s)) {
                 s.itemID = MineFactoryReloadedCore.syringeEmptyItem.itemID;
                 return true;
             }
