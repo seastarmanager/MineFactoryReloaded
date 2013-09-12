@@ -200,10 +200,6 @@ public class ItemSafariNet extends ItemFactory {
 
             e = EntityList.createEntityFromNBT(mobTag, world);
             if (e != null) {
-                if (e instanceof EntityLiving) {
-                    ((EntityLiving) e).entityInit();
-                }
-
                 e.readFromNBT(mobTag);
             }
         }
@@ -259,11 +255,13 @@ public class ItemSafariNet extends ItemFactory {
     }
 
     @Override
-    public boolean onEntitySwing(EntityLivingBase entity, ItemStack itemstack) {
-        return captureEntity(itemstack, entity);
+    public boolean itemInteractionForEntity(ItemStack itemstack, EntityPlayer player, EntityLivingBase entity) {
+        if (entity instanceof EntityLiving)
+            return captureEntity(itemstack, (EntityLiving) entity);
+        return false;
     }
 
-    public static boolean captureEntity(ItemStack itemstack, EntityLivingBase entity) {
+    public static boolean captureEntity(ItemStack itemstack, EntityLiving entity) {
         if (entity.worldObj.isRemote) {
             return false;
         }
@@ -271,7 +269,7 @@ public class ItemSafariNet extends ItemFactory {
             return false;
         } else if (MFRRegistry.getSafariNetBlacklist().contains(entity.getClass())) {
             return false;
-        } else if (!(entity instanceof EntityPlayer)) {
+        } else {
             NBTTagCompound c = new NBTTagCompound();
 
             entity.writeToNBT(c);
@@ -289,7 +287,6 @@ public class ItemSafariNet extends ItemFactory {
                 return false;
             }
         }
-        return true;
     }
 
     public static boolean isEmpty(ItemStack s) {

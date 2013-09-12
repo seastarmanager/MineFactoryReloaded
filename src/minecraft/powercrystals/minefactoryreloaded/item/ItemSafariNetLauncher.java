@@ -2,7 +2,6 @@ package powercrystals.minefactoryreloaded.item;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -46,7 +45,7 @@ public class ItemSafariNetLauncher extends ItemFactory {
             if (ammo != null && ammo.getItem() instanceof ItemSafariNet) {
                 if ((ItemSafariNet.isEmpty(ammo) && isCaptureMode(stack)) || (!ItemSafariNet.isEmpty(ammo) && !isCaptureMode(stack))) {
                     if (!world.isRemote) {
-                        EntitySafariNet esn = new EntitySafariNet(world, (EntityLiving) ((EntityLivingBase) player), ammo);
+                        EntitySafariNet esn = new EntitySafariNet(world, player, ammo);
                         world.spawnEntityInWorld(esn);
 
                         world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
