@@ -1,7 +1,7 @@
 package powercrystals.minefactoryreloaded.item;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.ISyringe;
@@ -14,32 +14,14 @@ public abstract class ItemSyringe extends ItemFactory implements ISyringe {
         setCreativeTab(MFRCreativeTab.tab);
     }
 
-    /*
     @Override
-	public boolean itemInteractionForEntity(ItemStack s, EntityLiving e)
-	{
-		if(!e.worldObj.isRemote && canInject(e.worldObj, e, s))
-		{
-			if(inject(e.worldObj, e, s))
-			{
+	public boolean itemInteractionForEntity(ItemStack s, EntityPlayer player, EntityLivingBase e) {
+		if (!e.worldObj.isRemote && canInject(e.worldObj, e, s)) {
+			if (inject(e.worldObj, e, s)) {
 				s.itemID = MineFactoryReloadedCore.syringeEmptyItem.itemID;
 				return true;
 			}
 		}
-
 		return false;
 	}
-	*/
-
-    @Override
-    public boolean onEntitySwing(EntityLivingBase e, ItemStack s) {
-        if (!e.worldObj.isRemote && canInject(e.worldObj, e, s)) {
-            if (inject(e.worldObj, e, s)) {
-                s.itemID = MineFactoryReloadedCore.syringeEmptyItem.itemID;
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
