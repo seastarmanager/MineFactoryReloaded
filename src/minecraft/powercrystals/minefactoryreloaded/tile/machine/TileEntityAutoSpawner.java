@@ -106,13 +106,10 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
             if (_spawnExact) {
                 NBTTagCompound tag = (NBTTagCompound) itemTag.copy();
                 spawnedLiving.writeToNBT(tag);
-                /*
                 spawnedLiving.readEntityFromNBT(tag);
+
 				for (int i = 0; i < 5; ++i)
-				{
-					spawnedLiving.func_96120_a(i, 0);
-				}
-				*/
+					spawnedLiving.setEquipmentDropChance(i, 0);
             }
 
             double x = xCoord + (worldObj.rand.nextDouble() - worldObj.rand.nextDouble()) * _spawnRange;
@@ -122,13 +119,9 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
             spawnedLiving.setLocationAndAngles(x, y, z, worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
             if (!worldObj.checkNoEntityCollision(spawnedLiving.boundingBox) ||
-                    !worldObj.getCollidingBoundingBoxes(spawnedLiving, spawnedLiving.boundingBox).isEmpty() ||
+                    (!worldObj.getCollidingBoundingBoxes(spawnedLiving, spawnedLiving.boundingBox).isEmpty()) ||
                     (worldObj.isAnyLiquid(spawnedLiving.boundingBox) != (spawnedLiving instanceof EntityWaterMob))) {
                 return false;
-            }
-
-            if (!_spawnExact) {
-                spawnedLiving.entityInit();
             }
 
             worldObj.spawnEntityInWorld(spawnedLiving);
