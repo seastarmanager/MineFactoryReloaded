@@ -10,13 +10,12 @@ import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import powercrystals.core.asm.relauncher.Implementable;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 
 import java.util.Properties;
 
-@Implementable("net.minecraftforge.fluids.IFluidContainerItem")
-public class ItemFactoryCup extends ItemFactory {
+public class ItemFactoryCup extends ItemFactory implements IFluidContainerItem {
     private int _maxUses = 0;
     private boolean _prefix = false;
 
@@ -91,12 +90,7 @@ public class ItemFactoryCup extends ItemFactory {
         return tag == null || !tag.hasKey("fluid") ? null : tag.getCompoundTag("fluid").getString("FluidName");
     }
 
-    // shim
-    public FluidStack getFluid(ItemStack stack) {
-        return null;
-    }
-
-	/*{TODO: migrate to FluidStack/IFluidContainerItem in 1.6
+	//{TODO: migrate to FluidStack/IFluidContainerItem in 1.6
     @Override
 	public FluidStack getFluid(ItemStack stack)
 	{
@@ -120,7 +114,7 @@ public class ItemFactoryCup extends ItemFactory {
 	@Override
 	public int fill(ItemStack stack, FluidStack resource, boolean doFill)
 	{
-		if (resource == null || resource.isGaseous())
+		if (resource == null || resource.getFluid() == null || resource.getFluid().isGaseous())
 			return 0;
 		int fillAmount = 0, capacity = getCapacity(stack);
 		NBTTagCompound tag = stack.stackTagCompound, fluidTag = null;
@@ -150,28 +144,27 @@ public class ItemFactoryCup extends ItemFactory {
 	@Override
 	public FluidStack drain(ItemStack stack, int maxDrain, boolean doDrain)
 	{
-		NBTTagCompound tag = stack.stackTagCompound, fluidTag = null;
-		FluidStack fluid = null;
+		NBTTagCompound tag = stack.stackTagCompound, fluidTag;
+		FluidStack fluid;
 		if (tag == null || !tag.hasKey("fluid") ||
 			(fluidTag = tag.getCompoundTag("fluid")) == null ||
 			(fluid = FluidStack.loadFluidStackFromNBT(fluidTag)) == null)
 			return null;
-		int drainAmount = Math.min(maxDrain, fluid.amount) * (Math.max(Math.random() - 0.25, 0) + 0.25);
+		int drainAmount = (int) (Math.min(maxDrain, fluid.amount) * (Math.max(Math.random() - 0.25, 0) + 0.25));
 		if (doDrain)
 		{
-			if (tag.hasKey('toDrain'))
+			if (tag.hasKey("toDrain"))
 			{
-				drainAmount = tag.getInteger('toDrain');
-				tag.removeTag('toDrain');
+				drainAmount = tag.getInteger("toDrain");
+				tag.removeTag("toDrain");
 			}
-			tag.removeTag('fluid');
+			tag.removeTag("fluid");
 		}
 		else
-			tag.setInteger('toDrain', drainAmount);
+			tag.setInteger("toDrain", drainAmount);
 		fluid.amount = drainAmount;
 		return fluid;
 	}
-	//}*/
 
     public boolean hasDrinkableFluid(ItemStack stack) {
         return MFRRegistry.getFluidDrinkHandlers().containsKey(getFluidName(stack));
