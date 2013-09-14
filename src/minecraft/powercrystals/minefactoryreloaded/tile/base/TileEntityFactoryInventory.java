@@ -1,6 +1,7 @@
 package powercrystals.minefactoryreloaded.tile.base;
 
 import buildcraft.api.gates.IAction;
+import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.transport.IPipeConnection;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.core.IMachine;
@@ -288,9 +289,9 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
 
     @Override
     public ConnectOverride overridePipeConnection(IPipeTile.PipeType pipeType, ForgeDirection dir) {
-        if (pipeType == IPipeTile.PipeType.ITEM)
-            return ConnectOverride.CONNECT;
-        if ((pipeType == IPipeTile.PipeType.FLUID) && ((this instanceof IFluidTank) || (this instanceof IFluidContainerItem)))
+        if ((pipeType == IPipeTile.PipeType.ITEM)
+                || ((pipeType == IPipeTile.PipeType.FLUID) && ((this instanceof IFluidTank) || (this instanceof IFluidContainerItem)))
+                || ((pipeType == IPipeTile.PipeType.POWER) && (this instanceof IPowerReceptor)))
             return ConnectOverride.CONNECT;
         return ConnectOverride.DISCONNECT;
     }
