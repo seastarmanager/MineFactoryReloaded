@@ -290,7 +290,7 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
     @Override
     public ConnectOverride overridePipeConnection(IPipeTile.PipeType pipeType, ForgeDirection dir) {
         if ((pipeType == IPipeTile.PipeType.ITEM)
-                || ((pipeType == IPipeTile.PipeType.FLUID) && ((this instanceof IFluidTank) || (this instanceof IFluidContainerItem)))
+                || ((pipeType == IPipeTile.PipeType.FLUID) && ((this instanceof IFluidTank) || (this instanceof IFluidContainerItem) || (this instanceof IFluidHandler)))
                 || ((pipeType == IPipeTile.PipeType.POWER) && (this instanceof IPowerReceptor)))
             return ConnectOverride.CONNECT;
         return ConnectOverride.DISCONNECT;

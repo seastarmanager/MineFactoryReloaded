@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.*;
 import powercrystals.core.util.Util;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
-public abstract class TileEntityLiquidGenerator extends TileEntityGenerator implements IFluidContainerItem, IFluidTank {
+public abstract class TileEntityLiquidGenerator extends TileEntityGenerator implements IFluidHandler {
     private int _fluidConsumedPerTick;
     private int _powerProducedPerConsumption;
     private int _ticksBetweenConsumption;
@@ -85,30 +85,6 @@ public abstract class TileEntityLiquidGenerator extends TileEntityGenerator impl
     }
 
     @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-        if ((resource == null) || (!getFluidType().isFluidEqual(resource)))
-            return 0;
-        if (!((getFluidType().isFluidEqual(container)) && (FluidContainerRegistry.isFilledContainer(container))))
-            return 0;
-        return _tank.fill(resource, doFill);
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return fill(null, resource, doFill);
-    }
-
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("ticksSinceLastConsumption", _ticksSinceLastConsumption);
@@ -134,57 +110,80 @@ public abstract class TileEntityLiquidGenerator extends TileEntityGenerator impl
     }
 
     /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
-    @Override
-    public FluidStack getFluid(ItemStack container) {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
-    @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * @return FluidStack representing the fluid in the tank, null if the tank is empty.
-     */
-    @Override
-    public FluidStack getFluid() {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @return Current amount of fluid in the tank.
-     */
-    @Override
-    public int getFluidAmount() {
-        return _tank.getFluidAmount();
-    }
-
-    /**
-     * @return Capacity of this fluid tank.
-     */
-    @Override
-    public int getCapacity() {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * Returns a wrapper object {@link net.minecraftforge.fluids.FluidTankInfo } containing the capacity of the tank and the
-     * FluidStack it holds.
-     * <p/>
-     * Should prevent manipulation of the IFluidTank. See {@link FluidTank}.
+     * Fills fluid into internal tanks, distribution is left entirely to the IFluidHandler.
      *
-     * @return State information for the IFluidTank.
+     * @param from     Orientation the Fluid is pumped in from.
+     * @param resource FluidStack representing the Fluid and maximum amount of fluid to be filled.
+     * @param doFill   If false, fill will only be simulated.
+     * @return Amount of resource that was (or would have been, if simulated) filled.
      */
     @Override
-    public FluidTankInfo getInfo() {
-        return _tank.getInfo();
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        if ((resource == null) || (!getFluidType().isFluidEqual(resource)))
+            return 0;
+        return _tank.fill(resource, doFill);
     }
+
+    /**
+     * Drains fluid out of internal tanks, distribution is left entirely to the IFluidHandler.
+     *
+     * @param from     Orientation the Fluid is drained to.
+     * @param resource FluidStack representing the Fluid and maximum amount of fluid to be drained.
+     * @param doDrain  If false, drain will only be simulated.
+     * @return FluidStack representing the Fluid and amount that was (or would have been, if
+     * simulated) drained.
+     */
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return null;
+    }
+
+    /**
+     * Drains fluid out of internal tanks, distribution is left entirely to the IFluidHandler.
+     * <p/>
+     * This method is not Fluid-sensitive.
+     *
+     * @param from     Orientation the fluid is drained to.
+     * @param maxDrain Maximum amount of fluid to drain.
+     * @param doDrain  If false, drain will only be simulated.
+     * @return FluidStack representing the Fluid and amount that was (or would have been, if
+     * simulated) drained.
+     */
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    /**
+     * Returns true if the given fluid can be inserted into the given direction.
+     * <p/>
+     * More formally, this should return true if fluid is able to enter from the given direction.
+     */
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return (fluid != null) && (getFluidType().fluidID == fluid.getID());
+    }
+
+    /**
+     * Returns true if the given fluid can be extracted from the given direction.
+     * <p/>
+     * More formally, this should return true if fluid is able to leave from the given direction.
+     */
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    /**
+     * Returns an array of objects which represent the internal tanks. These objects cannot be used
+     * to manipulate the internal tanks. See {@link net.minecraftforge.fluids.FluidTankInfo}.
+     *
+     * @param from Orientation determining which tanks should be queried.
+     * @return Info for the relevant internal tanks.
+     */
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
+    }
+
 }
