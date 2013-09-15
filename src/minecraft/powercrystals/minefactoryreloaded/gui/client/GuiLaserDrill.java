@@ -38,7 +38,7 @@ public class GuiLaserDrill extends GuiFactoryInventory {
             lines.add(_drill.getEnergyStored() / TileEntityFactoryPowered.energyPerEU + " / " + _drill.getEnergyMax() / TileEntityFactoryPowered.energyPerEU + " " + "EU");
             lines.add(_drill.getEnergyStored() * TileEntityFactoryPowered.wPerEnergy / 1000 + " / " +
                     _drill.getEnergyMax() * TileEntityFactoryPowered.wPerEnergy / 1000 + " " + "KJ");
-            drawTooltip(lines, mouseX, mouseY);
+            getUtility().drawTooltips(lines, mouseX, mouseY);
         } else if (isPointInRegion(161, 15, 8, 60, mouseX, mouseY)) {
             drawBarTooltip("Work", "Wk", _drill.getWorkDone(), _drill.getWorkMax(), mouseX, mouseY);
         }

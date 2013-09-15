@@ -38,7 +38,7 @@ public class GuiFactoryPowered extends GuiFactoryInventory {
             lines.add(_tePowered.getEnergyStored() / TileEntityFactoryPowered.energyPerEU + " / " + _tePowered.getEnergyStoredMax() / TileEntityFactoryPowered.energyPerEU + " " + "EU");
             lines.add(_tePowered.getEnergyStored() * TileEntityFactoryPowered.wPerEnergy / 1000 + " / " +
                     _tePowered.getEnergyStoredMax() * TileEntityFactoryPowered.wPerEnergy / 1000 + " " + "KJ");
-            drawTooltip(lines, mouseX, mouseY);
+            getUtility().drawTooltips(lines, mouseX, mouseY);
         } else if (isPointInRegion(151, 15, 8, 60, mouseX, mouseY)) {
             drawBarTooltip("Work", "Wk", _tePowered.getWorkDone(), _tePowered.getWorkMax(), mouseX, mouseY);
         } else if (isPointInRegion(161, 15, 8, 60, mouseX, mouseY)) {
