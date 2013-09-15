@@ -13,7 +13,7 @@ import powercrystals.minefactoryreloaded.tile.base.TileEntityFluidFabricator;
 
 public class TileEntityOilFabricator extends TileEntityFluidFabricator {
     public TileEntityOilFabricator() {
-        super(FluidRegistry.getFluid("Oil") == null ? Block.waterStill.blockID : FluidRegistry.getFluidID("Oil"), 1, Machine.OilFabricator);
+        super((FluidRegistry.isFluidRegistered("oil") ? FluidRegistry.getFluidID("oil") : -1), 1, Machine.OilFabricator);
     }
 
     @Override
