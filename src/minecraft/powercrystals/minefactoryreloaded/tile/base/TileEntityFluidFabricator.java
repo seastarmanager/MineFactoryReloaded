@@ -4,7 +4,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
-public class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidHandler {
+public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidHandler {
     private int _fluidId;
     private int _fluidFabPerTick;
 
