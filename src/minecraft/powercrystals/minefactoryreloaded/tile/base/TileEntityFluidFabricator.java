@@ -1,10 +1,10 @@
 package powercrystals.minefactoryreloaded.tile.base;
 
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
-public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank {
+public class TileEntityFluidFabricator extends TileEntityFactoryPowered implements IFluidHandler {
     private int _fluidId;
     private int _fluidFabPerTick;
 
@@ -61,83 +61,38 @@ public abstract class TileEntityFluidFabricator extends TileEntityFactoryPowered
         return 0;
     }
 
-    @Override // IFluidTank
-    public int fill(FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
-    @Override // IFluidContainerItem
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
-        return 0;
-    }
-
     @Override
     public boolean allowBucketDrain() {
         return true;
     }
 
-    @Override // IFluidTank
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    @Override // IFluidContainerItem
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        return null;
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        return _tank.getFluid();
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return false;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
-    @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
+    @Override // IFluidHandler
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return 0;
     }
 
-    /**
-     * @return FluidStack representing the fluid in the tank, null if the tank is empty.
-     */
-    @Override
-    public FluidStack getFluid() {
-        return _tank.getFluid();
+    @Override // IFluidHandler
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return (_tank.getFluidAmount() > 0) && (_tank.getFluid().isFluidEqual(new FluidStack(fluid, 0)));
     }
 
-    /**
-     * @return Current amount of fluid in the tank.
-     */
-    @Override
-    public int getFluidAmount() {
-        return _tank.getFluidAmount();
+    @Override // IFluidHandler
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return _tank.drain(maxDrain, doDrain);
     }
 
-    /**
-     * @return Capacity of this fluid tank.
-     */
-    @Override
-    public int getCapacity() {
-        return _tank.getCapacity();
+    @Override // IFluidHandler
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return (resource == null) ? null : _tank.drain(resource.amount, doDrain);
     }
 
-    /**
-     * Returns a wrapper object {@link net.minecraftforge.fluids.FluidTankInfo } containing the capacity of the tank and the
-     * FluidStack it holds.
-     * <p/>
-     * Should prevent manipulation of the IFluidTank. See {@link FluidTank}.
-     *
-     * @return State information for the IFluidTank.
-     */
-    @Override
-    public FluidTankInfo getInfo() {
-        return _tank.getInfo();
+    @Override // IFluidHandler
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
     }
 }

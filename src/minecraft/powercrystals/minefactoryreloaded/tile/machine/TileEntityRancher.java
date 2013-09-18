@@ -22,7 +22,7 @@ import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
 import java.util.List;
 
-public class TileEntityRancher extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank, IHarvestAreaContainer {
+public class TileEntityRancher extends TileEntityFactoryPowered implements IFluidHandler, IHarvestAreaContainer {
     private HarvestAreaManager _areaManager;
     private FluidTank _tank;
 
@@ -80,7 +80,7 @@ public class TileEntityRancher extends TileEntityFactoryPowered implements IFlui
 
     @Override
     public boolean activateMachine() {
-        MFRLiquidMover.pumpFluid(_tank, this);
+        MFRLiquidMover.pumpFluid(this);
 
         boolean didDrop = false;
 
@@ -148,102 +148,33 @@ public class TileEntityRancher extends TileEntityFactoryPowered implements IFlui
         return worldObj;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
-    @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @param resource  FluidStack attempting to fill the container.
-     * @param doFill    If false, the fill will only be simulated.
-     * @return Amount of fluid that was (or would have been, if simulated) filled into the
-     * container.
-     */
-    @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return 0;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @param maxDrain  Maximum amount of fluid to be removed from the container.
-     * @param doFill    If false, the drain will only be simulated.
-     * @return Amount of fluid that was (or would have been, if simulated) drained from the
-     * container.
-     */
     @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         return null;
     }
 
-    /**
-     * @return FluidStack representing the fluid in the tank, null if the tank is empty.
-     */
     @Override
-    public FluidStack getFluid() {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @return Current amount of fluid in the tank.
-     */
-    @Override
-    public int getFluidAmount() {
-        return 0;
-    }
-
-    /**
-     * @return Capacity of this fluid tank.
-     */
-    @Override
-    public int getCapacity() {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * Returns a wrapper object {@link net.minecraftforge.fluids.FluidTankInfo } containing the capacity of the tank and the
-     * FluidStack it holds.
-     * <p/>
-     * Should prevent manipulation of the IFluidTank. See {@link net.minecraftforge.fluids.FluidTank}.
-     *
-     * @return State information for the IFluidTank.
-     */
-    @Override
-    public FluidTankInfo getInfo() {
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
-    /**
-     * @param resource FluidStack attempting to fill the tank.
-     * @param doFill   If false, the fill will only be simulated.
-     * @return Amount of fluid that was accepted by the tank.
-     */
     @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return 0;
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return false;
     }
 
-    /**
-     * @param maxDrain Maximum amount of fluid to be removed from the container.
-     * @param doFill   If false, the fill will only be simulated.
-     * @return Amount of fluid that was removed from the tank.
-     */
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return null;
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
     }
 }

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TileEntityUnifier extends TileEntityFactoryInventory implements IFluidContainerItem, IFluidTank {
+public class TileEntityUnifier extends TileEntityFactoryInventory implements IFluidHandler {
     private FluidTank _tank;
 
     private static FluidStack _biofuel;
@@ -167,26 +167,8 @@ public class TileEntityUnifier extends TileEntityFactoryInventory implements IFl
         return true;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
-    @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
-    }
-
-    @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (resource == null || resource.amount == 0) return 0;
 
         FluidStack converted = unifierTransformFluid(resource, doFill);
@@ -200,6 +182,11 @@ public class TileEntityUnifier extends TileEntityFactoryInventory implements IFl
         } else {
             return filled * resource.amount / converted.amount + (resource.amount & _roundingCompensation);
         }
+    }
+
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return fluid != null;
     }
 
     private FluidStack unifierTransformFluid(FluidStack resource, boolean doFill) {
@@ -218,46 +205,9 @@ public class TileEntityUnifier extends TileEntityFactoryInventory implements IFl
         return null;
     }
 
-    /**
-     * @return FluidStack representing the fluid in the tank, null if the tank is empty.
-     */
     @Override
-    public FluidStack getFluid() {
-        return _tank.getFluid();
-    }
-
-    /**
-     * @return Current amount of fluid in the tank.
-     */
-    @Override
-    public int getFluidAmount() {
-        return _tank.getFluidAmount();
-    }
-
-    /**
-     * @return Capacity of this fluid tank.
-     */
-    @Override
-    public int getCapacity() {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * Returns a wrapper object {@link net.minecraftforge.fluids.FluidTankInfo } containing the capacity of the tank and the
-     * FluidStack it holds.
-     * <p/>
-     * Should prevent manipulation of the IFluidTank. See {@link net.minecraftforge.fluids.FluidTank}.
-     *
-     * @return State information for the IFluidTank.
-     */
-    @Override
-    public FluidTankInfo getInfo() {
-        return _tank.getInfo();
-    }
-
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return fill(null, resource, doFill);
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
     }
 
     @Override
@@ -266,12 +216,19 @@ public class TileEntityUnifier extends TileEntityFactoryInventory implements IFl
     }
 
     @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         return _tank.drain(maxDrain, doDrain);
     }
 
     @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return _tank.drain(maxDrain, doDrain);
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        if (resource == null)
+            return null;
+        return _tank.drain(resource.amount, doDrain);
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return (_tank.getFluidAmount() > 0) && (_tank.getFluid().fluidID == fluid.getID());
     }
 }

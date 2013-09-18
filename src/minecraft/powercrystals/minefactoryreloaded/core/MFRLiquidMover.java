@@ -17,12 +17,12 @@ public abstract class MFRLiquidMover {
      * @param    entityplayer    the player trying to fill the tank
      * @return True if fluid was transferred to the tank.
      */
-    public static boolean manuallyFillTank(IFluidContainerItem itcb, EntityPlayer entityplayer) {
+    public static boolean manuallyFillTank(IFluidHandler itcb, EntityPlayer entityplayer) {
         ItemStack ci = entityplayer.inventory.getCurrentItem();
         FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(ci);
         if (fluid != null) {
-            if (itcb.fill(ci, fluid, false) == fluid.amount) {
-                itcb.fill(ci, fluid, true);
+            if (itcb.fill(ForgeDirection.UNKNOWN, fluid, false) == fluid.amount) {
+                itcb.fill(ForgeDirection.UNKNOWN, fluid, true);
                 if (!entityplayer.capabilities.isCreativeMode) {
                     entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, UtilInventory.consumeItem(ci));
                 }
@@ -39,22 +39,22 @@ public abstract class MFRLiquidMover {
      * @param    entityplayer    the player trying to take fluid from the tank
      * @return True if fluid was transferred from the tank.
      */
-    public static boolean manuallyDrainTank(IFluidTank tank, EntityPlayer entityplayer) {
+    public static boolean manuallyDrainTank(IFluidHandler tank, EntityPlayer entityplayer) {
         ItemStack ci = entityplayer.inventory.getCurrentItem();
         if (FluidContainerRegistry.isEmptyContainer(ci)) {
-            FluidStack tankFluid = tank.getFluid();
+            FluidStack tankFluid = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
             ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(tankFluid, ci);
             if (FluidContainerRegistry.isFilledContainer(filledBucket)) {
                 FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(filledBucket);
                 if (entityplayer.capabilities.isCreativeMode) {
-                    tank.drain(fluid.amount, true);
+                    tank.drain(ForgeDirection.UNKNOWN, fluid.amount, true);
                     return true;
                 } else if (ci.stackSize == 1) {
-                    tank.drain(fluid.amount, true);
+                    tank.drain(ForgeDirection.UNKNOWN, fluid.amount, true);
                     entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, filledBucket);
                     return true;
                 } else if (entityplayer.inventory.addItemStackToInventory(filledBucket)) {
-                    tank.drain(fluid.amount, true);
+                    tank.drain(ForgeDirection.UNKNOWN, fluid.amount, true);
                     ci.stackSize -= 1;
                     return true;
                 }
@@ -63,16 +63,19 @@ public abstract class MFRLiquidMover {
         return false;
     }
 
-    public static void pumpFluid(IFluidTank tank, TileEntityFactory from) {
-        if (tank != null && tank.getFluidAmount() > 0) {
-            FluidStack l = tank.getFluid().copy();
+    public static void pumpFluid(TileEntityFactory from) {
+        if (!(from instanceof IFluidHandler))
+            return;
+        IFluidHandler tank = (IFluidHandler) from;
+        FluidStack stack = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
+        if ((stack != null) && (stack.amount > 0)) {
+            FluidStack l = stack.copy();
             l.amount = Math.min(l.amount, FluidContainerRegistry.BUCKET_VOLUME);
             for (BlockPosition adj : new BlockPosition(from).getAdjacent(true)) {
                 TileEntity tile = from.worldObj.getBlockTileEntity(adj.x, adj.y, adj.z);
-                TankClassWrapper wrapper = TankClassWrapper.newInstance(adj.orientation.getOpposite(), tile);
-                if (wrapper != null) {
-                    int filled = wrapper.fill(l, true);
-                    tank.drain(filled, true);
+                if (tile instanceof IFluidHandler) {
+                    int filled = ((IFluidHandler) tile).fill(adj.orientation.getOpposite(), l, true);
+                    tank.drain(adj.orientation, filled, true);
 
                     l.amount -= filled;
                     if (l.amount <= 0) {
@@ -82,39 +85,4 @@ public abstract class MFRLiquidMover {
             }
         }
     }
-
-    private static class TankClassWrapper {
-
-        private ForgeDirection direction;
-        private boolean useTankA;
-
-        private IFluidTank tankA;
-        private IFluidHandler tankB;
-
-        public static TankClassWrapper newInstance(ForgeDirection dir, TileEntity tile) {
-            if (tile instanceof IFluidTank)
-                return new TankClassWrapper((IFluidTank) tile);
-            else if (tile instanceof IFluidHandler)
-                return new TankClassWrapper(dir, (IFluidHandler) tile);
-            return null;
-        }
-
-        public TankClassWrapper(IFluidTank tank) {
-            tankA = tank;
-            useTankA = true;
-        }
-
-        public TankClassWrapper(ForgeDirection direction, IFluidHandler tank) {
-            this.direction = direction;
-            tankB = tank;
-            useTankA = false;
-        }
-
-        public int fill(FluidStack resource, boolean doFill) {
-            if (useTankA)
-                return tankA.fill(resource, doFill);
-            return tankB.fill(direction, resource, doFill);
-        }
-    }
-
 }

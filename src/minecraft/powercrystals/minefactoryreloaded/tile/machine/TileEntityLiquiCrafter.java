@@ -10,10 +10,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.*;
 import powercrystals.core.util.Util;
 import powercrystals.minefactoryreloaded.core.RemoteInventoryCrafting;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
@@ -26,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 // slots 0-8 craft grid, 9 craft grid template output, 10 output, 11-28 resources
-public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implements IFluidContainerItem {
+public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implements IFluidHandler {
     private boolean _lastRedstoneState;
     private boolean _resourcesChangedSinceLastFailedCraft = true;
 
@@ -279,35 +276,8 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
         return false;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return FluidStack representing the fluid in the container, null if the container is empty.
-     */
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        for (FluidTank tank : _tanks) {
-            if (tank.getFluid() != null && tank.getFluid().isFluidEqual(container))
-                return tank.getFluid();
-        }
-
-        return null;
-    }
-
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
-    @Override
-    public int getCapacity(ItemStack container) {
-        for (FluidTank tank : _tanks) {
-            if (tank.getFluid() != null && tank.getFluid().isFluidEqual(container))
-                return tank.getCapacity();
-        }
-        return 0;
-    }
-
-    @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int quantity;
         int match = findFirstMatchingTank(resource);
         if (match >= 0) {
@@ -325,18 +295,35 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
     }
 
     @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    @Override
     public boolean allowBucketDrain() {
         return false;
     }
 
     @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        if (resource == null)
+            return null;
         for (FluidTank tank : _tanks) {
-            if (tank.getFluidAmount() > 0 && tank.getFluid().isFluidEqual(container)) {
-                return tank.drain(maxDrain, doDrain);
+            if (tank.getFluidAmount() > 0 && tank.getFluid().isFluidEqual(resource)) {
+                return tank.drain(resource.amount, doDrain);
             }
         }
         return null;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return null;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return (fluid != null) && (findFirstMatchingTank(new FluidStack(fluid, 0)) > -1);
     }
 
     private int findFirstEmptyTank() {
@@ -407,5 +394,15 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
 
     public FluidTank[] getTanks() {
         return _tanks;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        FluidTankInfo[] info = new FluidTankInfo[_tanks.length];
+        for (int i = 0; i < _tanks.length; i++) {
+            if (_tanks[i] != null)
+                info[i] = _tanks[i].getInfo();
+        }
+        return info;
     }
 }

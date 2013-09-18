@@ -24,6 +24,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.fluids.IFluidTank;
 import powercrystals.core.position.IRotateableTile;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
@@ -228,18 +229,18 @@ public class BlockFactoryMachine extends BlockContainer implements IConnectableR
         if (te == null) {
             return false;
         }
-        if (te instanceof TileEntityFactoryInventory) {
-            if (te instanceof IFluidTank && FluidContainerRegistry.isEmptyContainer(entityplayer.inventory.getCurrentItem()) && ((TileEntityFactoryInventory) te).allowBucketDrain()) {
-                if (MFRLiquidMover.manuallyDrainTank((IFluidTank) te, entityplayer)) {
+        if ((te instanceof TileEntityFactoryInventory) && (te instanceof IFluidHandler)) {
+            if (FluidContainerRegistry.isEmptyContainer(entityplayer.inventory.getCurrentItem()) && ((TileEntityFactoryInventory) te).allowBucketDrain()) {
+                if (MFRLiquidMover.manuallyDrainTank((IFluidHandler) te, entityplayer)) {
                     return true;
                 }
-            } else if (te instanceof IFluidContainerItem && FluidContainerRegistry.isFilledContainer(entityplayer.inventory.getCurrentItem()) && ((TileEntityFactoryInventory) te).allowBucketFill()) {
-                if (MFRLiquidMover.manuallyFillTank((IFluidContainerItem) te, entityplayer)) {
+            } else if (FluidContainerRegistry.isFilledContainer(entityplayer.inventory.getCurrentItem()) && ((TileEntityFactoryInventory) te).allowBucketFill()) {
+                if (MFRLiquidMover.manuallyFillTank((IFluidHandler) te, entityplayer)) {
                     return true;
                 }
             }
         }
-        if (MFRUtil.isHoldingHammer(entityplayer) && te instanceof TileEntityFactory && ((TileEntityFactory) te).canRotate()) {
+        if (MFRUtil.isHoldingHammer(entityplayer) && (te instanceof TileEntityFactory) && ((TileEntityFactory) te).canRotate()) {
             ((TileEntityFactory) te).rotate();
             world.markBlockForUpdate(x, y, z);
             return true;

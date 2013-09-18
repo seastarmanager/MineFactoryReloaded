@@ -67,8 +67,7 @@ public class TileEntityAutoDisenchanter extends TileEntityFactoryPowered {
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int sideordinal) {
-        if (slot == 2 || slot == 3) return true;
-        return false;
+        return slot == 2 || slot == 3;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class TileEntityAutoDisenchanter extends TileEntityFactoryPowered {
 
                 NBTTagCompound enchTag;
                 if (_inventory[0].itemID == Item.enchantedBook.itemID) {
-                    if ((NBTTagList) _inventory[0].getTagCompound().getTag("ench") != null) {
+                    if (_inventory[0].getTagCompound().getTag("ench") != null) {
                         enchTag = (NBTTagCompound) ((NBTTagList) _inventory[0].getTagCompound().getTag("ench")).tagAt(0);
                         _inventory[0] = new ItemStack(Item.book);
                     } else {

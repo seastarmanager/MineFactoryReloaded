@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
@@ -12,7 +13,7 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryPowered;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
-public class TileEntityMeatPacker extends TileEntityFactoryPowered implements IFluidContainerItem {
+public class TileEntityMeatPacker extends TileEntityFactoryPowered implements IFluidHandler {
     private FluidTank _tank;
 
     public TileEntityMeatPacker() {
@@ -93,7 +94,7 @@ public class TileEntityMeatPacker extends TileEntityFactoryPowered implements IF
     }
 
     @Override
-    public int fill(ItemStack is, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (resource == null || !(resource.isFluidEqual(FluidRegistry.getFluidStack("meat", 0)) || resource.isFluidEqual(FluidRegistry.getFluidStack("pinkslime", 0)))) {
             return 0;
         } else {
@@ -110,27 +111,29 @@ public class TileEntityMeatPacker extends TileEntityFactoryPowered implements IF
     }
 
     @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         return null;
     }
 
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        if (container != null && FluidContainerRegistry.isContainer(container)) {
-            return _tank.getFluid();
-        }
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
         return null;
     }
 
-    /**
-     * @param container ItemStack which is the fluid container.
-     * @return Capacity of this fluid container.
-     */
     @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return false;
     }
 
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return (fluid != null) && (fluid.getID() == FluidRegistry.getFluidID("meat"));
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
+    }
 
     @Override
     public boolean manageSolids() {
