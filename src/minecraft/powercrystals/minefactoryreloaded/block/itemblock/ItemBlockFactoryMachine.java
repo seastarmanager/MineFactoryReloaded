@@ -1,12 +1,12 @@
-package powercrystals.minefactoryreloaded.block;
+package powercrystals.minefactoryreloaded.block.itemblock;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import powercrystals.minefactoryreloaded.block.BlockFactoryMachine;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class ItemBlockFactoryMachine extends ItemBlockFactory {
             int storedQuantity = c.getInteger("storedQuantity");
             if (storedId > 0 & storedQuantity > 0) {
                 ItemStack storedItem = new ItemStack(storedId, 1, storedMeta);
-                info.add("Contains " + storedQuantity + " " + Item.itemsList[storedId].getItemDisplayName(storedItem) + " (" + storedId + ":" + storedMeta + ")");
+                info.add("Contains " + storedQuantity + " " + itemsList[storedId].getItemDisplayName(storedItem) + " (" + storedId + ":" + storedMeta + ")");
             } else {
                 // info.add("Empty");
             }

@@ -1,4 +1,4 @@
-package powercrystals.minefactoryreloaded.block;
+package powercrystals.minefactoryreloaded.block.itemblock;
 
 public class ItemBlockDecorativeStone extends ItemBlockFactory {
     public ItemBlockDecorativeStone(int id) {

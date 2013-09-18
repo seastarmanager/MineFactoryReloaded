@@ -1,4 +1,4 @@
-package powercrystals.minefactoryreloaded.block;
+package powercrystals.minefactoryreloaded.block.itemblock;
 
 public class ItemBlockRedNetPanel extends ItemBlockFactory {
     public ItemBlockRedNetPanel(int id) {

@@ -1,4 +1,4 @@
-package powercrystals.minefactoryreloaded.block;
+package powercrystals.minefactoryreloaded.block.itemblock;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
