@@ -1,5 +1,6 @@
 package powercrystals.minefactoryreloaded.item;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -16,8 +17,8 @@ public abstract class ItemSyringe extends ItemFactory implements ISyringe {
 
     @Override
 	public boolean itemInteractionForEntity(ItemStack s, EntityPlayer player, EntityLivingBase e) {
-		if (!e.worldObj.isRemote && canInject(e.worldObj, e, s)) {
-			if (inject(e.worldObj, e, s)) {
+		if (!e.worldObj.isRemote && (e instanceof EntityLiving) && canInject(e.worldObj, (EntityLiving) e, s)) {
+			if (inject(e.worldObj, (EntityLiving) e, s)) {
 				s.itemID = MineFactoryReloadedCore.syringeEmptyItem.itemID;
 				return true;
 			}

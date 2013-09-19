@@ -67,7 +67,7 @@ public class TileEntityVet extends TileEntityFactoryPowered implements IHarvestA
     public boolean activateMachine() {
         List<?> entities = worldObj.getEntitiesWithinAABB(EntityLiving.class, _areaManager.getHarvestArea().toAxisAlignedBB());
         for (Object o : entities) {
-            if (!(o instanceof EntityLiving) || o instanceof EntityPlayer || o instanceof EntityMob) {
+            if (!(o instanceof EntityLiving) || o instanceof EntityMob) {
                 continue;
             }
             EntityLiving e = (EntityLiving) o;
