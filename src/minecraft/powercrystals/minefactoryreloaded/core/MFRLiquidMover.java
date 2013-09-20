@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.*;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.core.util.UtilInventory;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
+import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
 
 public abstract class MFRLiquidMover {
     /**
@@ -63,19 +64,18 @@ public abstract class MFRLiquidMover {
         return false;
     }
 
-    public static void pumpFluid(TileEntityFactory from) {
-        if (!(from instanceof IFluidHandler))
+    public static void pumpFluid(TileEntityFactoryInventory from) {
+        if (from.getTank() == null)
             return;
-        IFluidHandler tank = (IFluidHandler) from;
-        FluidStack stack = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-        if ((stack != null) && (stack.amount > 0)) {
-            FluidStack l = stack.copy();
+        FluidTank tank = from.getTank();
+        if (tank.getFluidAmount() > 0) {
+            FluidStack l = tank.getFluid().copy();
             l.amount = Math.min(l.amount, FluidContainerRegistry.BUCKET_VOLUME);
             for (BlockPosition adj : new BlockPosition(from).getAdjacent(true)) {
                 TileEntity tile = from.worldObj.getBlockTileEntity(adj.x, adj.y, adj.z);
                 if (tile instanceof IFluidHandler) {
                     int filled = ((IFluidHandler) tile).fill(adj.orientation.getOpposite(), l, true);
-                    tank.drain(adj.orientation, filled, true);
+                    tank.drain(filled, true);
 
                     l.amount -= filled;
                     if (l.amount <= 0) {
