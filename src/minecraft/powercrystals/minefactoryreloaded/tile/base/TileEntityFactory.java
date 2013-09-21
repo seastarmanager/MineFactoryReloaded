@@ -42,6 +42,7 @@ public abstract class TileEntityFactory extends TileEntity implements IRotateabl
 
     @Override
     public void validate() {
+        super.validate();
         if (worldObj.isRemote && this instanceof IHarvestAreaContainer) {
             MineFactoryReloadedClient.addTileToAreaList((IHarvestAreaContainer) this);
         }
@@ -49,6 +50,7 @@ public abstract class TileEntityFactory extends TileEntity implements IRotateabl
 
     @Override
     public void invalidate() {
+        super.invalidate();
         if (worldObj.isRemote && this instanceof IHarvestAreaContainer) {
             MineFactoryReloadedClient.removeTileFromAreaList((IHarvestAreaContainer) this);
         }
