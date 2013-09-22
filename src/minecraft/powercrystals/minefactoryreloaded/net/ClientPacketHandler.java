@@ -12,8 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.net.PacketWrapper;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
-import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
-import powercrystals.minefactoryreloaded.tile.conveyor.TileEntityConveyor;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityAutoJukebox;
 import powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetCable;
 import powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetHistorian;
@@ -29,29 +27,7 @@ public class ClientPacketHandler implements IPacketHandler {
         DataInputStream data = new DataInputStream(new ByteArrayInputStream(packet.data));
         int packetType = PacketWrapper.readPacketID(data);
 
-        if (packetType == Packets.TileDescription) // server -> client; server propagating machine rotation; args X Y Z rotation isActive
-        {
-            Class[] decodeAs = {Integer.class, Integer.class, Integer.class, Integer.class, Boolean.class};
-            Object[] packetReadout = PacketWrapper.readPacketData(data, decodeAs);
-
-            TileEntity te = ((EntityPlayer) player).worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
-            if (te instanceof TileEntityFactory) {
-                TileEntityFactory tef = (TileEntityFactory) te;
-                tef.rotateDirectlyTo((Integer) packetReadout[3]);
-                tef.setIsActive((Boolean) packetReadout[4]);
-            }
-        } else if (packetType == Packets.ConveyorDescription) // server -> client; server propagating conveyor color, activity state
-        {
-            Class[] decodeAs = {Integer.class, Integer.class, Integer.class, Integer.class, Boolean.class};
-            Object[] packetReadout = PacketWrapper.readPacketData(data, decodeAs);
-
-            TileEntity te = ((EntityPlayer) player).worldObj.getBlockTileEntity((Integer) packetReadout[0], (Integer) packetReadout[1], (Integer) packetReadout[2]);
-            if (te instanceof TileEntityConveyor) {
-                TileEntityConveyor tec = (TileEntityConveyor) te;
-                tec.setDyeColor((Integer) packetReadout[3]);
-                tec.setConveyorActive((Boolean) packetReadout[4]);
-            }
-        } else if (packetType == Packets.AutoJukeboxPlay) // server -> client; server playing a record
+        if (packetType == Packets.AutoJukeboxPlay) // server -> client; server playing a record
         {
             Class[] decodeAs = {Integer.class, Integer.class, Integer.class, Integer.class};
             Object[] packetReadout = PacketWrapper.readPacketData(data, decodeAs);

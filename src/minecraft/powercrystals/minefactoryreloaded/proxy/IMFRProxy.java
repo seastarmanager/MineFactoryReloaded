@@ -1,4 +1,4 @@
-package powercrystals.minefactoryreloaded.net;
+package powercrystals.minefactoryreloaded.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.TextureStitchEvent;

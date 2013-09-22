@@ -3,22 +3,25 @@ package powercrystals.minefactoryreloaded.tile.base;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import powercrystals.core.net.PacketWrapper;
+import powercrystals.core.net.ITilePacketHandler;
 import powercrystals.core.position.IRotateableTile;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedClient;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.core.IHarvestAreaContainer;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryInventory;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 
-public abstract class TileEntityFactory extends TileEntity implements IRotateableTile {
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public abstract class TileEntityFactory extends TileEntity implements IRotateableTile, ITilePacketHandler {
     // first index is rotation, second is side
     private static final int[][] _textureSelection = new int[][]
             {
@@ -128,8 +131,19 @@ public abstract class TileEntityFactory extends TileEntity implements IRotateabl
 
     @Override
     public Packet getDescriptionPacket() {
-        Object[] toSend = {xCoord, yCoord, zCoord, _forwardDirection.ordinal(), _isActive};
-        return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.TileDescription, toSend);
+        //Object[] toSend = {xCoord, yCoord, zCoord, _forwardDirection.ordinal(), _isActive};
+        //return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.TileDescription, toSend);
+        return NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(_forwardDirection.ordinal()).append(_isActive).build();
+    }
+
+    @Override
+    public void updateClient(DataInputStream stream, EntityPlayer player) throws IOException {
+        rotateDirectlyTo(stream.readInt());
+        setIsActive(stream.readBoolean());
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) {
     }
 
     @Override
@@ -143,10 +157,6 @@ public abstract class TileEntityFactory extends TileEntity implements IRotateabl
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setInteger("rotation", getDirectionFacing().ordinal());
-    }
-
-    public void onEntityCollidedWithBlock(Entity entity) {
-
     }
 
     public void onRedNetChanged(ForgeDirection side, int value) {

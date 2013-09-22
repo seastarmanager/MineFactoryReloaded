@@ -43,7 +43,8 @@ import powercrystals.minefactoryreloaded.gui.MFRGUIHandler;
 import powercrystals.minefactoryreloaded.item.*;
 import powercrystals.minefactoryreloaded.net.ClientPacketHandler;
 import powercrystals.minefactoryreloaded.net.ConnectionHandler;
-import powercrystals.minefactoryreloaded.net.IMFRProxy;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
+import powercrystals.minefactoryreloaded.proxy.IMFRProxy;
 import powercrystals.minefactoryreloaded.net.ServerPacketHandler;
 import powercrystals.minefactoryreloaded.setup.BehaviorDispenseSafariNet;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
@@ -71,7 +72,7 @@ import java.util.Map.Entry;
         serverPacketHandlerSpec = @SidedPacketHandler(channels = {MineFactoryReloadedCore.modNetworkChannel}, packetHandler = ServerPacketHandler.class),
         connectionHandler = ConnectionHandler.class)
 public class MineFactoryReloadedCore extends BaseMod {
-    @SidedProxy(clientSide = "powercrystals.minefactoryreloaded.net.ClientProxy", serverSide = "powercrystals.minefactoryreloaded.net.CommonProxy")
+    @SidedProxy(clientSide = "powercrystals.minefactoryreloaded.proxy.ClientProxy", serverSide = "powercrystals.minefactoryreloaded.proxy.CommonProxy")
     public static IMFRProxy proxy;
 
     public static final String modId = "MineFactoryReloaded";
@@ -205,6 +206,7 @@ public class MineFactoryReloadedCore extends BaseMod {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
+        NetworkHandler.init();
         setConfigFolderBase(evt.getModConfigurationDirectory());
 
         MFRConfig.loadCommonConfig(getCommonConfig());

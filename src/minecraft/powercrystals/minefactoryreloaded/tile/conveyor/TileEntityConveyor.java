@@ -5,6 +5,7 @@ import buildcraft.core.IMachine;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,14 +13,15 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import powercrystals.core.asm.relauncher.Implementable;
-import powercrystals.core.net.PacketWrapper;
+import powercrystals.core.net.ITilePacketHandler;
 import powercrystals.core.position.IRotateableTile;
 import powercrystals.core.util.Util;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 
-public class TileEntityConveyor extends TileEntity implements IRotateableTile, ISidedInventory, IMachine {
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public class TileEntityConveyor extends TileEntity implements IRotateableTile, ISidedInventory, IMachine, ITilePacketHandler {
     private int _dye = -1;
     private boolean _isReversed = false;
     private boolean _redNetAllowsActive = true;
@@ -39,7 +41,18 @@ public class TileEntityConveyor extends TileEntity implements IRotateableTile, I
 
     @Override
     public Packet getDescriptionPacket() {
-        return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.ConveyorDescription, new Object[]{xCoord, yCoord, zCoord, _dye, _conveyorActive});
+        return NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(_dye).append(_conveyorActive).build();
+        //return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.ConveyorDescription, new Object[]{xCoord, yCoord, zCoord, _dye, _conveyorActive});
+    }
+
+    @Override
+    public void updateClient(DataInputStream stream, EntityPlayer player) throws IOException {
+        setDyeColor(stream.readInt());
+        setConveyorActive(stream.readBoolean());
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
     }
 
     @Override
@@ -285,8 +298,7 @@ public class TileEntityConveyor extends TileEntity implements IRotateableTile, I
     //ISidedInventory
     @Override
     public int[] getAccessibleSlotsFromSide(int sideOrdinal) {
-        int[] accessibleSlot = {sideOrdinal};
-        return accessibleSlot;
+        return new int[]{sideOrdinal};
     }
 
     /*

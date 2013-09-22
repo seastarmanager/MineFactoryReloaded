@@ -1,10 +1,11 @@
-package powercrystals.minefactoryreloaded.net;
+package powercrystals.minefactoryreloaded.proxy;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedClient;
 
+@SuppressWarnings("UnusedDeclaration")
 public class ClientProxy implements IMFRProxy {
     @Override
     public void init() {
