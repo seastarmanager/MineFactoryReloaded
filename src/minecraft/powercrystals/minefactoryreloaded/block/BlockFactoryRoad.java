@@ -9,11 +9,11 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import powercrystals.core.net.PacketWrapper;
+import powercrystals.core.net.PacketHandler;
 import powercrystals.core.util.Util;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.MFRCreativeTab;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
 public class BlockFactoryRoad extends Block {
@@ -68,7 +68,8 @@ public class BlockFactoryRoad extends Block {
             if (newMeta >= 0) {
                 world.setBlockMetadataWithNotify(x, y, z, newMeta, 7);
                 PacketDispatcher.sendPacketToAllAround(x, y, z, 50, world.provider.dimensionId,
-                        PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.RoadBlockUpdate, new Object[]{x, y, z, newMeta}));
+                        NetworkHandler.getBuilder().startBuild(PacketHandler.PacketType.CUSTOM).append(x).append(y).append(z).append(newMeta).build());
+                        //PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.RoadBlockUpdate, new Object[]{x, y, z, newMeta}));
             }
         }
     }

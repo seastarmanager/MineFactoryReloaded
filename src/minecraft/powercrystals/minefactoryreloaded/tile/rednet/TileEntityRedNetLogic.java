@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.rednet;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -12,7 +13,7 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import org.bouncycastle.util.Arrays;
-import powercrystals.core.net.PacketWrapper;
+import powercrystals.core.net.ITilePacketHandler;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
@@ -20,14 +21,13 @@ import powercrystals.minefactoryreloaded.api.rednet.IRedNetLogicCircuit;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNetworkContainer;
 import powercrystals.minefactoryreloaded.circuits.Noop;
 import powercrystals.minefactoryreloaded.item.ItemLogicUpgradeCard;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class TileEntityRedNetLogic extends TileEntity {
+public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHandler {
+
     public class PinMapping {
         public PinMapping(int pin, int buffer) {
             this.pin = pin;
@@ -198,28 +198,47 @@ public class TileEntityRedNetLogic extends TileEntity {
     }
 
     public void sendCircuitDefinition(int circuit) {
-        List<Object> data = new ArrayList<Object>();
+        //List<Object> data = new ArrayList<Object>();
 
-        data.add(xCoord);
-        data.add(yCoord);
-        data.add(zCoord);
+        //data.add(xCoord);
+        //data.add(yCoord);
+        //data.add(zCoord);
 
-        data.add(circuit);
+        //data.add(circuit);
 
-        data.add(_circuits[circuit].getClass().getName());
-        data.add(_circuits[circuit].getInputCount());
+        //data.add(_circuits[circuit].getClass().getName());
+        //data.add(_circuits[circuit].getInputCount());
+        int[] inputMappings = new int[_pinMappingInputs[circuit].length * 2];
+        int seek = 0;
         for (int p = 0; p < _pinMappingInputs[circuit].length; p++) {
-            data.add(_pinMappingInputs[circuit][p].buffer);
-            data.add(_pinMappingInputs[circuit][p].pin);
+            inputMappings[seek] = _pinMappingInputs[circuit][p].buffer;
+            inputMappings[++seek] = _pinMappingInputs[circuit][p].pin;
         }
-        data.add(_circuits[circuit].getOutputCount());
+        //data.add(_circuits[circuit].getOutputCount());
+        int[] outputMappings = new int[_pinMappingOutputs[circuit].length * 2];
+        seek = 0;
         for (int p = 0; p < _pinMappingOutputs[circuit].length; p++) {
-            data.add(_pinMappingOutputs[circuit][p].buffer);
-            data.add(_pinMappingOutputs[circuit][p].pin);
+            outputMappings[seek] = _pinMappingOutputs[circuit][p].buffer;
+            outputMappings[++seek] = _pinMappingOutputs[circuit][p].pin;
         }
 
         PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 5, worldObj.provider.dimensionId,
-                PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicCircuitDefinition, data.toArray()));
+                NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(circuit)
+                        .append(_circuits[circuit].getClass().getName())
+                        .append(_circuits[circuit].getInputCount())
+                        .append(inputMappings)
+                        .append(_circuits[circuit].getOutputCount())
+                        .append(outputMappings).build());
+    }
+
+    @Override
+    public void updateClient(DataInputStream stream, EntityPlayer player) throws IOException {
+        setCircuitFromPacket(stream);
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+
     }
 
     @Override

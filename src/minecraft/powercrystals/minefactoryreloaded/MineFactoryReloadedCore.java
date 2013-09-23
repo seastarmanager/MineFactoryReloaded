@@ -41,11 +41,10 @@ import powercrystals.minefactoryreloaded.entity.EntityRocket;
 import powercrystals.minefactoryreloaded.entity.EntitySafariNet;
 import powercrystals.minefactoryreloaded.gui.MFRGUIHandler;
 import powercrystals.minefactoryreloaded.item.*;
-import powercrystals.minefactoryreloaded.net.ClientPacketHandler;
 import powercrystals.minefactoryreloaded.net.ConnectionHandler;
 import powercrystals.minefactoryreloaded.net.NetworkHandler;
-import powercrystals.minefactoryreloaded.proxy.IMFRProxy;
 import powercrystals.minefactoryreloaded.net.ServerPacketHandler;
+import powercrystals.minefactoryreloaded.proxy.IMFRProxy;
 import powercrystals.minefactoryreloaded.setup.BehaviorDispenseSafariNet;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
 import powercrystals.minefactoryreloaded.setup.MineFactoryReloadedFuelHandler;
@@ -68,7 +67,6 @@ import java.util.Map.Entry;
 @Mod(modid = MineFactoryReloadedCore.modId, name = MineFactoryReloadedCore.modName, version = MineFactoryReloadedCore.version,
         dependencies = "required-after:PowerCrystalsCore@[1.1.7,);after:BuildCraft|Core;after:BuildCraft|Factory;after:BuildCraft|Energy;after:BuildCraft|Builders;after:BuildCraft|Transport;after:IC2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false,
-        clientPacketHandlerSpec = @SidedPacketHandler(channels = {MineFactoryReloadedCore.modNetworkChannel}, packetHandler = ClientPacketHandler.class),
         serverPacketHandlerSpec = @SidedPacketHandler(channels = {MineFactoryReloadedCore.modNetworkChannel}, packetHandler = ServerPacketHandler.class),
         connectionHandler = ConnectionHandler.class)
 public class MineFactoryReloadedCore extends BaseMod {

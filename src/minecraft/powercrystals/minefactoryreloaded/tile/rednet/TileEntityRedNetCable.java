@@ -3,26 +3,30 @@ package powercrystals.minefactoryreloaded.tile.rednet;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.ForgeDirection;
-import powercrystals.core.net.PacketWrapper;
+import powercrystals.core.net.ITilePacketHandler;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.core.position.INeighboorUpdateTile;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.rednet.IConnectableRedNet;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetNoConnection;
 import powercrystals.minefactoryreloaded.api.rednet.RedNetConnectionType;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TileEntityRedNetCable extends TileEntity implements INeighboorUpdateTile {
+public class TileEntityRedNetCable extends TileEntity implements INeighboorUpdateTile, ITilePacketHandler {
     private int[] _sideColors = new int[6];
     private byte _mode; // 0: standard, 1: force connection, 2: connect to cables only
 
@@ -112,10 +116,26 @@ public class TileEntityRedNetCable extends TileEntity implements INeighboorUpdat
 
     @Override
     public Packet getDescriptionPacket() {
-        return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.CableDescription, new Object[]
-                {
-                        xCoord, yCoord, zCoord, _sideColors[0], _sideColors[1], _sideColors[2], _sideColors[3], _sideColors[4], _sideColors[5], _mode
-                });
+        //return PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.CableDescription, new Object[]
+        //        {
+        //                xCoord, yCoord, zCoord, _sideColors[0], _sideColors[1], _sideColors[2], _sideColors[3], _sideColors[4], _sideColors[5], _mode
+        //        });
+        return NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(_sideColors[0], _sideColors[1], _sideColors[2], _sideColors[3], _sideColors[4], _sideColors[5]).append(_mode).build();
+    }
+
+    @Override
+    public void updateClient(DataInputStream stream, EntityPlayer player) throws IOException {
+        setSideColor(ForgeDirection.DOWN, stream.readInt());
+        setSideColor(ForgeDirection.UP, stream.readInt());
+        setSideColor(ForgeDirection.NORTH, stream.readInt());
+        setSideColor(ForgeDirection.SOUTH, stream.readInt());
+        setSideColor(ForgeDirection.WEST, stream.readInt());
+        setSideColor(ForgeDirection.EAST, stream.readInt());
+        setMode(stream.readByte());
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
     }
 
     @Override

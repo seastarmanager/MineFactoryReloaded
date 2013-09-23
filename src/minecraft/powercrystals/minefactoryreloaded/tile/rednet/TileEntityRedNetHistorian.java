@@ -3,16 +3,18 @@ package powercrystals.minefactoryreloaded.tile.rednet;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.AxisAlignedBB;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.core.ArrayQueue;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public class TileEntityRedNetHistorian extends TileEntityFactory {
     /*private class HistorianData
@@ -60,9 +62,15 @@ public class TileEntityRedNetHistorian extends TileEntityFactory {
 
     @Override
     public void validate() {
+        super.validate();
         if (!worldObj.isRemote) {
             setSelectedSubnet(_currentSubnet);
         }
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
     }
 
     @Override
@@ -80,8 +88,9 @@ public class TileEntityRedNetHistorian extends TileEntityFactory {
                 //_data.get(i).add(new HistorianData(values[i], worldObj.getWorldTime()));
                 _lastValues[i] = values[i];
                 if (i == _currentSubnet) {
-                    PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, worldObj.provider.dimensionId, PacketWrapper.createPacket(
-                            MineFactoryReloadedCore.modNetworkChannel, Packets.HistorianValueChanged, new Object[]{xCoord, yCoord, zCoord, values[i]}));
+                    PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, worldObj.provider.dimensionId,
+                            NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(values[i]).build());
+                            //PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HistorianValueChanged, new Object[]{xCoord, yCoord, zCoord, values[i]}));
                 }
             }
         }
@@ -97,9 +106,15 @@ public class TileEntityRedNetHistorian extends TileEntityFactory {
         if (worldObj.isRemote) {
             _valuesClient.fill(null);
         } else {
-            PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, worldObj.provider.dimensionId, PacketWrapper.createPacket(
-                    MineFactoryReloadedCore.modNetworkChannel, Packets.HistorianValueChanged, new Object[]{xCoord, yCoord, zCoord, _lastValues[_currentSubnet]}));
+            PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 50, worldObj.provider.dimensionId,
+                    NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(_lastValues[_currentSubnet]).build());
+                    //PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HistorianValueChanged, new Object[]{xCoord, yCoord, zCoord, _lastValues[_currentSubnet]}));
         }
+    }
+
+    @Override
+    public void updateClient(DataInputStream stream, EntityPlayer player) throws IOException {
+        setClientValue(stream.readInt());
     }
 
     public int getSelectedSubnet() {
