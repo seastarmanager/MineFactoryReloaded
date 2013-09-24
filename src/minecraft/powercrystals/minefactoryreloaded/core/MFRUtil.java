@@ -1,7 +1,6 @@
 package powercrystals.minefactoryreloaded.core;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -39,11 +38,7 @@ public class MFRUtil {
 
     public static Entity prepareMob(Class<? extends Entity> entity, World world) {
         try {
-            Entity e = entity.getConstructor(new Class[]{World.class}).newInstance(world);
-            if (e instanceof EntityLiving) {
-                ((EntityLiving) e).entityInit();
-            }
-            return e;
+            return entity.getConstructor(new Class[]{World.class}).newInstance(world);
         } catch (Exception e) {
             e.printStackTrace();
         }

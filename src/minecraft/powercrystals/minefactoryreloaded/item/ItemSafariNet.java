@@ -245,7 +245,6 @@ public class ItemSafariNet extends ItemFactory {
 
             if (e != null) {
                 e.setLocationAndAngles(x, y, z, world.rand.nextFloat() * 360.0F, 0.0F);
-                ((EntityLiving) e).entityInit();
                 world.spawnEntityInWorld(e);
                 ((EntityLiving) e).playLivingSound();
             }
