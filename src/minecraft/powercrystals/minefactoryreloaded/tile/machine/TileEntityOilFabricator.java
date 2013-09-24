@@ -2,7 +2,6 @@ package powercrystals.minefactoryreloaded.tile.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.fluids.FluidRegistry;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;

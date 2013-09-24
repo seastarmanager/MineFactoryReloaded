@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,8 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerAutoEnchanter;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 
@@ -92,6 +95,11 @@ public class TileEntityAutoEnchanter extends TileEntityFactoryPowered implements
         if (getWorkDone() >= getWorkMax()) {
             activateMachine();
         }
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setTargetLevel(getTargetLevel() + stream.readInt());
     }
 
     @Override
@@ -210,8 +218,7 @@ public class TileEntityAutoEnchanter extends TileEntityFactoryPowered implements
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int sideordinal) {
-        if (slot == 1) return true;
-        return false;
+        return slot == 1;
     }
 
     @Override

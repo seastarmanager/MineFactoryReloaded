@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,9 @@ import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerDeepStorageUnit;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public class TileEntityDeepStorageUnit extends TileEntityFactoryInventory implements IDeepStorageUnit {
     public TileEntityDeepStorageUnit() {
@@ -59,6 +63,12 @@ public class TileEntityDeepStorageUnit extends TileEntityFactoryInventory implem
 
     public void setSideIsOutput(int side, boolean isOutput) {
         _isSideOutput[side] = isOutput;
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        int side = stream.readInt();
+        setSideIsOutput(side, !getIsSideOutput(side));
     }
 
     public int getQuantity() {
@@ -209,8 +219,7 @@ public class TileEntityDeepStorageUnit extends TileEntityFactoryInventory implem
      */
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int sideordinal) {
-        if (sideordinal > 5) return false;
-        return _isSideOutput[sideordinal];
+        return sideordinal <= 5 && _isSideOutput[sideordinal];
     }
 
     @Override

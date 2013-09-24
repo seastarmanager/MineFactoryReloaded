@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import powercrystals.core.position.BlockPosition;
@@ -14,6 +15,8 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerChronotyper;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class TileEntityChronotyper extends TileEntityFactoryPowered implements IHarvestAreaContainer {
@@ -81,6 +84,11 @@ public class TileEntityChronotyper extends TileEntityFactoryPowered implements I
     }
 
     @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setMoveOld(!getMoveOld());
+    }
+
+    @Override
     public int getEnergyStoredMax() {
         return 16000;
     }
@@ -105,7 +113,7 @@ public class TileEntityChronotyper extends TileEntityFactoryPowered implements I
     @Override
     public void readFromNBT(NBTTagCompound nbttagcompound) {
         super.readFromNBT(nbttagcompound);
-        _moveOld = nbttagcompound.getByte("moveOld") == 0 ? false : true;
+        _moveOld = nbttagcompound.getByte("moveOld") != 0;
     }
 
     @Override

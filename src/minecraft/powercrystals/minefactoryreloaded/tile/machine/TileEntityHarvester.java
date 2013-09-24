@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import com.google.common.collect.ImmutableMap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +25,8 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +75,13 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
 
     public Map<String, Boolean> getSettings() {
         return _settings;
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        String setting = stream.readUTF();
+        boolean onOrOff = stream.readBoolean();
+        getSettings().put(setting, onOrOff);
     }
 
     @Override
@@ -358,7 +368,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
 
     /**
      * @param maxDrain Maximum amount of fluid to be removed from the container.
-     * @param doFill   If false, the fill will only be simulated.
+     * @param doDrain   If false, the drain will only be simulated.
      * @return Amount of fluid that was removed from the tank.
      */
     @Override

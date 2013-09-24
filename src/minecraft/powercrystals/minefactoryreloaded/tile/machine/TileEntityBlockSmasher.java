@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,8 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerBlockSmasher;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -139,6 +142,11 @@ public class TileEntityBlockSmasher extends TileEntityFactoryPowered implements 
     }
 
     @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setFortune(getFortune() + stream.readInt());
+    }
+
+    @Override
     public int getEnergyStoredMax() {
         return 16000;
     }
@@ -155,14 +163,12 @@ public class TileEntityBlockSmasher extends TileEntityFactoryPowered implements 
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int sideordinal) {
-        if (slot == 0) return true;
-        return false;
+        return slot == 0;
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int sideordinal) {
-        if (slot == 1) return true;
-        return false;
+        return slot == 1;
     }
 
     @Override

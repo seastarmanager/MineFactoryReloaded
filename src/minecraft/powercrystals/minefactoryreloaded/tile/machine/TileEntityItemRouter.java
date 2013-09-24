@@ -2,6 +2,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +15,12 @@ import powercrystals.minefactoryreloaded.gui.container.ContainerItemRouter;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+
 public class TileEntityItemRouter extends TileEntityFactoryInventory {
+
+    @SuppressWarnings("UnusedDeclaration")
     public TileEntityItemRouter() {
         super(Machine.ItemRouter);
     }
@@ -145,10 +151,6 @@ public class TileEntityItemRouter extends TileEntityFactoryInventory {
         }
     }
 
-    public boolean hasRouteForItem(ItemStack stack) {
-        return hasRoutes(getRoutesForItem(stack));
-    }
-
     private boolean isSideEmpty(ForgeDirection side) {
         if (side == ForgeDirection.UNKNOWN || side == ForgeDirection.UP) {
             return false;
@@ -221,5 +223,10 @@ public class TileEntityItemRouter extends TileEntityFactoryInventory {
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setBoolean("rejectUnmapped", _rejectUnmapped);
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setRejectUnmapped(!getRejectUnmapped());
     }
 }

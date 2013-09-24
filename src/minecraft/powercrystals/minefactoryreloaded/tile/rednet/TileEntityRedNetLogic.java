@@ -28,6 +28,12 @@ import java.io.IOException;
 
 public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHandler {
 
+    /* packets */
+    public static final byte LogicRequestCircuitDefinition = 0;
+    public static final byte LogicSetCircuit = 1;
+    public static final byte LogicReinitialize = 2;
+    public static final byte LogicSetPin = 3;
+
     public class PinMapping {
         public PinMapping(int pin, int buffer) {
             this.pin = pin;
@@ -238,7 +244,34 @@ public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHand
 
     @Override
     public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
-
+        byte type = stream.readByte();
+        switch (type) {
+            case LogicRequestCircuitDefinition:
+                sendCircuitDefinition(stream.readInt()); // _selectedCircuit
+                break;
+            case LogicSetCircuit:
+                int index = stream.readInt();
+                String circuitClassName = stream.readUTF();
+                initCircuit(index, circuitClassName);
+                sendCircuitDefinition(index);
+                break;
+            case LogicReinitialize:
+                reinitialize(player);
+                break;
+            case LogicSetPin:
+                int IO = stream.readInt(); // input or output
+                int selectedCircuit = stream.readInt();
+                index = stream.readInt();
+                int buffer = stream.readInt();
+                int pin = stream.readInt();
+                if (IO == 0) {
+                    setInputPinMapping(selectedCircuit, index, buffer, pin);
+                } else if (IO == 1) {
+                    setOutputPinMapping(selectedCircuit, index, buffer, pin);
+                }
+                sendCircuitDefinition(selectedCircuit);
+                break;
+        }
     }
 
     @Override
@@ -396,8 +429,7 @@ public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHand
     public Packet getDescriptionPacket() {
         NBTTagCompound data = new NBTTagCompound();
         data.setIntArray("upgrades", _upgradeLevel);
-        Packet132TileEntityData packet = new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, data);
-        return packet;
+        return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, data);
     }
 
     @Override
@@ -420,10 +452,6 @@ public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHand
         return false;
     }
 
-    public void setUpgrade(int slot, int level) {
-        _upgradeLevel[slot] = level;
-    }
-
     public int getLevelForSlot(int slot) {
         return _upgradeLevel[slot];
     }
@@ -432,9 +460,9 @@ public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHand
         // recalculate sizes
         int circuitCount = 6;
         int variableCount = 16;
-        for (int i = 0; i < _upgradeLevel.length; i++) {
-            circuitCount += ItemLogicUpgradeCard.getCircuitsForLevel(_upgradeLevel[i]);
-            variableCount += ItemLogicUpgradeCard.getVariablesForLevel(_upgradeLevel[i]);
+        for (int a_upgradeLevel : _upgradeLevel) {
+            circuitCount += ItemLogicUpgradeCard.getCircuitsForLevel(a_upgradeLevel);
+            variableCount += ItemLogicUpgradeCard.getVariablesForLevel(a_upgradeLevel);
         }
 
         _circuitCount = circuitCount;

@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerAutoEnchanter;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityAutoEnchanter;
 
 public class GuiAutoEnchanter extends GuiFactoryPowered {
@@ -33,7 +31,7 @@ public class GuiAutoEnchanter extends GuiFactoryPowered {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRenderer.drawString(new Integer(_enchanter.getTargetLevel()).toString(), 68, 44, 4210752);
+        fontRenderer.drawString(Integer.toString(_enchanter.getTargetLevel()), 68, 44, 4210752);
     }
 
     @Override
@@ -48,14 +46,18 @@ public class GuiAutoEnchanter extends GuiFactoryPowered {
         if (button.id == 1) {
             if (_enchanter.getTargetLevel() < 30) {
                 _enchanter.setTargetLevel(_enchanter.getTargetLevel() + 1);
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
-                        new Object[]{_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord, 1}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord)
+                                                                                .append(1).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
+                //        new Object[]{_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord, 1}));
             }
         } else {
             if (_enchanter.getTargetLevel() > 1) {
                 _enchanter.setTargetLevel(_enchanter.getTargetLevel() - 1);
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
-                        new Object[]{_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord, -1}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord)
+                                                                                .append(-1).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
+                //        new Object[]{_enchanter.xCoord, _enchanter.yCoord, _enchanter.zCoord, -1}));
             }
         }
     }

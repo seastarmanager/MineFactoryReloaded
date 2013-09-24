@@ -3,6 +3,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,6 +12,8 @@ import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerEnchantmentRouter;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 public class TileEntityEnchantmentRouter extends TileEntityItemRouter {
@@ -91,5 +94,10 @@ public class TileEntityEnchantmentRouter extends TileEntityItemRouter {
     public void writeToNBT(NBTTagCompound nbttagcompound) {
         super.writeToNBT(nbttagcompound);
         nbttagcompound.setBoolean("matchLevels", _matchLevels);
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setMatchLevels(!getMatchLevels());
     }
 }

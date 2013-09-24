@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
@@ -125,5 +126,16 @@ public class TileEntityAutoJukebox extends TileEntityFactoryInventory {
     @Override
     public int getSizeInventorySide(ForgeDirection side) {
         return 1;
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        int button = stream.readInt();
+        if (button == 1)
+            playRecord();
+        else if (button == 2)
+            stopRecord();
+        else if (button == 3)
+            copyRecord();
     }
 }

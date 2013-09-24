@@ -11,7 +11,6 @@ import powercrystals.core.gui.controls.Button;
 import powercrystals.core.gui.controls.IListBoxElement;
 import powercrystals.core.gui.controls.ListBox;
 import powercrystals.core.gui.controls.SliderVertical;
-import powercrystals.core.net.PacketWrapper;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedClient;
@@ -21,7 +20,7 @@ import powercrystals.minefactoryreloaded.gui.control.ButtonLogicBufferSelect;
 import powercrystals.minefactoryreloaded.gui.control.ButtonLogicPinSelect;
 import powercrystals.minefactoryreloaded.gui.control.ListBoxElementCircuit;
 import powercrystals.minefactoryreloaded.gui.control.LogicButtonType;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetLogic;
 import powercrystals.minefactoryreloaded.tile.rednet.TileEntityRedNetLogic.PinMapping;
 
@@ -52,8 +51,8 @@ public class GuiRedNetLogic extends GuiScreenBase {
     private ButtonLogicPinSelect[] _inputIOPinButtons = new ButtonLogicPinSelect[16];
     private ButtonLogicPinSelect[] _outputIOPinButtons = new ButtonLogicPinSelect[16];
 
-    private Button _nextCircuit;
-    private Button _prevCircuit;
+    @SuppressWarnings("FieldCanBeLocal") private Button _nextCircuit;
+    @SuppressWarnings("FieldCanBeLocal") private Button _prevCircuit;
 
     private Button _reinit;
     private Button _reinitConfirm;
@@ -74,8 +73,10 @@ public class GuiRedNetLogic extends GuiScreenBase {
 
             @Override
             protected void onElementClicked(IListBoxElement element) {
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetCircuit, new Object[]
-                        {_logic.xCoord, _logic.yCoord, _logic.zCoord, _selectedCircuit, element.getValue().getClass().getName()}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                        .append(TileEntityRedNetLogic.LogicSetCircuit).append(_selectedCircuit).append(element.getValue().getClass().getName()).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetCircuit, new Object[]
+                //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, _selectedCircuit, element.getValue().getClass().getName()}));
             }
 
             @Override
@@ -139,8 +140,9 @@ public class GuiRedNetLogic extends GuiScreenBase {
         _reinitConfirm = new Button(this, 316, 228, 60, 20, "Confirm") {
             @Override
             public void onClick() {
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicReinitialize,
-                        new Object[]{_logic.xCoord, _logic.yCoord, _logic.zCoord}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord).append(TileEntityRedNetLogic.LogicReinitialize).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicReinitialize,
+                //        new Object[]{_logic.xCoord, _logic.yCoord, _logic.zCoord}));
                 _reinitCountdown = 0;
             }
         };
@@ -182,8 +184,10 @@ public class GuiRedNetLogic extends GuiScreenBase {
     }
 
     private void requestCircuit() {
-        PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicRequestCircuitDefinition, new Object[]
-                {_logic.xCoord, _logic.yCoord, _logic.zCoord, _selectedCircuit}));
+        PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                .append(TileEntityRedNetLogic.LogicRequestCircuitDefinition).append(_selectedCircuit).build());
+        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicRequestCircuitDefinition, new Object[]
+        //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, _selectedCircuit}));
     }
 
     @Override
@@ -253,13 +257,17 @@ public class GuiRedNetLogic extends GuiScreenBase {
     }
 
     public void setInputPinMapping(int index, int buffer, int pin) {
-        PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
-                {_logic.xCoord, _logic.yCoord, _logic.zCoord, 0, _selectedCircuit, index, buffer, pin}));
+        PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                                            .append(0, _selectedCircuit, index, buffer, pin).build());
+        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
+        //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, 0, _selectedCircuit, index, buffer, pin}));
     }
 
     public void setOutputPinMapping(int index, int buffer, int pin) {
-        PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
-                {_logic.xCoord, _logic.yCoord, _logic.zCoord, 1, _selectedCircuit, index, buffer, pin}));
+        PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                                            .append(1, _selectedCircuit, index, buffer, pin).build());
+        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
+        //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, 1, _selectedCircuit, index, buffer, pin}));
     }
 
     public int getVariableCount() {
@@ -289,10 +297,10 @@ public class GuiRedNetLogic extends GuiScreenBase {
         float vScale = 1.0F / 256.0F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV(x + 0, y + ySize, this.zLevel, (u + 0) * uScale, (v + ySize) * vScale);
+        tessellator.addVertexWithUV(x, y + ySize, this.zLevel, (u) * uScale, (v + ySize) * vScale);
         tessellator.addVertexWithUV(x + xSize, y + ySize, this.zLevel, (u + xSize) * uScale, (v + ySize) * vScale);
-        tessellator.addVertexWithUV(x + xSize, y + 0, this.zLevel, (u + xSize) * uScale, (v + 0) * vScale);
-        tessellator.addVertexWithUV(x + 0, y + 0, this.zLevel, (u + 0) * uScale, (v + 0) * vScale);
+        tessellator.addVertexWithUV(x + xSize, y, this.zLevel, (u + xSize) * uScale, (v) * vScale);
+        tessellator.addVertexWithUV(x, y, this.zLevel, (u) * uScale, (v) * vScale);
         tessellator.draw();
     }
 }

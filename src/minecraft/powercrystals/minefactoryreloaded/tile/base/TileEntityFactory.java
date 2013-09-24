@@ -143,7 +143,7 @@ public abstract class TileEntityFactory extends TileEntity implements IRotateabl
     }
 
     @Override
-    public void updateServer(DataInputStream stream, EntityPlayerMP player) {
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
     }
 
     @Override

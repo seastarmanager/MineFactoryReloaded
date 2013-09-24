@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerAutoSpawner;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityAutoSpawner;
 
 public class GuiAutoSpawner extends GuiFactoryPowered {
@@ -37,8 +35,9 @@ public class GuiAutoSpawner extends GuiFactoryPowered {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 1) {
-            PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.AutoSpawnerButton,
-                    new Object[]{_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord}));
+            PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord).build());
+            //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.AutoSpawnerButton,
+            //        new Object[]{_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord}));
         }
     }
 }

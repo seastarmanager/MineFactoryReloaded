@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryInventory;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityDeepStorageUnit;
 
 public class GuiDeepStorageUnit extends GuiFactoryInventory {
@@ -80,8 +78,11 @@ public class GuiDeepStorageUnit extends GuiFactoryInventory {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id > 0 && button.id <= 6) {
-            PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.DSUButton,
-                    new Object[]{_dsu.xCoord, _dsu.yCoord, _dsu.zCoord, button.id - 1}));
+            PacketDispatcher.sendPacketToServer(
+                    NetworkHandler.getBuilder().startBuild(_dsu.xCoord, _dsu.yCoord, _dsu.zCoord)
+                                                .append(button.id - 1).build());
+            //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.DSUButton,
+            //        new Object[]{_dsu.xCoord, _dsu.yCoord, _dsu.zCoord, button.id - 1}));
         }
     }
 }

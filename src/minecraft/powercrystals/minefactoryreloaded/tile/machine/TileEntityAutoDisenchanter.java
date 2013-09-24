@@ -2,6 +2,7 @@ package powercrystals.minefactoryreloaded.tile.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,9 @@ import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerAutoDisenchanter;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public class TileEntityAutoDisenchanter extends TileEntityFactoryPowered {
     private boolean _repeatDisenchant;
@@ -43,6 +47,11 @@ public class TileEntityAutoDisenchanter extends TileEntityFactoryPowered {
 
     public void setRepeatDisenchant(boolean repeatDisenchant) {
         _repeatDisenchant = repeatDisenchant;
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setRepeatDisenchant(stream.readInt() == 1);
     }
 
     @Override
@@ -135,13 +144,10 @@ public class TileEntityAutoDisenchanter extends TileEntityFactoryPowered {
 
     @Override
     public boolean isStackValidForSlot(int slot, ItemStack itemstack) {
-        if (slot == 0) {
+        if (slot == 0)
             return itemstack.getEnchantmentTagList() != null;
-        } else if (slot == 1) {
-            return itemstack != null && itemstack.itemID == Item.book.itemID;
-        } else {
-            return false;
-        }
+        else
+            return slot == 1 && itemstack != null && itemstack.itemID == Item.book.itemID;
     }
 
     @Override

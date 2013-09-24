@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityWaterMob;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +20,9 @@ import powercrystals.minefactoryreloaded.item.ItemSafariNet;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
+
+import java.io.DataInputStream;
+import java.io.IOException;
 
 public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements IFluidHandler {
     private static final int _spawnRange = 4;
@@ -36,6 +40,11 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
 
     public void setSpawnExact(boolean spawnExact) {
         _spawnExact = spawnExact;
+    }
+
+    @Override
+    public void updateServer(DataInputStream stream, EntityPlayerMP player) throws IOException {
+        setSpawnExact(!getSpawnExact());
     }
 
     @Override

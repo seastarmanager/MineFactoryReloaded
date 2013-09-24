@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerHarvester;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityHarvester;
 
 public class GuiHarvester extends GuiFactoryPowered {
@@ -53,14 +51,20 @@ public class GuiHarvester extends GuiFactoryPowered {
     @Override
     protected void actionPerformed(GuiButton button) {
         if (button.id == 1) {
-            PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
-                    new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "silkTouch", getNewSettingValue("silkTouch")}));
+            PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_harvester.xCoord, _harvester.yCoord, _harvester.zCoord)
+                                                .append("silkTouch").append(getNewSettingValue("silkTouch")).build());
+            //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
+            //        new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "silkTouch", getNewSettingValue("silkTouch")}));
         } else if (button.id == 2) {
-            PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
-                    new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "harvestSmallMushrooms", getNewSettingValue("harvestSmallMushrooms")}));
+            PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_harvester.xCoord, _harvester.yCoord, _harvester.zCoord)
+                                                .append("harvestSmallMushrooms").append(getNewSettingValue("harvestSmallMushrooms")).build());
+            //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
+            //        new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "harvestSmallMushrooms", getNewSettingValue("harvestSmallMushrooms")}));
         } else if (button.id == 3) {
-            PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
-                    new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "harvestJungleWood", getNewSettingValue("harvestJungleWood")}));
+            PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_harvester.xCoord, _harvester.yCoord, _harvester.zCoord)
+                                                .append("harvestJungleWood").append(getNewSettingValue("harvestJungleWood")).build());
+            //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.HarvesterButton,
+            //        new Object[]{_harvester.xCoord, _harvester.yCoord, _harvester.zCoord, "harvestJungleWood", getNewSettingValue("harvestJungleWood")}));
         }
     }
 
@@ -70,7 +74,6 @@ public class GuiHarvester extends GuiFactoryPowered {
     }
 
     private Boolean getNewSettingValue(String setting) {
-        if (_harvester.getSettings().get(setting) == null) return true;
-        return _harvester.getSettings().get(setting) ? false : true;
+        return _harvester.getSettings().get(setting) == null || !_harvester.getSettings().get(setting);
     }
 }

@@ -4,10 +4,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidHandler;
 import powercrystals.core.position.BlockPosition;
 import powercrystals.core.util.UtilInventory;
-import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
 
 public abstract class MFRLiquidMover {
@@ -36,7 +38,7 @@ public abstract class MFRLiquidMover {
     /**
      * Attempts to drain tank into the player's current item.
      *
-     * @param    itcb            the tank the fluid is coming from
+     * @param    tank            the tank the fluid is coming from
      * @param    entityplayer    the player trying to take fluid from the tank
      * @return True if fluid was transferred from the tank.
      */

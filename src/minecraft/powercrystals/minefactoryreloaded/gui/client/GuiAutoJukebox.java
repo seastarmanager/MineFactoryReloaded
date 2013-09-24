@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryInventory;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityAutoJukebox;
 
 public class GuiAutoJukebox extends GuiFactoryInventory {
@@ -40,7 +38,10 @@ public class GuiAutoJukebox extends GuiFactoryInventory {
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.AutoJukeboxButton,
-                new Object[]{_jukebox.xCoord, _jukebox.yCoord, _jukebox.zCoord, button.id}));
+        PacketDispatcher.sendPacketToServer(
+                NetworkHandler.getBuilder().startBuild(_jukebox.xCoord, _jukebox.yCoord, _jukebox.zCoord)
+                                            .append(button.id).build());
+        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.AutoJukeboxButton,
+        //        new Object[]{_jukebox.xCoord, _jukebox.yCoord, _jukebox.zCoord, button.id}));
     }
 }

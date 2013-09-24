@@ -4,12 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.core.position.Area;
@@ -108,9 +108,9 @@ public class TileEntitySewer extends TileEntityFactoryInventory implements IFlui
             double massFound = 0;
             for (Object o : entities) {
                 if (o instanceof EntityAnimal || o instanceof EntityVillager) {
-                    massFound += Math.pow(((EntityLiving) o).boundingBox.getAverageEdgeLength(), 2);
+                    massFound += Math.pow(((EntityLivingBase) o).boundingBox.getAverageEdgeLength(), 2);
                 } else if (o instanceof EntityPlayer && ((EntityPlayer) o).isSneaking()) {
-                    massFound += Math.pow(((EntityLiving) o).boundingBox.getAverageEdgeLength(), 2);
+                    massFound += Math.pow(((EntityLivingBase) o).boundingBox.getAverageEdgeLength(), 2);
                 }
             }
             if (massFound > 0) {

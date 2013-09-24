@@ -2,10 +2,8 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
-import powercrystals.core.net.PacketWrapper;
-import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerBlockSmasher;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityBlockSmasher;
 
 public class GuiBlockSmasher extends GuiFactoryPowered {
@@ -33,7 +31,7 @@ public class GuiBlockSmasher extends GuiFactoryPowered {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-        fontRenderer.drawString(new Integer(_smasher.getFortune()).toString(), 68, 44, 4210752);
+        fontRenderer.drawString(Integer.toString(_smasher.getFortune()), 68, 44, 4210752);
         fontRenderer.drawString("Fortune", 64, 15, 4210752);
     }
 
@@ -49,14 +47,18 @@ public class GuiBlockSmasher extends GuiFactoryPowered {
         if (button.id == 1) {
             if (_smasher.getFortune() < 3) {
                 _smasher.setFortune(_smasher.getFortune() + 1);
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
-                        new Object[]{_smasher.xCoord, _smasher.yCoord, _smasher.zCoord, 1}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_smasher.xCoord, _smasher.yCoord, _smasher.zCoord)
+                                                                                .append(1).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
+                //        new Object[]{_smasher.xCoord, _smasher.yCoord, _smasher.zCoord, 1}));
             }
         } else {
             if (_smasher.getFortune() > 1) {
                 _smasher.setFortune(_smasher.getFortune() - 1);
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
-                        new Object[]{_smasher.xCoord, _smasher.yCoord, _smasher.zCoord, -1}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_smasher.xCoord, _smasher.yCoord, _smasher.zCoord)
+                                                                                .append(1).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.EnchanterButton,
+                //        new Object[]{_smasher.xCoord, _smasher.yCoord, _smasher.zCoord, -1}));
             }
         }
     }

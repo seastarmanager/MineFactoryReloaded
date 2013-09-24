@@ -2,20 +2,17 @@ package powercrystals.minefactoryreloaded.gui.client;
 
 import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import powercrystals.core.net.PacketWrapper;
 import powercrystals.core.render.ExposedGuiContainer;
 import powercrystals.core.render.RenderUtility;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.slot.SlotFake;
-import powercrystals.minefactoryreloaded.net.Packets;
+import powercrystals.minefactoryreloaded.net.NetworkHandler;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
 
 import java.util.ArrayList;
@@ -55,8 +52,10 @@ public class GuiFactoryInventory extends ExposedGuiContainer {
             }
             SlotFake s = (SlotFake) o;
             if (x >= s.xDisplayPosition && x <= s.xDisplayPosition + 16 && y >= s.yDisplayPosition && y <= s.yDisplayPosition + 16) {
-                PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.FakeSlotChange,
-                        new Object[]{_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord, s.slotNumber}));
+                int _x = _tileEntity.xCoord, _y = _tileEntity.yCoord, _z = _tileEntity.zCoord;
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_x, _y, _z).append(s.slotNumber).build());
+                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.FakeSlotChange,
+                //        new Object[]{_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord, s.slotNumber}));
             }
         }
     }

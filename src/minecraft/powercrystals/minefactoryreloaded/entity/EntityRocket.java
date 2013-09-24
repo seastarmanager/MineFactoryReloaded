@@ -3,7 +3,6 @@ package powercrystals.minefactoryreloaded.entity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,6 +48,7 @@ public class EntityRocket extends Entity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onUpdate() {
         super.onUpdate();
 
@@ -76,13 +76,11 @@ public class EntityRocket extends Entity {
             }
 
             Entity entityHit = null;
-            List<?> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
             double closestRange = 0.0D;
             double collisionRange = 0.3D;
 
-            for (int i = 0, end = list.size(); i < end; ++i) {
-                Entity e = (Entity) list.get(i);
-
+            for (Entity e : list) {
                 if (e.canBeCollidedWith() && (e != _owner)) {
                     AxisAlignedBB entitybb = e.boundingBox.expand(collisionRange, collisionRange, collisionRange);
                     MovingObjectPosition entityHitPos = entitybb.calculateIntercept(pos, nextPos);
@@ -106,7 +104,7 @@ public class EntityRocket extends Entity {
                 EntityPlayer entityplayer = (EntityPlayer) hit.entityHit;
 
 
-                if (entityplayer.capabilities.disableDamage || ((EntityLivingBase) _owner instanceof EntityPlayer && !(((EntityPlayer) (EntityLivingBase) _owner)).canAttackPlayer(entityplayer))) {
+                if (entityplayer.capabilities.disableDamage || (_owner instanceof EntityPlayer && !(((EntityPlayer) _owner)).canAttackPlayer(entityplayer))) {
                     hit = null;
                 }
             }
@@ -125,7 +123,7 @@ public class EntityRocket extends Entity {
             // At this point, I suspect literally no one on this project actually understands what this does or how it works
 
             Vec3 targetVector = worldObj.getWorldVec3Pool().getVecFromPool(_target.posX - posX, _target.posY - posY, _target.posZ - posZ);
-            float targetYaw = clampAngle(360 - (float) (Math.atan2(targetVector.xCoord, targetVector.zCoord) * 180.0D / Math.PI), 360, false);
+            @SuppressWarnings("SuspiciousNameCombination") float targetYaw = clampAngle(360 - (float) (Math.atan2(targetVector.xCoord, targetVector.zCoord) * 180.0D / Math.PI), 360, false);
             float targetPitch = clampAngle(-(float) (Math.atan2(targetVector.yCoord, Math.sqrt(targetVector.xCoord * targetVector.xCoord + targetVector.zCoord * targetVector.zCoord)) * 180.0D / Math.PI), 360, false);
 
             float yawDifference = clampAngle(targetYaw - rotationYaw, 3, true);
@@ -181,6 +179,7 @@ public class EntityRocket extends Entity {
 
         if (prevRotationPitch == 0.0F && prevRotationYaw == 0.0F) {
             double f = MathHelper.sqrt_double(x * x + z * z);
+            //noinspection SuspiciousNameCombination
             prevRotationYaw = rotationYaw = (float) (Math.atan2(x, z) * 180.0D / Math.PI);
             prevRotationPitch = rotationPitch = (float) (Math.atan2(y, f) * 180.0D / Math.PI);
             setLocationAndAngles(posX, posY, posZ, rotationYaw, rotationPitch);
