@@ -5,8 +5,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
@@ -74,11 +72,6 @@ public class TwilightForest {
             MFRRegistry.registerGrinderBlacklist(tfHydra);
 
             MFRRegistry.registerMobEggHandler(new TwilightForestEggHandler());
-
-            MFRRegistry.registerBreederFood(tfBighorn, new ItemStack(Item.wheat));
-            MFRRegistry.registerBreederFood(tfBoar, new ItemStack(Item.carrot));
-            MFRRegistry.registerBreederFood(tfDeer, new ItemStack(Item.wheat));
-
             MFRRegistry.registerRanchable(new RanchableTFBighorn(tfBighorn));
 
             Class tfBlocks = Class.forName("twilightforest.block.TFBlocks");

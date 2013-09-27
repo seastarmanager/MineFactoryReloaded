@@ -5,12 +5,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.inventory.IInventoryManager;
 import powercrystals.core.inventory.InventoryManager;
-import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.core.HarvestAreaManager;
 import powercrystals.minefactoryreloaded.core.IHarvestAreaContainer;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
@@ -20,7 +18,6 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 import powercrystals.minefactoryreloaded.setup.Machine;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileEntityBreeder extends TileEntityFactoryPowered implements IHarvestAreaContainer {
@@ -82,18 +79,12 @@ public class TileEntityBreeder extends TileEntityFactoryPowered implements IHarv
             if (o instanceof EntityAnimal) {
                 EntityAnimal a = ((EntityAnimal) o);
 
-                List<ItemStack> foodList;
-                if (MFRRegistry.getBreederFoods().containsKey(a.getClass())) {
-                    foodList = MFRRegistry.getBreederFoods().get(a.getClass());
-                } else {
-                    foodList = new ArrayList<ItemStack>();
-                    foodList.add(new ItemStack(Item.wheat));
-                }
-                for (ItemStack food : foodList) {
-                    int stackIndex = manager.findItem(food);
-                    if (stackIndex < 0) {
+                for (ItemStack food : manager.getContents().values()) {
+                    if ((food != null) && !a.isBreedingItem(food))
                         continue;
-                    }
+                    int stackIndex = manager.findItem(food);
+                    if (stackIndex < 0)
+                        continue;
 
                     if (!a.isInLove() && a.getGrowingAge() == 0) {
                         a.inLove = 600;

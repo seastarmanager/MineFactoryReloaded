@@ -19,7 +19,6 @@ public abstract class MFRRegistry {
     private static Map<Integer, IFactoryFertilizable> _fertilizables = new HashMap<Integer, IFactoryFertilizable>();
     private static Map<Class<?>, IFactoryRanchable> _ranchables = new HashMap<Class<?>, IFactoryRanchable>();
     private static Map<Class<?>, IFactoryGrindable2> _grindables27 = new HashMap<Class<?>, IFactoryGrindable2>();
-    private static Map<Class<?>, List<ItemStack>> _breederFoods = new HashMap<Class<?>, List<ItemStack>>();
     private static Map<Integer, IFluidDrinkHandler> _fluidDrinkHandlers = new HashMap<Integer, IFluidDrinkHandler>();
     private static Map<Integer, INeedleAmmo> _needleAmmoTypes = new HashMap<Integer, INeedleAmmo>();
 
@@ -42,7 +41,7 @@ public abstract class MFRRegistry {
     private static Map<Integer, List<ItemStack>> _laserPreferredOres = new HashMap<Integer, List<ItemStack>>(16);
 
     public static void registerPlantable(IFactoryPlantable plantable) {
-        _plantables.put(new Integer(plantable.getSeedId()), plantable);
+        _plantables.put(plantable.getSeedId(), plantable);
     }
 
     public static Map<Integer, IFactoryPlantable> getPlantables() {
@@ -66,7 +65,7 @@ public abstract class MFRRegistry {
     }
 
     public static void registerFertilizer(IFactoryFertilizer fertilizer) {
-        Integer i = new Integer(fertilizer.getFertilizerId());
+        int i = fertilizer.getFertilizerId();
         if (!_fertilizers.containsKey(i)) {
             _fertilizers.put(i, fertilizer);
         }
@@ -114,20 +113,6 @@ public abstract class MFRRegistry {
 
     public static List<WeightedRandomItem> getSludgeDrops() {
         return _sludgeDrops;
-    }
-
-    public static void registerBreederFood(Class<?> entityToBreed, ItemStack food) {
-        if (_breederFoods.containsKey(entityToBreed)) {
-            _breederFoods.get(entityToBreed).add(food);
-        } else {
-            ArrayList<ItemStack> foodToAdd = new ArrayList<ItemStack>();
-            foodToAdd.add(food.copy());
-            _breederFoods.put(entityToBreed, foodToAdd);
-        }
-    }
-
-    public static Map<Class<?>, List<ItemStack>> getBreederFoods() {
-        return _breederFoods;
     }
 
     public static void registerMobEggHandler(IMobEggHandler handler) {
@@ -226,11 +211,6 @@ public abstract class MFRRegistry {
 
     public static List<String> getAutoSpawnerBlacklist() {
         return _autoSpawnerBlacklist;
-    }
-
-    @Deprecated
-    public static void setLaserPreferredOre(int color, ItemStack ore) {
-        addLaserPreferredOre(color, ore);
     }
 
     public static void addLaserPreferredOre(int color, ItemStack ore) {
