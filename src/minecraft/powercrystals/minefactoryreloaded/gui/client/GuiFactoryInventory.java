@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
+import powercrystals.core.net.PacketHandler;
 import powercrystals.core.render.ExposedGuiContainer;
 import powercrystals.core.render.RenderUtility;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
@@ -53,9 +54,7 @@ public class GuiFactoryInventory extends ExposedGuiContainer {
             SlotFake s = (SlotFake) o;
             if (x >= s.xDisplayPosition && x <= s.xDisplayPosition + 16 && y >= s.yDisplayPosition && y <= s.yDisplayPosition + 16) {
                 int _x = _tileEntity.xCoord, _y = _tileEntity.yCoord, _z = _tileEntity.zCoord;
-                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_x, _y, _z).append(s.slotNumber).build());
-                //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.FakeSlotChange,
-                //        new Object[]{_tileEntity.xCoord, _tileEntity.yCoord, _tileEntity.zCoord, s.slotNumber}));
+                PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(PacketHandler.PacketType.CUSTOM).append(NetworkHandler.CustomPacketType.FAKE_SLOT_CHANGE.ordinal(), _x, _y, _z, s.slotNumber).build());
             }
         }
     }

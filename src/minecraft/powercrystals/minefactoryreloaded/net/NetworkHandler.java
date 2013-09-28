@@ -77,8 +77,11 @@ public final class NetworkHandler {
                             ItemStack stack = _player.inventory.getItemStack();
                             if (stack == null)
                                 inv.setInventorySlotContents(slotNum, null);
-                            else
+                            else {
+                                stack = stack.copy();
+                                stack.stackSize = 1;
                                 inv.setInventorySlotContents(slotNum, stack);
+                            }
                         }
                     }
                     break;

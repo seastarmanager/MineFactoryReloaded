@@ -135,7 +135,7 @@ public abstract class TileEntityFactoryInventory extends TileEntityFactory imple
         return 64;
     }
 
-    public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+    public boolean isStackValidForSlot(int slot, ItemStack itemstack) {
         return true;
     }
 
