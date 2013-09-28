@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
-public class TileEntityHarvester extends TileEntityFactoryPowered implements IFluidContainerItem, IFluidTank, IHarvestAreaContainer {
+public class TileEntityHarvester extends TileEntityFactoryPowered implements IFluidHandler, IHarvestAreaContainer {
     private Map<String, Boolean> _settings;
 
     private Random _rand;
@@ -90,11 +90,6 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-    public FluidStack getFluid(ItemStack container) {
-        return _tank.getFluid();
-    }
-
-    @Override
     public int getEnergyStoredMax() {
         return 16000;
     }
@@ -147,10 +142,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
         }
 
         harvestable.postHarvest(worldObj, targetCoords.x, targetCoords.y, targetCoords.z);
-
-        //_tank.fill(FluidContainerRegistry.getFluidForFilledItem("sludge", 10), true);
         _tank.fill(FluidRegistry.getFluidStack("sludge", 10), true);
-
         return true;
     }
 
@@ -251,7 +243,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-    public int fill(ItemStack container, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         return 0;
     }
 
@@ -261,13 +253,23 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
     }
 
     @Override
-    public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
-        return _tank.drain(maxDrain, doDrain); // TODO: check container
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return _tank.drain(maxDrain, doDrain);
     }
 
     @Override
-    public int getCapacity(ItemStack container) {
-        return _tank.getCapacity();
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return false;
+    }
+
+    @Override
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return _tank.drain(resource.amount, doDrain);
     }
 
     @Override
@@ -323,56 +325,12 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
      * @return FluidStack representing the fluid in the tank, null if the tank is empty.
      */
     @Override
-    public FluidStack getFluid() {
-        return _tank.getFluid();
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return new FluidTankInfo[] { _tank.getInfo() };
     }
 
-    /**
-     * @return Current amount of fluid in the tank.
-     */
     @Override
-    public int getFluidAmount() {
-        return _tank.getFluidAmount();
-    }
-
-    /**
-     * @return Capacity of this fluid tank.
-     */
-    @Override
-    public int getCapacity() {
-        return _tank.getCapacity();
-    }
-
-    /**
-     * Returns a wrapper object {@link net.minecraftforge.fluids.FluidTankInfo } containing the capacity of the tank and the
-     * FluidStack it holds.
-     * <p/>
-     * Should prevent manipulation of the IFluidTank. See {@link net.minecraftforge.fluids.FluidTank}.
-     *
-     * @return State information for the IFluidTank.
-     */
-    @Override
-    public FluidTankInfo getInfo() {
-        return _tank.getInfo();
-    }
-
-    /**
-     * @param resource FluidStack attempting to fill the tank.
-     * @param doFill   If false, the fill will only be simulated.
-     * @return Amount of fluid that was accepted by the tank.
-     */
-    @Override
-    public int fill(FluidStack resource, boolean doFill) {
-        return _tank.fill(resource, doFill);
-    }
-
-    /**
-     * @param maxDrain Maximum amount of fluid to be removed from the container.
-     * @param doDrain   If false, the drain will only be simulated.
-     * @return Amount of fluid that was removed from the tank.
-     */
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        return _tank.drain(maxDrain, doDrain);
+    public FluidTank getTank() {
+        return _tank;
     }
 }

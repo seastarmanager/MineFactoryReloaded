@@ -2,10 +2,17 @@ package powercrystals.minefactoryreloaded.gui.container;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
+import net.minecraftforge.fluids.FluidStack;
 import powercrystals.minefactoryreloaded.gui.slot.SlotAcceptUpgrade;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityHarvester;
 
+import java.util.List;
+
 public class ContainerHarvester extends ContainerUpgradable {
+
+    private int fluidID;
+    private int fluidAmount;
+
     public ContainerHarvester(TileEntityHarvester te, InventoryPlayer inv) {
         super(te, inv);
     }
@@ -16,13 +23,19 @@ public class ContainerHarvester extends ContainerUpgradable {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < crafters.size(); i++) {
-            ((ICrafting) crafters.get(i)).sendProgressBarUpdate(this, 100, getSetting("silkTouch"));
-            ((ICrafting) crafters.get(i)).sendProgressBarUpdate(this, 101, getSetting("harvestSmallMushrooms"));
-            ((ICrafting) crafters.get(i)).sendProgressBarUpdate(this, 102, getSetting("harvestJungleWood"));
+        for (ICrafting crafter : (List<ICrafting>) crafters) {
+            crafter.sendProgressBarUpdate(this, 100, getSetting("silkTouch"));
+            crafter.sendProgressBarUpdate(this, 101, getSetting("harvestSmallMushrooms"));
+            crafter.sendProgressBarUpdate(this, 102, getSetting("harvestJungleWood"));
+            if (_te.getTank() != null && _te.getTank().getFluidAmount() > 0) {
+                crafter.sendProgressBarUpdate(this, 103, _te.getTank().getFluidAmount());
+                crafter.sendProgressBarUpdate(this, 104, _te.getTank().getFluid().fluidID);
+                crafter.sendProgressBarUpdate(this, 105, 0);
+            }
         }
     }
 
@@ -33,6 +46,9 @@ public class ContainerHarvester extends ContainerUpgradable {
         if (var == 100) setSetting("silkTouch", value);
         if (var == 101) setSetting("harvestSmallMushrooms", value);
         if (var == 102) setSetting("harvestJungleWood", value);
+        if (var == 103) fluidAmount = value;
+        if (var == 104) fluidID = value;
+        if (var == 105) _te.getTank().setFluid(new FluidStack(fluidID, fluidAmount));
     }
 
     private int getSetting(String setting) {
@@ -44,6 +60,6 @@ public class ContainerHarvester extends ContainerUpgradable {
     }
 
     private void setSetting(String setting, int value) {
-        ((TileEntityHarvester) _te).getSettings().put(setting, value == 0 ? false : true);
+        ((TileEntityHarvester) _te).getSettings().put(setting, value != 0);
     }
 }
