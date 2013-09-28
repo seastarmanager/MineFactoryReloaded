@@ -64,7 +64,7 @@ public class TileEntityPlanter extends TileEntityFactoryPowered implements IHarv
         ItemStack match = _inventory[getPlanterSlotIdFromBp(bp)];
 
         for (int stackIndex = 10; stackIndex <= 25; stackIndex++) {
-            if (worldObj.isAirBlock(bp.x, bp.y - 1, bp.z))
+            if (worldObj.isAirBlock(bp.x, bp.y - 1, bp.z) || !worldObj.isAirBlock(bp.x, bp.y, bp.z))
                 continue;
             ItemStack availableStack = getStackInSlot(stackIndex);
 
@@ -89,6 +89,7 @@ public class TileEntityPlanter extends TileEntityFactoryPowered implements IHarv
                 if (!block.canSustainPlant(worldObj, bp.x, bp.y, bp.z, ForgeDirection.UP, plantable))
                     continue;
             }
+
             worldObj.setBlock(bp.x, bp.y, bp.z, plantable.getPlantID(worldObj, bp.x, bp.y, bp.z),
                     plantable.getPlantMetadata(worldObj, bp.x, bp.y, bp.z), 3);
             Block.blocksList[worldObj.getBlockId(bp.x, bp.y, bp.z)]
