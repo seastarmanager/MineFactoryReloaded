@@ -9,8 +9,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.asm.relauncher.Implementable;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.core.util.Util;
-import powercrystals.core.util.UtilInventory;
 import powercrystals.minefactoryreloaded.modhelpers.ic2.IC2;
 import powercrystals.minefactoryreloaded.setup.Machine;
 
@@ -153,7 +153,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
     }
 
     public boolean doDrop(ItemStack drop) {
-        drop = UtilInventory.dropStack(this, drop, this.getDropDirection());
+        drop = InventoryUtil.dropStack(this, drop, this.getDropDirection());
         if (drop != null && drop.stackSize > 0) {
             if (failedDrops == null) {
                 failedDrops = new ArrayList<ItemStack>();
@@ -172,7 +172,7 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
         missed.clear();
         for (int i = drops.size(); i-- > 0; ) {
             ItemStack dropStack = drops.get(i);
-            dropStack = UtilInventory.dropStack(this, dropStack, this.getDropDirection());
+            dropStack = InventoryUtil.dropStack(this, dropStack, this.getDropDirection());
             if (dropStack != null && dropStack.stackSize > 0) {
                 missed.add(dropStack);
             }

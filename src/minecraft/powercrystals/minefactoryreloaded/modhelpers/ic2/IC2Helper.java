@@ -17,7 +17,6 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.fertilizables.FertilizerStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
 import java.lang.reflect.Constructor;
@@ -39,7 +38,6 @@ class IC2Helper {
             ItemStack plantBall = Items.getItem("plantBall");
 
             if (rubberSapling != null) {
-                MFRRegistry.registerPlantable(new PlantableStandard(rubberSapling.itemID, rubberSapling.itemID));
                 MFRRegistry.registerFertilizable(new FertilizableIC2RubberTree(rubberSapling.itemID));
             }
             if (rubberLeaves != null) {

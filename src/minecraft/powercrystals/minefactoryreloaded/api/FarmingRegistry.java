@@ -17,22 +17,6 @@ import java.lang.reflect.Method;
  *         This class will be replaced by FactoryRegistry in 1.6.
  */
 public class FarmingRegistry {
-    /**
-     * Registers a plantable object with the Planter.
-     *
-     * @param plantable The thing to plant.
-     */
-    public static void registerPlantable(IFactoryPlantable plantable) {
-        try {
-            Class<?> registry = Class.forName("powercrystals.minefactoryreloaded.MFRRegistry");
-            if (registry != null) {
-                Method reg = registry.getMethod("registerPlantable", IFactoryPlantable.class);
-                reg.invoke(registry, plantable);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Registers a harvestable block with the Harvester.

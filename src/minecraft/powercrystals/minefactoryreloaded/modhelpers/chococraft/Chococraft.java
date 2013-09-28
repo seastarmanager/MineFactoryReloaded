@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableCropPlant;
 
 @Mod(modid = "MineFactoryReloaded|CompatChococraft", name = "MFR Compat: Chococraft",
         version = MineFactoryReloadedCore.version,
@@ -30,7 +29,6 @@ public class Chococraft {
             int blockId = ((Block) (mod.getField("gysahlStemBlock").get(null))).blockID;
             int seedId = ((Item) (mod.getField("gysahlSeedsItem").get(null))).itemID;
 
-            MFRRegistry.registerPlantable(new PlantableCropPlant(seedId, blockId));
             MFRRegistry.registerHarvestable(new HarvestableChococraft(blockId));
             MFRRegistry.registerFertilizable(new FertilizableChococraft(blockId));
 

@@ -7,7 +7,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionHelper;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.gui.client.GuiAutoBrewer;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerAutoBrewer;
@@ -109,7 +109,7 @@ public class TileEntityAutoBrewer extends TileEntityFactoryPowered {
                 _inventory[getProcessSlot(row)] = null;
 
                 for (int i = 0; i < 3; i++) {
-                    if (!UtilInventory.stacksEqual(_inventory[getResourceSlot(row, i)], ingredient)) {
+                    if (!InventoryUtil.stacksEqual(_inventory[getResourceSlot(row, i)], ingredient)) {
                         continue;
                     }
 
@@ -136,7 +136,7 @@ public class TileEntityAutoBrewer extends TileEntityFactoryPowered {
 
         boolean hasIngredients = false;
         for (int i = 0; i < 3; i++) {
-            if (UtilInventory.stacksEqual(_inventory[getTemplateSlot(row)], _inventory[getResourceSlot(row, i)])) {
+            if (InventoryUtil.stacksEqual(_inventory[getTemplateSlot(row)], _inventory[getResourceSlot(row, i)])) {
                 hasIngredients = true;
                 break;
             }
@@ -202,7 +202,7 @@ public class TileEntityAutoBrewer extends TileEntityFactoryPowered {
         if (column == 1) return false;
         if (column == 0)
             return _inventory[getTemplateSlot(row)] != null && Item.itemsList[itemstack.itemID] instanceof ItemPotion && (row == 0 || _inventory[getTemplateSlot(row - 1)] == null);
-        return UtilInventory.stacksEqual(_inventory[getTemplateSlot(row)], itemstack);
+        return InventoryUtil.stacksEqual(_inventory[getTemplateSlot(row)], itemstack);
     }
 
     @Override
@@ -213,7 +213,7 @@ public class TileEntityAutoBrewer extends TileEntityFactoryPowered {
         if (row == 6) return true;
         if (column == 1) return false;
         if (column == 0) return _inventory[getTemplateSlot(row)] == null;
-        return !UtilInventory.stacksEqual(_inventory[getTemplateSlot(row)], itemstack);
+        return !InventoryUtil.stacksEqual(_inventory[getTemplateSlot(row)], itemstack);
     }
 
     @Override

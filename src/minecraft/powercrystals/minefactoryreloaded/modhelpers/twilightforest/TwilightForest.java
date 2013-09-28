@@ -11,7 +11,6 @@ import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.fertilizables.FertilizableSapling;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 
 import java.util.HashMap;
 
@@ -86,8 +85,6 @@ public class TwilightForest {
                 MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(((Block) tfBlocks.getField("firefly").get(null)).blockID));
                 MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(((Block) tfBlocks.getField("cicada").get(null)).blockID));
                 MFRRegistry.registerHarvestable(new HarvestableStandard(((Block) tfBlocks.getField("plant").get(null)).blockID, HarvestType.Normal));
-
-                MFRRegistry.registerPlantable(new PlantableStandard(((Block) tfBlocks.getField("sapling").get(null)).blockID, ((Block) tfBlocks.getField("sapling").get(null)).blockID));
 
                 MFRRegistry.registerFertilizable(new FertilizableSapling(((Block) tfBlocks.getField("sapling").get(null)).blockID));
             }

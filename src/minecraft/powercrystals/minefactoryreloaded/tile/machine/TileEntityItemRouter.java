@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.client.GuiItemRouter;
 import powercrystals.minefactoryreloaded.gui.container.ContainerFactoryInventory;
@@ -77,7 +77,7 @@ public class TileEntityItemRouter extends TileEntityFactoryInventory {
                 ItemStack stackForThisRoute = stack.copy();
                 stackForThisRoute.stackSize = startingAmount * routes[i] / totalWeight(routes);
                 if (stackForThisRoute.stackSize > 0) {
-                    ItemStack remainingFromThisRoute = UtilInventory.dropStack(this, stackForThisRoute, _outputDirections[i], _outputDirections[i]);
+                    ItemStack remainingFromThisRoute = InventoryUtil.dropStack(this, stackForThisRoute, _outputDirections[i], _outputDirections[i]);
                     if (remainingFromThisRoute == null) {
                         remainingOverall.stackSize -= stackForThisRoute.stackSize;
                     } else {
@@ -93,7 +93,7 @@ public class TileEntityItemRouter extends TileEntityFactoryInventory {
 
         if (0 < remainingOverall.stackSize && remainingOverall.stackSize < totalWeight(routes)) {
             int outdir = weightedRandomSide(routes);
-            remainingOverall = UtilInventory.dropStack(this, remainingOverall, _outputDirections[outdir], _outputDirections[outdir]);
+            remainingOverall = InventoryUtil.dropStack(this, remainingOverall, _outputDirections[outdir], _outputDirections[outdir]);
         }
         return remainingOverall;
     }

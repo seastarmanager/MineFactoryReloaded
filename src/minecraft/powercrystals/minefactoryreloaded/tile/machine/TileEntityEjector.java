@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.inventory.IInventoryManager;
 import powercrystals.core.inventory.InventoryManager;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.core.util.Util;
-import powercrystals.core.util.UtilInventory;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactory;
 
 import java.util.Map;
@@ -24,7 +24,7 @@ public class TileEntityEjector extends TileEntityFactory {
         }
         boolean redstoneState = Util.isRedstonePowered(this);
         if (redstoneState && !_lastRedstoneState) {
-            Map<ForgeDirection, IInventory> chests = UtilInventory.findChests(worldObj, xCoord, yCoord, zCoord);
+            Map<ForgeDirection, IInventory> chests = InventoryUtil.findChests(worldObj, xCoord, yCoord, zCoord);
             inv:
             for (Entry<ForgeDirection, IInventory> chest : chests.entrySet()) {
                 if (chest.getKey() == getDirectionFacing()) {
@@ -48,7 +48,7 @@ public class TileEntityEjector extends TileEntityFactory {
 
                     ItemStack stackToDrop = stack.getValue().copy();
                     stackToDrop.stackSize = 1;
-                    ItemStack remaining = UtilInventory.dropStack(this, stackToDrop, this.getDirectionFacing(), this.getDirectionFacing());
+                    ItemStack remaining = InventoryUtil.dropStack(this, stackToDrop, this.getDirectionFacing(), this.getDirectionFacing());
 
                     // remaining == null if dropped successfully.
                     if (remaining == null) {

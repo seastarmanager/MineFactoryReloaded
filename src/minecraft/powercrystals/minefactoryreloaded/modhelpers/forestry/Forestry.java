@@ -19,7 +19,6 @@ import powercrystals.minefactoryreloaded.modhelpers.forestry.pods.FertilizableFo
 import powercrystals.minefactoryreloaded.modhelpers.forestry.pods.FruitForestryPod;
 import powercrystals.minefactoryreloaded.modhelpers.forestry.trees.FertilizableForestryTree;
 import powercrystals.minefactoryreloaded.modhelpers.forestry.trees.HarvestableForestryTree;
-import powercrystals.minefactoryreloaded.modhelpers.forestry.trees.PlantableForestryTree;
 import powercrystals.minefactoryreloaded.modhelpers.forestry.utils.ForestryUtils;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityUnifier;
 
@@ -41,7 +40,6 @@ public class Forestry {
                 MFRRegistry.registerSludgeDrop(5, new ItemStack(peat));
             }
 
-            MFRRegistry.registerPlantable(new PlantableForestryTree());
             MFRRegistry.registerFertilizable(new FertilizableForestryTree());
 
             for (Field f : Class.forName("forestry.core.config.ForestryBlock").getDeclaredFields()) {

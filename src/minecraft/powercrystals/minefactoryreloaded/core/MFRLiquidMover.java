@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.IFluidHandler;
 import powercrystals.core.position.BlockPosition;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryInventory;
 
 public abstract class MFRLiquidMover {
@@ -27,7 +27,7 @@ public abstract class MFRLiquidMover {
             if (itcb.fill(ForgeDirection.UNKNOWN, fluid, false) == fluid.amount) {
                 itcb.fill(ForgeDirection.UNKNOWN, fluid, true);
                 if (!entityplayer.capabilities.isCreativeMode) {
-                    entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, UtilInventory.consumeItem(ci));
+                    entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, InventoryUtil.consumeItem(ci));
                 }
                 return true;
             }

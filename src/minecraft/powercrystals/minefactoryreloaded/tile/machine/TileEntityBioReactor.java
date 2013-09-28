@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import powercrystals.core.util.InventoryUtil;
+import powercrystals.core.util.ItemStackUtil;
 import powercrystals.core.util.Util;
-import powercrystals.core.util.UtilInventory;
-import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.gui.client.GuiBioReactor;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerBioReactor;
@@ -64,7 +64,7 @@ public class TileEntityBioReactor extends TileEntityFactoryInventory implements 
 
         if (!worldObj.isRemote) {
             for (int i = 0; i < 9; i++) {
-                if (_inventory[i] != null && MFRRegistry.getPlantables().containsKey(_inventory[i].itemID)) {
+                if (_inventory[i] != null && ItemStackUtil.isPlantable(_inventory[i])) {
                     int targetSlot = findMatchingSlot(_inventory[i]);
                     if (targetSlot < 0) {
                         continue;
@@ -74,7 +74,7 @@ public class TileEntityBioReactor extends TileEntityFactoryInventory implements 
                         _inventory[targetSlot] = _inventory[i];
                         _inventory[i] = null;
                     } else {
-                        UtilInventory.mergeStacks(_inventory[targetSlot], _inventory[i]);
+                        InventoryUtil.mergeStacks(_inventory[targetSlot], _inventory[i]);
                         if (_inventory[i].stackSize <= 0) {
                             _inventory[i] = null;
                         }
@@ -185,7 +185,7 @@ public class TileEntityBioReactor extends TileEntityFactoryInventory implements 
             return false;
         }
         for (int i = 0; i < 9; i++) {
-            if (i != slot && _inventory[i] != null && UtilInventory.stacksEqual(_inventory[i], itemstack)) {
+            if (i != slot && _inventory[i] != null && InventoryUtil.stacksEqual(_inventory[i], itemstack)) {
                 return false;
             }
         }

@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.gui.client.GuiBlockSmasher;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.container.ContainerBlockSmasher;
@@ -70,7 +70,7 @@ public class TileEntityBlockSmasher extends TileEntityFactoryPowered implements 
             setWorkDone(0);
             return false;
         }
-        if (_lastInput == null || !UtilInventory.stacksEqual(_lastInput, _inventory[0])) {
+        if (_lastInput == null || !InventoryUtil.stacksEqual(_lastInput, _inventory[0])) {
             _lastInput = _inventory[0];
             _lastOutput = getOutput(_lastInput);
         }
@@ -81,7 +81,7 @@ public class TileEntityBlockSmasher extends TileEntityFactoryPowered implements 
         if (_fortune > 0 && (_tank.getFluid() == null || _tank.getFluidAmount() < _fortune)) {
             return false;
         }
-        if (_inventory[1] != null && !UtilInventory.stacksEqual(_lastOutput, _inventory[1])) {
+        if (_inventory[1] != null && !InventoryUtil.stacksEqual(_lastOutput, _inventory[1])) {
             setWorkDone(0);
             return false;
         }

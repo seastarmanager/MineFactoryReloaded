@@ -41,10 +41,6 @@ import powercrystals.minefactoryreloaded.farmables.grindables.GrindableSlime;
 import powercrystals.minefactoryreloaded.farmables.grindables.GrindableStandard;
 import powercrystals.minefactoryreloaded.farmables.grindables.GrindableZombiePigman;
 import powercrystals.minefactoryreloaded.farmables.harvestables.*;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableCocoa;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableCropPlant;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableNetherWart;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 import powercrystals.minefactoryreloaded.farmables.ranchables.*;
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.EntityAgeableHandler;
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.EntityLivingHandler;
@@ -57,18 +53,6 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 public class Vanilla {
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        MFRRegistry.registerPlantable(new PlantableStandard(Block.sapling.blockID, Block.sapling.blockID));
-        MFRRegistry.registerPlantable(new PlantableStandard(Item.pumpkinSeeds.itemID, Block.pumpkinStem.blockID));
-        MFRRegistry.registerPlantable(new PlantableStandard(Item.melonSeeds.itemID, Block.melonStem.blockID));
-        MFRRegistry.registerPlantable(new PlantableStandard(Block.mushroomBrown.blockID, Block.mushroomBrown.blockID));
-        MFRRegistry.registerPlantable(new PlantableStandard(Block.mushroomRed.blockID, Block.mushroomRed.blockID));
-        MFRRegistry.registerPlantable(new PlantableCropPlant(Item.seeds.itemID, Block.crops.blockID));
-        MFRRegistry.registerPlantable(new PlantableCropPlant(Item.carrot.itemID, Block.carrot.blockID));
-        MFRRegistry.registerPlantable(new PlantableCropPlant(Item.potato.itemID, Block.potato.blockID));
-        MFRRegistry.registerPlantable(new PlantableNetherWart());
-        MFRRegistry.registerPlantable(new PlantableCocoa());
-        MFRRegistry.registerPlantable(new PlantableStandard(MineFactoryReloadedCore.rubberSaplingBlock.blockID, MineFactoryReloadedCore.rubberSaplingBlock.blockID));
-
         MFRRegistry.registerHarvestable(new HarvestableWood());
         MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(Block.leaves.blockID));
         MFRRegistry.registerHarvestable(new HarvestableStandard(Block.reed.blockID, HarvestType.LeaveBottom));

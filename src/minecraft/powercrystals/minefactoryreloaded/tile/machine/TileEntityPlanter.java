@@ -2,13 +2,15 @@ package powercrystals.minefactoryreloaded.tile.machine;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.IPlantable;
 import powercrystals.core.position.BlockPosition;
-import powercrystals.minefactoryreloaded.MFRRegistry;
-import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
+import powercrystals.core.util.ItemStackUtil;
 import powercrystals.minefactoryreloaded.core.HarvestAreaManager;
 import powercrystals.minefactoryreloaded.core.IHarvestAreaContainer;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
@@ -62,28 +64,35 @@ public class TileEntityPlanter extends TileEntityFactoryPowered implements IHarv
         ItemStack match = _inventory[getPlanterSlotIdFromBp(bp)];
 
         for (int stackIndex = 10; stackIndex <= 25; stackIndex++) {
+            if (worldObj.isAirBlock(bp.x, bp.y - 1, bp.z))
+                continue;
             ItemStack availableStack = getStackInSlot(stackIndex);
 
             //skip planting attempt if there's no stack in that slot, or if there's a template item that's not matched
-            if (availableStack == null ||
-                    (match != null &&
-                            !stacksEqual(match, availableStack))) {
+            if (availableStack == null || (match != null && !stacksEqual(match, availableStack)))
                 continue;
+
+            IPlantable plantable = ItemStackUtil.getPlantable(availableStack);
+            if (plantable == null)
+                continue;
+
+            if (plantable.getPlantType(worldObj, bp.x, bp.y, bp.z) == EnumPlantType.Crop) {
+                int blockID = worldObj.getBlockId(bp.x, bp.y - 1, bp.z);
+                if (blockID == Block.grass.blockID || blockID == Block.dirt.blockID)
+                    worldObj.setBlock(bp.x, bp.y - 1, bp.z, Block.tilledField.blockID);
+                else if (blockID != Block.tilledField.blockID)
+                    continue;
             }
 
-            if (!MFRRegistry.getPlantables().containsKey(new Integer(availableStack.itemID))) {
-                continue;
+            {
+                Block block = Block.blocksList[worldObj.getBlockId(bp.x, bp.y - 1, bp.z)];
+                if (!block.canSustainPlant(worldObj, bp.x, bp.y, bp.z, ForgeDirection.UP, plantable))
+                    continue;
             }
-            IFactoryPlantable plantable = MFRRegistry.getPlantables().get(new Integer(availableStack.itemID));
-
-            if (!plantable.canBePlantedHere(worldObj, bp.x, bp.y, bp.z, availableStack)) {
-                continue;
-            }
-            plantable.prePlant(worldObj, bp.x, bp.y, bp.z, availableStack);
-            worldObj.setBlock(bp.x, bp.y, bp.z,
-                    plantable.getPlantedBlockId(worldObj, bp.x, bp.y, bp.z, availableStack),
-                    plantable.getPlantedBlockMetadata(worldObj, bp.x, bp.y, bp.z, availableStack), 3);
-            plantable.postPlant(worldObj, bp.x, bp.y, bp.z, availableStack);
+            worldObj.setBlock(bp.x, bp.y, bp.z, plantable.getPlantID(worldObj, bp.x, bp.y, bp.z),
+                    plantable.getPlantMetadata(worldObj, bp.x, bp.y, bp.z), 3);
+            Block.blocksList[worldObj.getBlockId(bp.x, bp.y, bp.z)]
+                    .onBlockPlaced(worldObj, bp.x, bp.y, bp.z, ForgeDirection.UP.ordinal(), 0, 0, 0, worldObj.getBlockMetadata(bp.x, bp.y, bp.z));
             decrStackSize(stackIndex, 1);
             return true;
         }
@@ -169,7 +178,6 @@ public class TileEntityPlanter extends TileEntityFactoryPowered implements IHarv
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemstack, int sideordinal) {
-        if (slot >= 10) return true;
-        return false;
+        return slot >= 10;
     }
 }

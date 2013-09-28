@@ -32,8 +32,6 @@ public class Thaumcraft {
             MFRRegistry.registerHarvestable(new HarvestableThaumcraftLeaves(tcLeaves.blockID, tcSapling.blockID));
             MFRRegistry.registerHarvestable(new HarvestableThaumcraftPlant(tcSapling.blockID));
 
-            MFRRegistry.registerPlantable(new PlantableThaumcraftTree(tcSapling.blockID, tcSapling.blockID));
-
             MFRRegistry.registerAutoSpawnerBlacklistClass(golem);
 
             MFRRegistry.registerGrinderBlacklist(golem);

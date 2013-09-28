@@ -14,7 +14,6 @@ import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableStandard;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableCropPlant;
 import powercrystals.minefactoryreloaded.modhelpers.FertilizableCropReflection;
 
 import java.lang.reflect.Method;
@@ -95,15 +94,15 @@ public class Pam {
             registerCrop("Zucchini", true, false);
 
             // misc types
-            registerPamMod("Candle", "Candleberry", Category.MISC, true, true, Block.tilledField.blockID);
+            registerPamMod("Candle", "Candleberry", Category.MISC, true, true);
             registerMisc("Cotton", true, true);
 
             // plants that require different base soils
-            registerPamMod("Rice", "Rice", Category.CROP, false, false, Block.waterStill.blockID);
-            registerPamMod("Cranberry", "Cranberry", Category.BUSH, false, true, Block.waterStill.blockID);
-            registerPamMod("Whitemushroom", "Whitemushroom", Category.BUSH, false, true, Block.wood.blockID);
-            registerPamMod("Rotten", "Rotten", Category.CROP, false, false, Block.slowSand.blockID);
-            registerPamMod("Cactusfruit", "Cactusfruit", Category.BUSH, true, true, Block.sand.blockID);
+            registerPamMod("Rice", "Rice", Category.CROP, false, false);
+            registerPamMod("Cranberry", "Cranberry", Category.BUSH, false, true);
+            registerPamMod("Whitemushroom", "Whitemushroom", Category.BUSH, false, true);
+            registerPamMod("Rotten", "Rotten", Category.CROP, false, false);
+            registerPamMod("Cactusfruit", "Cactusfruit", Category.BUSH, true, true);
 
             // fruits
             registerFruit("Apple");
@@ -151,11 +150,9 @@ public class Pam {
                 MFRRegistry.registerHarvestable(new HarvestableStandard(((Block) mod.getField("pamFlower").get(null)).blockID, HarvestType.Normal));
 
                 for (String flower : flowers) {
-                    int seedId = ((Item) mod.getField(flower.toLowerCase() + "flowerseedItem").get(null)).itemID;
                     int blockId = ((Block) mod.getField("pam" + flower.toLowerCase() + "flowerCrop").get(null)).blockID;
                     Method fertilize = Class.forName("mods.PamWeeeFlowers.BlockPamFlowerCrop").getMethod("fertilize", World.class, int.class, int.class, int.class);
 
-                    MFRRegistry.registerPlantable(new PlantableCropPlant(seedId, blockId));
                     MFRRegistry.registerHarvestable(new HarvestablePams(blockId));
                     MFRRegistry.registerFertilizable(new FertilizableCropReflection(blockId, fertilize, 7));
                 }
@@ -180,15 +177,14 @@ public class Pam {
     }
 
     private static void registerPamModBasic(String modName, Category category, boolean isPerennial, boolean hasWild) {
-        registerPamMod(modName, modName, category, isPerennial, hasWild, Block.tilledField.blockID);
+        registerPamMod(modName, modName, category, isPerennial, hasWild);
     }
 
-    private static void registerPamMod(String modName, String cropName, Category category, boolean isPerennial, boolean hasWild, int plantableBlockId) {
+    private static void registerPamMod(String modName, String cropName, Category category, boolean isPerennial, boolean hasWild) {
         try {
             Class<?> mod;
             int blockIdCrop;
             int blockIdWild;
-            int seedId;
             final String cropNameLC;
             cropNameLC = cropName.toLowerCase();
             final String baseClassPath;
@@ -196,13 +192,6 @@ public class Pam {
 
             mod = Class.forName(String.format("%s.PamHC%s", baseClassPath, modName));
             blockIdCrop = ((Block) mod.getField(String.format("pam%sCrop", cropNameLC)).get(null)).blockID;
-            seedId = ((Item) mod.getField(String.format("%sseedItem", cropNameLC)).get(null)).itemID;
-
-            if (plantableBlockId == Block.tilledField.blockID) {
-                MFRRegistry.registerPlantable(new PlantableCropPlant(seedId, blockIdCrop));
-            } else {
-                MFRRegistry.registerPlantable(new PlantablePamSpecial(blockIdCrop, seedId, plantableBlockId));
-            }
 
             if (hasWild) {
                 blockIdWild = ((Block) mod.getField(String.format("pam%sWild", cropNameLC)).get(null)).blockID;

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.inventory.IInventoryManager;
 import powercrystals.core.inventory.InventoryManager;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.MFRCreativeTab;
 
@@ -36,7 +36,7 @@ public class BlockRailCargoPickup extends BlockRailBase {
 
         IInventoryManager minecart = InventoryManager.create((EntityMinecartContainer) entity, ForgeDirection.UNKNOWN);
 
-        for (Entry<ForgeDirection, IInventory> inventory : UtilInventory.findChests(world, x, y, z).entrySet()) {
+        for (Entry<ForgeDirection, IInventory> inventory : InventoryUtil.findChests(world, x, y, z).entrySet()) {
             IInventoryManager chest = InventoryManager.create(inventory.getValue(), inventory.getKey().getOpposite());
             for (Entry<Integer, ItemStack> contents : chest.getContents().entrySet()) {
                 if (contents.getValue() == null) {

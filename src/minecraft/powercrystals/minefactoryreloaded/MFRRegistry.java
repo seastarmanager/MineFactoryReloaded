@@ -3,7 +3,7 @@ package powercrystals.minefactoryreloaded;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomItem;
 import powercrystals.core.random.WeightedRandomItemStack;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.api.*;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetLogicCircuit;
 
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class MFRRegistry {
-    private static Map<Integer, IFactoryPlantable> _plantables = new HashMap<Integer, IFactoryPlantable>();
     private static Map<Integer, IFactoryHarvestable> _harvestables = new HashMap<Integer, IFactoryHarvestable>();
     private static Map<Integer, IFactoryFertilizer> _fertilizers = new HashMap<Integer, IFactoryFertilizer>();
     private static Map<Integer, IFactoryFertilizable> _fertilizables = new HashMap<Integer, IFactoryFertilizable>();
@@ -39,14 +38,6 @@ public abstract class MFRRegistry {
     private static List<Class<?>> _slaughterhouseBlacklist = new ArrayList<Class<?>>();
 
     private static Map<Integer, List<ItemStack>> _laserPreferredOres = new HashMap<Integer, List<ItemStack>>(16);
-
-    public static void registerPlantable(IFactoryPlantable plantable) {
-        _plantables.put(plantable.getSeedId(), plantable);
-    }
-
-    public static Map<Integer, IFactoryPlantable> getPlantables() {
-        return _plantables;
-    }
 
     public static void registerHarvestable(IFactoryHarvestable harvestable) {
         _harvestables.put(harvestable.getPlantId(), harvestable);
@@ -224,7 +215,7 @@ public abstract class MFRRegistry {
             _laserPreferredOres.put(color, oresList);
         } else {
             for (ItemStack registeredOre : oresForColor) {
-                if (UtilInventory.stacksEqual(registeredOre, ore)) {
+                if (InventoryUtil.stacksEqual(registeredOre, ore)) {
                     return;
                 }
             }

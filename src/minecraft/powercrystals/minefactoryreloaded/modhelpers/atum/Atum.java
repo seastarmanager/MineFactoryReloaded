@@ -14,7 +14,6 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 import powercrystals.minefactoryreloaded.modhelpers.FertilizableCropReflection;
 import powercrystals.minefactoryreloaded.modhelpers.FertilizableSaplingReflection;
 
@@ -61,9 +60,6 @@ public class Atum {
 
             MFRRegistry.registerGrinderBlacklist(banditWarlord);
             MFRRegistry.registerGrinderBlacklist(pharaoh);
-
-            MFRRegistry.registerPlantable(new PlantableStandard(atumSaplingId, atumSaplingId));
-            MFRRegistry.registerPlantable(new PlantableStandard(flaxSeedsId, flaxId));
 
             MFRRegistry.registerFertilizable(new FertilizableCropReflection(flaxId, atumFlaxFertilize, 5));
             MFRRegistry.registerFertilizable(new FertilizableSaplingReflection(atumSaplingId, atumSaplingGrowTree));

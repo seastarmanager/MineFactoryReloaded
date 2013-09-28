@@ -13,7 +13,6 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -62,7 +61,6 @@ public class ExtraBiomes {
             for (String s : new String[]{"SAPLING", "CATTAIL"}) {
                 Object o = xbbs.getField(s).get(null);
                 Integer blockID = (Integer) xbbs.getMethod("getID").invoke(o);
-                MFRRegistry.registerPlantable(new PlantableStandard(blockID, blockID));
             }
 
 

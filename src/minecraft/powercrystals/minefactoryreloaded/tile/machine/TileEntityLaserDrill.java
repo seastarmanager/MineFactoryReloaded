@@ -11,7 +11,7 @@ import net.minecraft.util.WeightedRandom;
 import net.minecraft.util.WeightedRandomItem;
 import net.minecraftforge.common.ForgeDirection;
 import powercrystals.core.random.WeightedRandomItemStack;
-import powercrystals.core.util.UtilInventory;
+import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
@@ -100,7 +100,7 @@ public class TileEntityLaserDrill extends TileEntityFactoryInventory {
 
         while (_workStored >= _workStoredMax) {
             _workStored -= _workStoredMax;
-            UtilInventory.dropStack(this, getRandomDrop(), ForgeDirection.UP);
+            InventoryUtil.dropStack(this, getRandomDrop(), ForgeDirection.UP);
         }
     }
 
@@ -164,7 +164,7 @@ public class TileEntityLaserDrill extends TileEntityFactoryInventory {
                 List<ItemStack> preferredOres = MFRRegistry.getLaserPreferredOres(s.getItemDamage());
 
                 for (ItemStack preferredOre : preferredOres) {
-                    if (UtilInventory.stacksEqual(newStack.getStack(), preferredOre)) {
+                    if (InventoryUtil.stacksEqual(newStack.getStack(), preferredOre)) {
                         newStack.itemWeight += boost;
                     }
                 }

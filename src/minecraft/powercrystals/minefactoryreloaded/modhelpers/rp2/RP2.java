@@ -7,15 +7,12 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableCropPlant;
-import powercrystals.minefactoryreloaded.farmables.plantables.PlantableStandard;
 
 import java.lang.reflect.Method;
 
@@ -36,17 +33,12 @@ public class RP2 {
             int blockIdPlants = ((Block) modClass.getField("blockPlants").get(null)).blockID;
             int blockIdCrops = ((Block) modClass.getField("blockCrops").get(null)).blockID;
 
-            int itemCropSeedId = ((Item) modClass.getField("itemSeeds").get(null)).itemID;
-
             Method fertilizeMethod = Class.forName("com.eloraam.redpower.world.BlockCustomFlower").getMethod("growTree", World.class, int.class, int.class, int.class);
 
             MFRRegistry.registerHarvestable(new HarvestableTreeLeaves(blockIdLeaves));
             MFRRegistry.registerHarvestable(new HarvestableStandard(blockIdLogs, HarvestType.Tree));
             MFRRegistry.registerHarvestable(new HarvestableRedPowerPlant(blockIdPlants));
             MFRRegistry.registerHarvestable(new HarvestableRedPowerFlax(blockIdCrops));
-
-            MFRRegistry.registerPlantable(new PlantableStandard(blockIdPlants, blockIdPlants));
-            MFRRegistry.registerPlantable(new PlantableCropPlant(itemCropSeedId, blockIdCrops));
 
             MFRRegistry.registerFertilizable(new FertilizableRedPowerFlax(blockIdCrops));
             MFRRegistry.registerFertilizable(new FertilizableRedPowerRubberTree(blockIdPlants, fertilizeMethod));
