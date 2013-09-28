@@ -87,24 +87,6 @@ public class FarmingRegistry {
     }
 
     /**
-     * Registers a grindable entity with the Grinder.
-     *
-     * @param grindable The entity to grind.
-     */
-    @SuppressWarnings("deprecation")
-    public static void registerGrindable(IFactoryGrindable grindable) {
-        try {
-            Class<?> registry = Class.forName("powercrystals.minefactoryreloaded.MFRRegistry");
-            if (registry != null) {
-                Method reg = registry.getMethod("registerGrindable", IFactoryGrindable.class);
-                reg.invoke(registry, grindable);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Registers a possible output with the sludge boiler.
      *
      * @param weight Likelihood that this item will be produced. Lower means rarer.

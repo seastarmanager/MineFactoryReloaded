@@ -1,6 +1,5 @@
 package powercrystals.minefactoryreloaded;
 
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
@@ -13,20 +12,12 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import powercrystals.minefactoryreloaded.block.BlockRubberSapling;
 import powercrystals.minefactoryreloaded.core.GrindingDamage;
 
-import java.util.List;
-
 public class EventHandler {
 
     @ForgeSubscribe
     public void handleDrops(LivingDropsEvent e) {
-        if (e.source instanceof GrindingDamage) {
-            GrindingDamage damage = (GrindingDamage) e.source;
-            List<EntityItem> drops = e.drops;
-
-            for (EntityItem item : drops)
-                damage.grinder.doDrop(item.getEntityItem());
+        if (e.source instanceof GrindingDamage)
             e.setCanceled(true);
-        }
     }
 
     @ForgeSubscribe

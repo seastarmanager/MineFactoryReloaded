@@ -2,7 +2,6 @@ package powercrystals.minefactoryreloaded.tile.machine;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.core.GrindingDamage;
@@ -17,19 +16,12 @@ public class TileEntitySlaughterhouse extends TileEntityGrinder {
     }
 
     @Override
-    public void setWorldObj(World world) {
-        super.setWorldObj(world);
-        this._grindingWorld.setAllowSpawns(true);
-    }
-
-    @Override
     public String getGuiBackground() {
         return "slaughterhouse.png";
     }
 
     @Override
     public boolean activateMachine() {
-        _grindingWorld.cleanReferences();
         List<?> entities = worldObj.getEntitiesWithinAABB(EntityLiving.class, _areaManager.getHarvestArea().toAxisAlignedBB());
 
         entityList:
@@ -40,8 +32,7 @@ public class TileEntitySlaughterhouse extends TileEntityGrinder {
                     continue entityList;
                 }
             }
-            if ((e instanceof EntityAgeable && ((EntityAgeable) e).getGrowingAge() < 0) || e.isEntityInvulnerable() || e.getHealth() <= 0
-                    || !_grindingWorld.addEntityForGrinding(e)) {
+            if ((e instanceof EntityAgeable && ((EntityAgeable) e).getGrowingAge() < 0) || e.isEntityInvulnerable() || e.getHealth() <= 0) {
                 continue;
             }
             double massFound = Math.pow(e.boundingBox.getAverageEdgeLength(), 2);
@@ -61,7 +52,7 @@ public class TileEntitySlaughterhouse extends TileEntityGrinder {
     @Override
     protected void damageEntity(EntityLiving entity) {
         setRecentlyHit(entity, 0);
-        entity.attackEntityFrom(_damageSource, DAMAGE);
+        entity.attackEntityFrom(_damageSource, entity.getMaxHealth());
     }
 
     @Override

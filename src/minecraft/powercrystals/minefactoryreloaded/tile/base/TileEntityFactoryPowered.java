@@ -153,15 +153,9 @@ public abstract class TileEntityFactoryPowered extends TileEntityFactoryInventor
     }
 
     public boolean doDrop(ItemStack drop) {
-        drop = InventoryUtil.dropStack(this, drop, this.getDropDirection());
-        if (drop != null && drop.stackSize > 0) {
-            if (failedDrops == null) {
-                failedDrops = new ArrayList<ItemStack>();
-            }
-            failedDrops.add(drop);
-            return false;
-        }
-        return true;
+        List<ItemStack> drops = new ArrayList<ItemStack>(1);
+        drops.add(drop);
+        return doDrop(drops);
     }
 
     public boolean doDrop(List<ItemStack> drops) {

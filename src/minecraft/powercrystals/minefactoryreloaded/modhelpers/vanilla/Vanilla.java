@@ -7,11 +7,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import net.minecraft.block.Block;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +16,6 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.FertilizerType;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.api.INeedleAmmo;
-import powercrystals.minefactoryreloaded.api.MobDrop;
 import powercrystals.minefactoryreloaded.circuits.*;
 import powercrystals.minefactoryreloaded.circuits.analog.*;
 import powercrystals.minefactoryreloaded.circuits.digital.*;
@@ -32,14 +27,10 @@ import powercrystals.minefactoryreloaded.circuits.timing.Multipulse;
 import powercrystals.minefactoryreloaded.circuits.timing.OneShot;
 import powercrystals.minefactoryreloaded.circuits.timing.PulseLengthener;
 import powercrystals.minefactoryreloaded.circuits.wave.*;
-import powercrystals.minefactoryreloaded.entity.EntityPinkSlime;
 import powercrystals.minefactoryreloaded.farmables.drinkhandlers.*;
 import powercrystals.minefactoryreloaded.farmables.egghandlers.VanillaEggHandler;
 import powercrystals.minefactoryreloaded.farmables.fertilizables.*;
 import powercrystals.minefactoryreloaded.farmables.fruits.FruitCocoa;
-import powercrystals.minefactoryreloaded.farmables.grindables.GrindableSlime;
-import powercrystals.minefactoryreloaded.farmables.grindables.GrindableStandard;
-import powercrystals.minefactoryreloaded.farmables.grindables.GrindableZombiePigman;
 import powercrystals.minefactoryreloaded.farmables.harvestables.*;
 import powercrystals.minefactoryreloaded.farmables.ranchables.*;
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.EntityAgeableHandler;
@@ -106,21 +97,6 @@ public class Vanilla {
         MFRRegistry.registerGrinderBlacklist(EntityDragon.class);
         MFRRegistry.registerGrinderBlacklist(EntityWither.class);
         MFRRegistry.registerGrinderBlacklist(EntityVillager.class);
-
-        MFRRegistry.registerGrindable(new GrindableStandard(EntityChicken.class, new MobDrop[]
-                {
-                        new MobDrop(30, null),
-                        new MobDrop(10, new ItemStack(Item.egg))
-                }, false));
-        MFRRegistry.registerGrindable(new GrindableStandard(EntityOcelot.class, new MobDrop[]
-                {
-                        new MobDrop(10, new ItemStack(Item.fishRaw)),
-                        new MobDrop(10, new ItemStack(Item.silk))
-                }));
-        MFRRegistry.registerGrindable(new GrindableStandard(EntityWolf.class, new ItemStack(Item.bone)));
-        MFRRegistry.registerGrindable(new GrindableZombiePigman());
-        MFRRegistry.registerGrindable(new GrindableSlime(EntitySlime.class, new ItemStack(Item.slimeBall), 1));
-        MFRRegistry.registerGrindable(new GrindableSlime(EntityPinkSlime.class, new ItemStack(MineFactoryReloadedCore.pinkSlimeballItem), 1));
 
         MFRRegistry.registerSludgeDrop(50, new ItemStack(Block.sand));
         MFRRegistry.registerSludgeDrop(40, new ItemStack(Block.dirt));

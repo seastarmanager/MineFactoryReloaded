@@ -38,7 +38,6 @@ public class Thaumcraft {
 
             // TODO: redo/remove wisp?
 
-            MFRRegistry.registerGrindable(new GrindableWisp());
         } catch (Exception x) {
             x.printStackTrace();
         }

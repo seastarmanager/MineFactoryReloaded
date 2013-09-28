@@ -17,7 +17,6 @@ public abstract class MFRRegistry {
     private static Map<Integer, IFactoryFertilizer> _fertilizers = new HashMap<Integer, IFactoryFertilizer>();
     private static Map<Integer, IFactoryFertilizable> _fertilizables = new HashMap<Integer, IFactoryFertilizable>();
     private static Map<Class<?>, IFactoryRanchable> _ranchables = new HashMap<Class<?>, IFactoryRanchable>();
-    private static Map<Class<?>, IFactoryGrindable2> _grindables27 = new HashMap<Class<?>, IFactoryGrindable2>();
     private static Map<Integer, IFluidDrinkHandler> _fluidDrinkHandlers = new HashMap<Integer, IFluidDrinkHandler>();
     private static Map<Integer, INeedleAmmo> _needleAmmoTypes = new HashMap<Integer, INeedleAmmo>();
 
@@ -72,14 +71,6 @@ public abstract class MFRRegistry {
 
     public static Map<Class<?>, IFactoryRanchable> getRanchables() {
         return _ranchables;
-    }
-
-    public static void registerGrindable(IFactoryGrindable2 grindable) {
-        _grindables27.put(grindable.getGrindableEntity(), grindable);
-    }
-
-    public static Map<Class<?>, IFactoryGrindable2> getGrindables27() {
-        return _grindables27;
     }
 
     public static void registerGrinderBlacklist(Class<?>... ungrindables) {

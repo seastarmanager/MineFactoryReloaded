@@ -14,29 +14,9 @@ import java.lang.reflect.Method;
  *         these will be rolled back into this class.
  */
 public class FactoryRegistry27 {
-    /**
-     * Registers a grindable entity with the Grinder using the new grinder interface. This method will be renamed to the standard "registerGrindable"
-     * on MC 1.6.
-     *
-     * @param grindable The entity to grind.
-     */
-    public static void registerGrindable(IFactoryGrindable2 grindable) {
-        try {
-            Class<?> registry = Class.forName("powercrystals.minefactoryreloaded.MFRRegistry");
-            if (registry != null) {
-                Method reg = registry.getMethod("registerGrindable", IFactoryGrindable2.class);
-                reg.invoke(registry, grindable);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
-     * Registers a grindable entity with the Grinder using the new grinder interface. This method will be renamed to the standard "registerGrindable"
-     * on MC 1.6.
-     *
-     * @param grindable The entity to grind.
+     * @param ungrindables The entity to prevent from being grinded
      */
     public static void registerGrinderBlacklist(Class<?>... ungrindables) {
         try {
