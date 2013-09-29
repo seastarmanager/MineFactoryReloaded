@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,6 +51,7 @@ import powercrystals.minefactoryreloaded.setup.MineFactoryReloadedWorldGen;
 import powercrystals.minefactoryreloaded.setup.recipe.GregTech;
 import powercrystals.minefactoryreloaded.setup.recipe.ThermalExpansion;
 import powercrystals.minefactoryreloaded.setup.recipe.Vanilla;
+import powercrystals.minefactoryreloaded.setup.village.ComponentZoologistHouse;
 import powercrystals.minefactoryreloaded.setup.village.VillageCreationHandler;
 import powercrystals.minefactoryreloaded.setup.village.VillageTradeHandler;
 import powercrystals.minefactoryreloaded.tile.conveyor.TileEntityConveyor;
@@ -409,8 +411,8 @@ public class MineFactoryReloadedCore extends BaseMod {
         ChestGenHooks.getInfo(ChestGenHooks.MINESHAFT_CORRIDOR).addItem(new WeightedRandomChestContent(new ItemStack(safariNetSingleItem), 1, 1, 25));
         ChestGenHooks.getInfo(ChestGenHooks.PYRAMID_DESERT_CHEST).addItem(new WeightedRandomChestContent(new ItemStack(safariNetSingleItem), 1, 1, 25));
 
+        MapGenStructureIO.func_143031_a(ComponentZoologistHouse.class, "Zoologist");
         VillagerRegistry.instance().registerVillageCreationHandler(new VillageCreationHandler());
-
         VillagerRegistry.instance().registerVillageTradeHandler(MFRConfig.getInstance().zoolologistEntityId, new VillageTradeHandler());
 
         MinecraftForge.EVENT_BUS.register(new powercrystals.minefactoryreloaded.EventHandler());
