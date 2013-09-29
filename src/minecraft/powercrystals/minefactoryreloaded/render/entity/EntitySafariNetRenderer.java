@@ -2,6 +2,7 @@ package powercrystals.minefactoryreloaded.render.entity;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
@@ -10,7 +11,6 @@ import org.lwjgl.opengl.GL12;
 import powercrystals.minefactoryreloaded.entity.EntitySafariNet;
 
 public class EntitySafariNetRenderer extends Render {
-    private static ResourceLocation loc = new ResourceLocation("/gui/items.png");
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float par8, float par9) {
@@ -18,7 +18,7 @@ public class EntitySafariNetRenderer extends Render {
         GL11.glTranslatef((float) x, (float) y, (float) z);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glScalef(0.5F, 0.5F, 0.5F);
-        this.bindTexture(loc);
+        this.bindTexture(getEntityTexture(entity));
         Tessellator var10 = Tessellator.instance;
 
         this.renderItemInFlight(var10, ((EntitySafariNet) entity).getIcon());
@@ -28,7 +28,7 @@ public class EntitySafariNetRenderer extends Render {
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return loc;
+        return TextureMap.locationItemsTexture;
     }
 
     private void renderItemInFlight(Tessellator par1Tessellator, Icon par2Icon) {
