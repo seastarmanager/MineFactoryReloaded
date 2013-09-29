@@ -49,7 +49,7 @@ public class ItemSpyglass extends ItemFactory {
             return null;
         }
 
-        double range = MFRConfig.spyglassRange.getInt();
+        double range = MFRConfig.getInstance().spyglassRange;
         MovingObjectPosition objHit = Minecraft.getMinecraft().renderViewEntity.rayTrace(range, 1.0F);
         double blockDist = range;
         Vec3 playerPos = Minecraft.getMinecraft().renderViewEntity.getPosition(1.0F);

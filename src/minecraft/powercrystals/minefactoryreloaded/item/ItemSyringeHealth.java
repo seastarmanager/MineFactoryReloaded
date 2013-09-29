@@ -7,7 +7,7 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
 public class ItemSyringeHealth extends ItemSyringe {
     public ItemSyringeHealth() {
-        super(MFRConfig.syringeHealthItemId.getInt());
+        super(MFRConfig.getInstance().syringeHealthItemId);
     }
 
     @Override

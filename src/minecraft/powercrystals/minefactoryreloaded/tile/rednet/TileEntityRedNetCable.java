@@ -41,7 +41,7 @@ public class TileEntityRedNetCable extends TileEntity implements INeighboorUpdat
     public TileEntityRedNetCable() {
         if (_connectionBlackList == null) {
             _connectionBlackList = new LinkedList<Integer>();
-            for (String s : MFRConfig.redNetConnectionBlacklist.getString().replace("\"", "").split(",")) {
+            for (String s : MFRConfig.getInstance().redNetConnectionBlacklist.replace("\"", "").split(",")) {
                 try {
                     int i = Integer.parseInt(s.trim());
                     _connectionBlackList.add(i);

@@ -81,7 +81,7 @@ public class Vanilla {
         MFRRegistry.registerFertilizable(new FertilizableRubberSapling());
 
         MFRRegistry.registerFertilizer(new FertilizerStandard(MineFactoryReloadedCore.fertilizerItem.itemID, 0));
-        if (MFRConfig.enableBonemealFertilizing.getBoolean(false)) {
+        if (MFRConfig.getInstance().enableBonemealFertilizing) {
             MFRRegistry.registerFertilizer(new FertilizerStandard(Item.dyePowder.itemID, 15));
         } else {
             MFRRegistry.registerFertilizer(new FertilizerStandard(Item.dyePowder.itemID, 15, FertilizerType.Grass));

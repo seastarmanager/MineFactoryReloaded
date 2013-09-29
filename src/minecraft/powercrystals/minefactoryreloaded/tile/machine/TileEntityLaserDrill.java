@@ -34,7 +34,7 @@ public class TileEntityLaserDrill extends TileEntityFactoryInventory {
     private static final int _energyStoredMax = 1000000;
     private int _energyStored;
 
-    private int _workStoredMax = MFRConfig.laserdrillCost.getInt();
+    private int _workStoredMax = MFRConfig.getInstance().laserdrillCost;
     private int _workStored;
 
     private int _bedrockLevel;
@@ -133,7 +133,7 @@ public class TileEntityLaserDrill extends TileEntityFactoryInventory {
     }
 
     private void updateDrill() {
-        int y = Integer.MAX_VALUE;
+        int y;
         for (y = yCoord - 1; y >= 0; y--) {
             int id = worldObj.getBlockId(xCoord, y, zCoord);
             if (id != MineFactoryReloadedCore.fakeLaserBlock.blockID && id != Block.bedrock.blockID && id != 0) {

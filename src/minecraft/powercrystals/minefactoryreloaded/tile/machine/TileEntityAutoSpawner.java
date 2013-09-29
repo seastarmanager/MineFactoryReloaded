@@ -150,7 +150,7 @@ public class TileEntityAutoSpawner extends TileEntityFactoryPowered implements I
 
     @Override
     public int getWorkMax() {
-        return _spawnExact ? MFRConfig.autospawnerCostExact.getInt() : MFRConfig.autospawnerCostStandard.getInt();
+        return _spawnExact ? MFRConfig.getInstance().autospawnerCostExact : MFRConfig.getInstance().autospawnerCostStandard;
     }
 
     @Override

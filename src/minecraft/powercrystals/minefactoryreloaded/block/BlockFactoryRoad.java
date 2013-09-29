@@ -23,7 +23,7 @@ public class BlockFactoryRoad extends Block {
 
     public BlockFactoryRoad(int id) {
         super(id, Material.rock);
-        if (MFRConfig.enableSlipperyRoads.getBoolean(true)) {
+        if (MFRConfig.getInstance().enableSlipperyRoads) {
             slipperiness = 0.98F;
         }
         setHardness(2.0F);

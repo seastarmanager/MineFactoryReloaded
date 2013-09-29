@@ -12,7 +12,7 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
 public class ItemSyringeZombie extends ItemSyringe {
     public ItemSyringeZombie() {
-        super(MFRConfig.syringeZombieId.getInt());
+        super(MFRConfig.getInstance().syringeZombieId);
     }
 
     @Override

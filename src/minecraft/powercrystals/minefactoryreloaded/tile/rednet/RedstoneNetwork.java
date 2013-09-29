@@ -38,7 +38,7 @@ public class RedstoneNetwork {
     private World _world;
 
     public static void log(String format, Object... data) {
-        if (MFRConfig.redNetDebug.getBoolean(false) && format != null) {
+        if (MFRConfig.getInstance().redNetDebug && format != null) {
             FMLLog.info("RedNet Debug: " + format, data);
         }
     }

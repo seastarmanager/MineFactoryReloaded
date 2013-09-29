@@ -10,7 +10,7 @@ import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
 public class ItemSyringeGrowth extends ItemSyringe {
     public ItemSyringeGrowth() {
-        super(MFRConfig.syringeGrowthItemId.getInt());
+        super(MFRConfig.getInstance().syringeGrowthItemId);
     }
 
     @Override

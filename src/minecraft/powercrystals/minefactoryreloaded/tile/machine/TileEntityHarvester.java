@@ -135,7 +135,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
         doDrop(drops);
 
         if (harvestable.breakBlock()) {
-            if (MFRConfig.playSounds.getBoolean(true)) {
+            if (MFRConfig.getInstance().playSounds) {
                 worldObj.playAuxSFXAtEntity(null, 2001, targetCoords.x, targetCoords.y, targetCoords.z, harvestedBlockId + (harvestedBlockMetadata << 12));
             }
             worldObj.setBlockToAir(targetCoords.x, targetCoords.y, targetCoords.z);
@@ -188,7 +188,7 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
     private BlockPosition getNextVertical(int x, int y, int z, int startOffset) {
         int highestBlockOffset = -1;
 
-        for (int currentYoffset = startOffset; currentYoffset < MFRConfig.verticalHarvestSearchMaxVertical.getInt(); currentYoffset++) {
+        for (int currentYoffset = startOffset; currentYoffset < MFRConfig.getInstance().verticalHarvestSearchMaxVertical; currentYoffset++) {
             int blockId = worldObj.getBlockId(x, y + currentYoffset, z);
             if (MFRRegistry.getHarvestables().containsKey(blockId) && MFRRegistry.getHarvestables().get(blockId).canBeHarvested(worldObj, _settings, x, y + currentYoffset, z)) {
                 highestBlockOffset = currentYoffset;
@@ -208,11 +208,11 @@ public class TileEntityHarvester extends TileEntityFactoryPowered implements IFl
         int blockId;
 
         if (_lastTree == null || _lastTree.x != x || _lastTree.y != y || _lastTree.z != z) {
-            int yTreeAreaLowerBound = (treeFlipped ? y - MFRConfig.treeSearchMaxVertical.getInt() : y);
-            int yTreeAreaUpperBound = (treeFlipped ? y : y + MFRConfig.treeSearchMaxVertical.getInt());
-            Area a = new Area(x - MFRConfig.treeSearchMaxHorizontal.getInt(), x + MFRConfig.treeSearchMaxHorizontal.getInt(),
+            int yTreeAreaLowerBound = (treeFlipped ? y - MFRConfig.getInstance().treeSearchMaxVertical : y);
+            int yTreeAreaUpperBound = (treeFlipped ? y : y + MFRConfig.getInstance().treeSearchMaxVertical);
+            Area a = new Area(x - MFRConfig.getInstance().treeSearchMaxHorizontal, x + MFRConfig.getInstance().treeSearchMaxHorizontal,
                     yTreeAreaLowerBound, yTreeAreaUpperBound,
-                    z - MFRConfig.treeSearchMaxHorizontal.getInt(), z + MFRConfig.treeSearchMaxHorizontal.getInt());
+                    z - MFRConfig.getInstance().treeSearchMaxHorizontal, z + MFRConfig.getInstance().treeSearchMaxHorizontal);
 
             _treeManager = new TreeHarvestManager(a, treeFlipped ? TreeHarvestMode.HarvestInverted : TreeHarvestMode.Harvest);
             _lastTree = new BlockPosition(x, y, z);

@@ -122,6 +122,6 @@ public class ComponentZoologistHouse extends ComponentVillage {
 
     @Override
     protected int getVillagerType(int par1) {
-        return MFRConfig.zoolologistEntityId.getInt();
+        return MFRConfig.getInstance().zoolologistEntityId;
     }
 }

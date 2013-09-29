@@ -100,7 +100,7 @@ public class BlockFactoryGlassPane extends BlockPane implements IConnectableRedN
                 blockId == Block.glass.blockID ||
                 blockId == MineFactoryReloadedCore.factoryGlassPaneBlock.blockID ||
                 blockId == MineFactoryReloadedCore.factoryGlassBlock.blockID ||
-                (blockId == Block.thinGlass.blockID && MFRConfig.vanillaOverrideGlassPane.getBoolean(true));
+                (blockId == Block.thinGlass.blockID && MFRConfig.getInstance().vanillaOverrideGlassPane);
     }
 
     @Override
@@ -109,8 +109,7 @@ public class BlockFactoryGlassPane extends BlockPane implements IConnectableRedN
         return !((blockId == Block.glass.blockID ||
                 blockId == MineFactoryReloadedCore.factoryGlassPaneBlock.blockID ||
                 blockId == MineFactoryReloadedCore.factoryGlassBlock.blockID ||
-                (blockId == Block.thinGlass.blockID &&
-                        MFRConfig.vanillaOverrideGlassPane.getBoolean(true))) ||
+                (blockId == Block.thinGlass.blockID && MFRConfig.getInstance().vanillaOverrideGlassPane)) ||
                 !super.shouldSideBeRendered(world, x, y, z, side));
     }
 

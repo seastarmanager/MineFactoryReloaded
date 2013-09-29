@@ -139,10 +139,9 @@ public class ButtonLogicPinSelect extends Button {
     @Override
     public void drawForeground(int mouseX, int mouseY) {
         if (_buffer < 12) {
-            if (!MFRConfig.colorblindMode.getBoolean(false)) {
+            if (!MFRConfig.getInstance().colorblindMode) {
                 GuiRender.drawRect(x + 3, y + 3, x + width - 3, y + height - 3, _pinColors[_pin].getColor());
             } else {
-
                 GuiRender.drawCenteredString(containerScreen.fontRenderer, _pinColorNames[_pin], x + width / 2, y + height / 2 - 4, getTextColor(mouseX, mouseY));
             }
         } else if (_buffer < 14) {

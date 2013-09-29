@@ -29,7 +29,7 @@ public class MineFactoryReloadedWorldGen implements IWorldGenerator {
 
         BiomeGenBase b = world.getBiomeGenForCoords(x, z);
 
-        if (MFRConfig.rubberTreeWorldGen.getBoolean(true)) {
+        if (MFRConfig.getInstance().rubberTreeWorldGen) {
             if (MFRRegistry.getRubberTreeBiomes().contains(b.biomeName)) {
                 if (random.nextInt(100) < 40) {
                     new WorldGenRubberTree().generate(world, random, x, random.nextInt(3) + 4, z);
@@ -37,15 +37,15 @@ public class MineFactoryReloadedWorldGen implements IWorldGenerator {
             }
         }
 
-        if (MFRConfig.mfrLakeWorldGen.getBoolean(true) && world.provider.canRespawnHere()) {
-            if (random.nextInt(MFRConfig.mfrLakeSludgeRarity.getInt()) == 0) {
+        if (MFRConfig.getInstance().mfrLakeWorldGen && world.provider.canRespawnHere()) {
+            if (random.nextInt(MFRConfig.getInstance().mfrLakeSludgeRarity) == 0) {
                 int lakeX = x - 8 + random.nextInt(16);
                 int lakeY = random.nextInt(128);
                 int lakeZ = z - 8 + random.nextInt(16);
                 new WorldGenLakesMeta(MineFactoryReloadedCore.sludgeLiquid.blockID, 7).generate(world, random, lakeX, lakeY, lakeZ);
             }
 
-            if (random.nextInt(MFRConfig.mfrLakeSewageRarity.getInt()) == 0) {
+            if (random.nextInt(MFRConfig.getInstance().mfrLakeSewageRarity) == 0) {
                 int lakeX = x - 8 + random.nextInt(16);
                 int lakeY = random.nextInt(128);
                 int lakeZ = z - 8 + random.nextInt(16);
@@ -59,7 +59,7 @@ public class MineFactoryReloadedWorldGen implements IWorldGenerator {
     }
 
     private static List<Integer> buildBlacklistedDimensions() {
-        String blacklist = MFRConfig.worldGenDimensionBlacklist.getString();
+        String blacklist = MFRConfig.getInstance().worldGenDimensionBlacklist;
         List<Integer> dims = new ArrayList<Integer>();
 
         if (blacklist == null) {

@@ -54,9 +54,9 @@ public class BlockRailPassengerDropoff extends BlockRailBase {
         int targetY;
         int targetZ;
 
-        for (offsetX = -MFRConfig.passengerRailSearchMaxHorizontal.getInt(); offsetX < MFRConfig.passengerRailSearchMaxHorizontal.getInt(); offsetX++) {
-            for (offsetY = -MFRConfig.passengerRailSearchMaxVertical.getInt(); offsetY < MFRConfig.passengerRailSearchMaxVertical.getInt(); offsetY++) {
-                for (offsetZ = -MFRConfig.passengerRailSearchMaxHorizontal.getInt(); offsetZ < MFRConfig.passengerRailSearchMaxHorizontal.getInt(); offsetZ++) {
+        for (offsetX = -MFRConfig.getInstance().passengerRailSearchMaxHorizontal; offsetX < MFRConfig.getInstance().passengerRailSearchMaxHorizontal; offsetX++) {
+            for (offsetY = -MFRConfig.getInstance().passengerRailSearchMaxVertical; offsetY < MFRConfig.getInstance().passengerRailSearchMaxVertical; offsetY++) {
+                for (offsetZ = -MFRConfig.getInstance().passengerRailSearchMaxHorizontal; offsetZ < MFRConfig.getInstance().passengerRailSearchMaxHorizontal; offsetZ++) {
                     targetX = x + offsetX;
                     targetY = y + offsetY;
                     targetZ = z + offsetZ;

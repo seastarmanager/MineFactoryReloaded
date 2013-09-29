@@ -91,7 +91,7 @@ public class MineFactoryReloadedClient implements IScheduledTickHandler {
         RenderingRegistry.registerBlockHandler(MineFactoryReloadedCore.renderIdFactoryGlass, new FactoryGlassRenderer());
 
         MinecraftForgeClient.registerItemRenderer(MineFactoryReloadedCore.factoryGlassPaneBlock.blockID, new FactoryGlassPaneItemRenderer());
-        if (MFRConfig.vanillaOverrideGlassPane.getBoolean(true)) {
+        if (MFRConfig.getInstance().vanillaOverrideGlassPane) {
             MinecraftForgeClient.registerItemRenderer(Block.thinGlass.blockID, new FactoryGlassPaneItemRenderer());
         }
 
@@ -120,7 +120,7 @@ public class MineFactoryReloadedClient implements IScheduledTickHandler {
         RenderingRegistry.registerEntityRenderingHandler(EntityRocket.class, new EntityRocketRenderer());
         RenderingRegistry.registerEntityRenderingHandler(EntityPinkSlime.class, new EntityPinkSlimeRenderer());
 
-        VillagerRegistry.instance().registerVillagerSkin(MFRConfig.zoolologistEntityId.getInt(), new ResourceLocation(MineFactoryReloadedCore.villagerFolder + "zoologist.png"));
+        VillagerRegistry.instance().registerVillagerSkin(MFRConfig.getInstance().zoolologistEntityId, new ResourceLocation(MineFactoryReloadedCore.villagerFolder + "zoologist.png"));
 
         TickRegistry.registerScheduledTickHandler(instance, Side.CLIENT);
         TickRegistry.registerTickHandler(new RenderTickHandler(), Side.CLIENT);

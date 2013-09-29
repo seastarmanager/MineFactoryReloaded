@@ -105,14 +105,14 @@ public class BlockConveyor extends BlockContainer implements IConnectableRedNet 
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if (entity instanceof EntityPlayer && MFRConfig.conveyorNeverCapturesPlayers.getBoolean(false))
+        if (entity instanceof EntityPlayer && MFRConfig.getInstance().conveyorNeverCapturesPlayers)
             return;
 
         // TODO: add conveyer entity blacklist: these two cases will be covered conditionally elsewhere
-        if (entity.getClass().getName().contains("thaumcraft.common.entities.golems") && MFRConfig.conveyorNeverCapturesTCGolems.getBoolean(false))
+        if (entity.getClass().getName().contains("thaumcraft.common.entities.golems") && MFRConfig.getInstance().conveyorNeverCapturesTCGolems)
             return;
 
-        if (((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityLiving) && !(entity instanceof EntityPlayer)) && !MFRConfig.conveyorCaptureNonItems.getBoolean(true))
+        if (((entity instanceof EntityItem || entity instanceof EntityXPOrb || entity instanceof EntityLiving)) && !MFRConfig.getInstance().conveyorCaptureNonItems)
             return;
 
         TileEntity conveyor = world.getBlockTileEntity(x, y, z);

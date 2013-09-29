@@ -37,12 +37,12 @@ public class BlockRailPassengerPickup extends BlockRailBase {
         }
 
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-                x - MFRConfig.passengerRailSearchMaxHorizontal.getInt(),
-                y - MFRConfig.passengerRailSearchMaxVertical.getInt(),
-                z - MFRConfig.passengerRailSearchMaxHorizontal.getInt(),
-                x + MFRConfig.passengerRailSearchMaxHorizontal.getInt() + 1,
-                y + MFRConfig.passengerRailSearchMaxVertical.getInt() + 1,
-                z + MFRConfig.passengerRailSearchMaxHorizontal.getInt() + 1);
+                x - MFRConfig.getInstance().passengerRailSearchMaxHorizontal,
+                y - MFRConfig.getInstance().passengerRailSearchMaxVertical,
+                z - MFRConfig.getInstance().passengerRailSearchMaxHorizontal,
+                x + MFRConfig.getInstance().passengerRailSearchMaxHorizontal + 1,
+                y + MFRConfig.getInstance().passengerRailSearchMaxVertical + 1,
+                z + MFRConfig.getInstance().passengerRailSearchMaxHorizontal + 1);
 
         @SuppressWarnings("rawtypes")
         List entities = world.getEntitiesWithinAABB(EntityPlayer.class, bb);

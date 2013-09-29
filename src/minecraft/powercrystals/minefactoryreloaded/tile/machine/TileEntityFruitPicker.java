@@ -81,7 +81,7 @@ public class TileEntityFruitPicker extends TileEntityFactoryPowered {
         doDrop(drops);
 
         if (replacement == null) {
-            if (MFRConfig.playSounds.getBoolean(true)) {
+            if (MFRConfig.getInstance().playSounds) {
                 worldObj.playAuxSFXAtEntity(null, 2001, targetCoords.x, targetCoords.y, targetCoords.z, harvestedBlockId + (harvestedBlockMetadata << 12));
             }
             worldObj.setBlockToAir(targetCoords.x, targetCoords.y, targetCoords.z);
@@ -115,11 +115,11 @@ public class TileEntityFruitPicker extends TileEntityFactoryPowered {
         int blockId;
 
         if (_lastTree == null || _lastTree.x != x || _lastTree.y != y || _lastTree.z != z) {
-            int yTreeAreaLowerBound = (treeFlipped ? y - MFRConfig.fruitTreeSearchMaxVertical.getInt() : y);
-            int yTreeAreaUpperBound = (treeFlipped ? y : y + MFRConfig.fruitTreeSearchMaxVertical.getInt());
-            Area a = new Area(x - MFRConfig.fruitTreeSearchMaxHorizontal.getInt(), x + MFRConfig.fruitTreeSearchMaxHorizontal.getInt(),
+            int yTreeAreaLowerBound = (treeFlipped ? y - MFRConfig.getInstance().fruitTreeSearchMaxVertical : y);
+            int yTreeAreaUpperBound = (treeFlipped ? y : y + MFRConfig.getInstance().fruitTreeSearchMaxVertical);
+            Area a = new Area(x - MFRConfig.getInstance().fruitTreeSearchMaxHorizontal, x + MFRConfig.getInstance().fruitTreeSearchMaxHorizontal,
                     yTreeAreaLowerBound, yTreeAreaUpperBound,
-                    z - MFRConfig.fruitTreeSearchMaxHorizontal.getInt(), z + MFRConfig.fruitTreeSearchMaxHorizontal.getInt());
+                    z - MFRConfig.getInstance().fruitTreeSearchMaxHorizontal, z + MFRConfig.getInstance().fruitTreeSearchMaxHorizontal);
 
             _treeManager = new TreeHarvestManager(a, treeFlipped ? TreeHarvestMode.HarvestInverted : TreeHarvestMode.Harvest);
             _lastTree = new BlockPosition(x, y, z);
@@ -135,7 +135,7 @@ public class TileEntityFruitPicker extends TileEntityFactoryPowered {
             BlockPosition bp = _treeManager.getNextBlock();
             blockId = worldObj.getBlockId(bp.x, bp.y, bp.z);
 
-            if (MFRRegistry.getFruits().containsKey(new Integer(blockId)) && MFRRegistry.getFruits().get(new Integer(blockId)).canBePicked(worldObj, bp.x, bp.y, bp.z)) {
+            if (MFRRegistry.getFruits().containsKey(blockId) && MFRRegistry.getFruits().get(blockId).canBePicked(worldObj, bp.x, bp.y, bp.z)) {
                 return bp;
             }
             _treeManager.moveNext();

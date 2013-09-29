@@ -18,7 +18,7 @@ public class ItemRuler extends ItemFactory {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
         if (world.isRemote) {
-            MovingObjectPosition mop = player.rayTrace(MFRConfig.spyglassRange.getInt(), 1.0F);
+            MovingObjectPosition mop = player.rayTrace(MFRConfig.getInstance().spyglassRange, 1.0F);
             if (mop == null || (mop.typeOfHit == EnumMovingObjectType.ENTITY && mop.entityHit == null)) {
                 player.sendChatToPlayer(ChatMessageComponent.createFromText("Nothing in sight"));
             } else if (mop.typeOfHit == EnumMovingObjectType.ENTITY) {

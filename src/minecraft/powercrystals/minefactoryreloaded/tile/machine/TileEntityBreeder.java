@@ -70,7 +70,7 @@ public class TileEntityBreeder extends TileEntityFactoryPowered implements IHarv
 
         IInventoryManager manager = InventoryManager.create(this, ForgeDirection.UNKNOWN);
 
-        if (entities.size() > MFRConfig.breederShutdownThreshold.getInt()) {
+        if (entities.size() > MFRConfig.getInstance().breederShutdownThreshold) {
             setIdleTicks(getIdleTicksMax());
             return false;
         }
