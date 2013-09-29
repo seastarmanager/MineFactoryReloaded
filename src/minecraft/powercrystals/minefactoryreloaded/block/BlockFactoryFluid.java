@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.Icon;
@@ -34,8 +34,8 @@ public class BlockFactoryFluid extends BlockFluidClassic implements IConnectable
             return;
         }
 
-        if (entity instanceof EntityLiving && !((EntityLiving) entity).isEntityUndead()) {
-            EntityLiving ent = (EntityLiving) entity;
+        if (entity instanceof EntityLivingBase && !((EntityLivingBase) entity).isEntityUndead()) {
+            EntityLivingBase ent = (EntityLivingBase) entity;
             if (blockID == MineFactoryReloadedCore.sludgeLiquid.blockID) {
                 ent.addPotionEffect(new PotionEffect(Potion.poison.id, 12 * 20, 0));
                 ent.addPotionEffect(new PotionEffect(Potion.weakness.id, 12 * 20, 0));
