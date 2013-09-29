@@ -25,6 +25,8 @@ import powercrystals.minefactoryreloaded.net.NetworkHandler;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHandler {
 
@@ -204,37 +206,23 @@ public class TileEntityRedNetLogic extends TileEntity implements ITilePacketHand
     }
 
     public void sendCircuitDefinition(int circuit) {
-        //List<Object> data = new ArrayList<Object>();
+        List<Integer> data = new ArrayList<Integer>();
 
-        //data.add(xCoord);
-        //data.add(yCoord);
-        //data.add(zCoord);
-
-        //data.add(circuit);
-
-        //data.add(_circuits[circuit].getClass().getName());
-        //data.add(_circuits[circuit].getInputCount());
-        int[] inputMappings = new int[_pinMappingInputs[circuit].length * 2];
-        int seek = 0;
+        data.add(_circuits[circuit].getInputCount());
         for (int p = 0; p < _pinMappingInputs[circuit].length; p++) {
-            inputMappings[seek] = _pinMappingInputs[circuit][p].buffer;
-            inputMappings[++seek] = _pinMappingInputs[circuit][p].pin;
+            data.add(_pinMappingInputs[circuit][p].buffer);
+            data.add(_pinMappingInputs[circuit][p].pin);
         }
-        //data.add(_circuits[circuit].getOutputCount());
-        int[] outputMappings = new int[_pinMappingOutputs[circuit].length * 2];
-        seek = 0;
+        data.add(_circuits[circuit].getOutputCount());
         for (int p = 0; p < _pinMappingOutputs[circuit].length; p++) {
-            outputMappings[seek] = _pinMappingOutputs[circuit][p].buffer;
-            outputMappings[++seek] = _pinMappingOutputs[circuit][p].pin;
+            data.add(_pinMappingOutputs[circuit][p].buffer);
+            data.add(_pinMappingOutputs[circuit][p].pin);
         }
 
         PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 5, worldObj.provider.dimensionId,
-                NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord).append(circuit)
-                        .append(_circuits[circuit].getClass().getName())
-                        .append(_circuits[circuit].getInputCount())
-                        .append(inputMappings)
-                        .append(_circuits[circuit].getOutputCount())
-                        .append(outputMappings).build());
+                NetworkHandler.getBuilder().startBuild(xCoord, yCoord, zCoord)
+                        .append(circuit).append(_circuits[circuit].getClass().getName())
+                        .append(data).build());
     }
 
     @Override

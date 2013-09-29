@@ -258,16 +258,14 @@ public class GuiRedNetLogic extends GuiScreenBase {
 
     public void setInputPinMapping(int index, int buffer, int pin) {
         PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                                            .append(TileEntityRedNetLogic.LogicSetPin)
                                             .append(0, _selectedCircuit, index, buffer, pin).build());
-        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
-        //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, 0, _selectedCircuit, index, buffer, pin}));
     }
 
     public void setOutputPinMapping(int index, int buffer, int pin) {
         PacketDispatcher.sendPacketToServer(NetworkHandler.getBuilder().startBuild(_logic.xCoord, _logic.yCoord, _logic.zCoord)
+                                            .append(TileEntityRedNetLogic.LogicSetPin)
                                             .append(1, _selectedCircuit, index, buffer, pin).build());
-        //PacketDispatcher.sendPacketToServer(PacketWrapper.createPacket(MineFactoryReloadedCore.modNetworkChannel, Packets.LogicSetPin, new Object[]
-        //        {_logic.xCoord, _logic.yCoord, _logic.zCoord, 1, _selectedCircuit, index, buffer, pin}));
     }
 
     public int getVariableCount() {
