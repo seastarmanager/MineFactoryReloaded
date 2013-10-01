@@ -65,7 +65,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 @Mod(modid = MineFactoryReloadedCore.modId, name = MineFactoryReloadedCore.modName, version = MineFactoryReloadedCore.version,
-        dependencies = "required-after:PowerCrystalsCore@[1.1.7,);after:BuildCraft|Core;after:BuildCraft|Factory;after:BuildCraft|Energy;after:BuildCraft|Builders;after:BuildCraft|Transport;after:IC2")
+        dependencies = "required-after:PowerCrystalsCore@[1.1.7,);required-after:BuildCraft|Core;required-after:BuildCraft|Factory;required-after:BuildCraft|Energy;required-after:BuildCraft|Builders;required-after:BuildCraft|Transport;after:IC2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, connectionHandler = ConnectionHandler.class)
 public class MineFactoryReloadedCore extends BaseMod {
     @SidedProxy(clientSide = "powercrystals.minefactoryreloaded.proxy.ClientProxy", serverSide = "powercrystals.minefactoryreloaded.proxy.CommonProxy")
