@@ -130,14 +130,19 @@ public class TileEntityGrinder extends TileEntityFactoryPowered implements IFlui
     }
 
     protected void setRecentlyHit(EntityLiving entity, int t) {
+        // TODO: make the field public on the next forge update
         try {
             recentlyHit.set(entity, t);
         } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 
     protected void damageEntity(EntityLiving entity) {
-        entity.attackEntityFrom(_damageSource, entity.getMaxHealth());
+        //entity.attackEntityFrom(_damageSource, entity.getMaxHealth());
+        entity.setHealth(0);
+        setRecentlyHit(entity, 100); // allow drops to spawn
+        entity.onDeath(_damageSource); // get the item drops and play the animation
         setRecentlyHit(entity, 0); // prevent exp orbs from spawning
     }
 
