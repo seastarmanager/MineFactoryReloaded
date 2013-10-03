@@ -8,7 +8,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.IFluidTank;
 import powercrystals.minefactoryreloaded.gui.slot.SlotFake;
 import powercrystals.minefactoryreloaded.gui.slot.SlotRemoveOnly;
 import powercrystals.minefactoryreloaded.gui.slot.SlotViewOnly;
@@ -47,20 +47,17 @@ public class ContainerLiquiCrafter extends ContainerFactoryInventory {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         int tankIndex = (int) (_crafter.worldObj.getWorldTime() % 9);
-        FluidTank tank = _crafter.getTanks()[tankIndex];
-        FluidStack l = tank.getFluid();
+        IFluidTank tank = _crafter.getTanks().getTank(tankIndex);
 
-        for (int i = 0; i < crafters.size(); i++) {
-            ICrafting crafter = (ICrafting) crafters.get(i);
+        for (Object crafter1 : crafters) {
+            ICrafting crafter = (ICrafting) crafter1;
             crafter.sendProgressBarUpdate(this, 0, tankIndex);
-            if (l != null) {
-                crafter.sendProgressBarUpdate(this, 1, l.fluidID);
-                crafter.sendProgressBarUpdate(this, 2, 0);
-                crafter.sendProgressBarUpdate(this, 3, l.amount);
+            if (tank.getFluidAmount() > 0) {
+                crafter.sendProgressBarUpdate(this, 1, tank.getFluid().fluidID);
+                crafter.sendProgressBarUpdate(this, 2, tank.getFluidAmount());
             } else {
-                crafter.sendProgressBarUpdate(this, 1, 0);
-                crafter.sendProgressBarUpdate(this, 2, 0);
-                crafter.sendProgressBarUpdate(this, 3, 0);
+                crafter.sendProgressBarUpdate(this, 1, -1);
+                crafter.sendProgressBarUpdate(this, 2, -1);
             }
         }
     }
@@ -71,9 +68,11 @@ public class ContainerLiquiCrafter extends ContainerFactoryInventory {
         super.updateProgressBar(var, value);
         if (var == 0) _tempTankIndex = value;
         else if (var == 1) _tempLiquidId = value;
-            //else if(var == 2) _tempLiquidMeta = value;
-        else if (var == 3) {
-            _crafter.getTanks()[_tempTankIndex].setFluid(new FluidStack(_tempLiquidId, value));
+        else if (var == 2) {
+            if (_tempLiquidId >= 0)
+                _crafter.getTanks().getTank(_tempTankIndex).setFluid(new FluidStack(_tempLiquidId, value));
+            else
+                _crafter.getTanks().getTank(_tempTankIndex).setFluid(null);
         }
     }
 

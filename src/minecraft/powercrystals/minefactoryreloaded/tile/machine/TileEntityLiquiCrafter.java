@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import powercrystals.core.util.Util;
+import powercrystals.minefactoryreloaded.core.FluidUtil;
 import powercrystals.minefactoryreloaded.core.RemoteInventoryCrafting;
 import powercrystals.minefactoryreloaded.gui.client.GuiFactoryInventory;
 import powercrystals.minefactoryreloaded.gui.client.GuiLiquiCrafter;
@@ -24,29 +25,16 @@ import java.util.List;
 
 // slots 0-8 craft grid, 9 craft grid template output, 10 output, 11-28 resources
 public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implements IFluidHandler {
+
+    @SuppressWarnings("FieldCanBeLocal") private static int fakeOutput = 9;
+    @SuppressWarnings("FieldCanBeLocal") private static int realOutput = 10;
+
     private boolean _lastRedstoneState;
     private boolean _resourcesChangedSinceLastFailedCraft = true;
-
-    private class ItemResourceTracker {
-        public ItemResourceTracker(int id, int meta, int required) {
-            this.id = id;
-            this.meta = meta;
-            this.required = required;
-        }
-
-        public int id;
-        public int meta;
-        public int required;
-        public int found;
-    }
-
-    private FluidTank[] _tanks = new FluidTank[9];
+    private FluidUtil _tanks = new FluidUtil(9, FluidContainerRegistry.BUCKET_VOLUME * 10);
 
     public TileEntityLiquiCrafter() {
         super(Machine.LiquiCrafter);
-        for (int i = 0; i < 9; i++) {
-            _tanks[i] = new FluidTank(10 * FluidContainerRegistry.BUCKET_VOLUME);
-        }
     }
 
     @Override
@@ -76,13 +64,11 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
 
         boolean redstoneState = Util.isRedstonePowered(this);
         if (redstoneState && !_lastRedstoneState) {
-            if (!worldObj.isRemote &&
-                    _resourcesChangedSinceLastFailedCraft &&
-                    _inventory[9] != null &&
-                    (_inventory[10] == null ||
-                            (_inventory[10].stackSize + _inventory[9].stackSize <= _inventory[9].getMaxStackSize() &&
-                                    _inventory[9].itemID == _inventory[10].itemID &&
-                                    _inventory[9].getItemDamage() == _inventory[10].getItemDamage()))) {
+            if (!worldObj.isRemote && _resourcesChangedSinceLastFailedCraft && _inventory[fakeOutput] != null &&
+                    (_inventory[realOutput] == null ||
+                            ((_inventory[realOutput].stackSize + _inventory[fakeOutput].stackSize) <= _inventory[fakeOutput].getMaxStackSize() &&
+                                    _inventory[fakeOutput].itemID == _inventory[realOutput].itemID &&
+                                    _inventory[fakeOutput].getItemDamage() == _inventory[realOutput].getItemDamage()))) {
                 checkResources();
             }
         }
@@ -96,24 +82,28 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
         inv:
         for (int i = 0; i < 9; i++) {
             if (_inventory[i] != null) {
+                liquid:
                 if (FluidContainerRegistry.isFilledContainer(_inventory[i])) {
                     FluidStack l = FluidContainerRegistry.getFluidForFilledItem(_inventory[i]);
+                    if (l == null)
+                        break liquid;
                     for (ItemResourceTracker t : requiredItems) {
-                        if (t.id == l.fluidID) {
-                            t.required += 1000;
+                        if (t.isFluid && t.fluid.isFluidEqual(l)) {
+                            t.required += l.amount;
                             continue inv;
                         }
                     }
-                    requiredItems.add(new ItemResourceTracker(l.fluidID, 0, 1000));
-                } else {
-                    for (ItemResourceTracker t : requiredItems) {
-                        if (t.id == _inventory[i].itemID && t.meta == _inventory[i].getItemDamage()) {
-                            t.required++;
-                            continue inv;
-                        }
-                    }
-                    requiredItems.add(new ItemResourceTracker(_inventory[i].itemID, _inventory[i].getItemDamage(), 1));
+                    requiredItems.add(new ItemResourceTracker(l, l.amount));
+                    continue;
                 }
+
+                for (ItemResourceTracker t : requiredItems) {
+                    if (t.id == _inventory[i].itemID && t.meta == _inventory[i].getItemDamage()) {
+                        t.required++;
+                        continue inv;
+                    }
+                }
+                requiredItems.add(new ItemResourceTracker(_inventory[i].itemID, _inventory[i].getItemDamage(), 1));
             }
         }
 
@@ -131,13 +121,13 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
                 }
             }
         }
-        for (int i = 0; i < _tanks.length; i++) {
-            FluidStack l = _tanks[i].getFluid();
-            if (l == null || _tanks[i].getFluidAmount() <= 0) {
+        for (int i = 0; i < _tanks.getTankCount(); i++) {
+            FluidStack l = _tanks.getFluidFromTank(i);
+            if (l == null || l.amount == 0) {
                 continue;
             }
             for (ItemResourceTracker t : requiredItems) {
-                if (t.id == l.fluidID) {
+                if (t.isFluid && l.isFluidEqual(t.fluid)) {
                     t.found += l.amount;
                     break;
                 }
@@ -182,15 +172,15 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
                 }
             }
         }
-        for (int i = 0; i < _tanks.length; i++) {
-            FluidStack l = _tanks[i].getFluid();
+        for (int i = 0; i < _tanks.getTankCount(); i++) {
+            FluidStack l = _tanks.getFluidFromTank(i);
             if (l == null || l.amount == 0) {
                 continue;
             }
             for (ItemResourceTracker t : requiredItems) {
-                if (t.id == l.fluidID) {
+                if (l.isFluidEqual(t.fluid)) {
                     int use = Math.min(t.required, l.amount);
-                    _tanks[i].drain(use, true);
+                    _tanks.getTank(i).drain(use, true);
                     t.required -= use;
 
                     if (t.required == 0) {
@@ -279,24 +269,19 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int quantity;
-        int match = findFirstMatchingTank(resource);
+        int match = _tanks.findFirstMatchingTank(resource);
         if (match >= 0) {
-            quantity = _tanks[match].fill(resource, doFill);
+            quantity = _tanks.getTank(match).fill(resource, doFill);
             if (quantity > 0) _resourcesChangedSinceLastFailedCraft = true;
             return quantity;
         }
-        match = findFirstEmptyTank();
+        match = _tanks.findFirstEmptyTank();
         if (match >= 0) {
-            quantity = _tanks[match].fill(resource, doFill);
+            quantity = _tanks.getTank(match).fill(resource, doFill);
             if (quantity > 0) _resourcesChangedSinceLastFailedCraft = true;
             return quantity;
         }
         return 0;
-    }
-
-    @Override
-    public boolean canFill(ForgeDirection from, Fluid fluid) {
-        return true;
     }
 
     @Override
@@ -305,54 +290,33 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
     }
 
     @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        if (resource == null)
-            return null;
-        for (FluidTank tank : _tanks) {
-            if (tank.getFluidAmount() > 0 && tank.getFluid().isFluidEqual(resource)) {
-                return tank.drain(resource.amount, doDrain);
-            }
-        }
-        return null;
-    }
-
-    @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        int match = _tanks.findFirstNonEmptyTank();
+        if (match >= 0) return _tanks.getTank(match).drain(maxDrain, doDrain);
         return null;
     }
 
     @Override
-    public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return (fluid != null) && (findFirstMatchingTank(new FluidStack(fluid, 0)) > -1);
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        int match = _tanks.findFirstMatchingTank(resource);
+        if (match >= 0) return _tanks.getTank(match).drain(resource.amount, doDrain);
+        return null;
     }
 
-    private int findFirstEmptyTank() {
-        for (int i = 0; i < 9; i++)
-            if (_tanks[i].getFluidAmount() <= 0)
-                return i;
-        return -1;
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return _tanks.getTankInfo();
     }
 
-    private int findFirstMatchingTank(FluidStack fluid) {
-        if (fluid == null) {
-            return -1;
-        }
-
-        for (int i = 0; i < 9; i++) {
-            if (_tanks[i].getFluid() != null && _tanks[i].getFluid().isFluidEqual(fluid)) {
-                return i;
-            }
-        }
-
-        return -1;
+    @SideOnly(Side.CLIENT)
+    public FluidUtil getTanks() {
+        return _tanks;
     }
 
     private ItemStack findMatchingRecipe() {
         InventoryCrafting craft = new RemoteInventoryCrafting();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 9; i++)
             craft.setInventorySlotContents(i, (_inventory[i] == null ? null : _inventory[i].copy()));
-        }
-
         return CraftingManager.getInstance().findMatchingRecipe(craft, worldObj);
     }
 
@@ -364,10 +328,10 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
         for (int i = 0; i < nbttaglist.tagCount(); i++) {
             NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
             int j = nbttagcompound1.getByte("Tank") & 0xff;
-            if (j >= 0 && j < _tanks.length) {
+            if (j >= 0 && j < _tanks.getTankCount()) {
                 FluidStack l = FluidStack.loadFluidStackFromNBT(nbttagcompound1);
                 if (l != null) {
-                    _tanks[j].setFluid(l);
+                    _tanks.getTank(j).setFluid(l);
                 }
             }
         }
@@ -378,12 +342,12 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
         super.writeToNBT(nbttagcompound);
 
         NBTTagList tanks = new NBTTagList();
-        for (int i = 0; i < _tanks.length; i++) {
-            if (_tanks[i].getFluid() != null) {
+        for (int i = 0; i < _tanks.getTankCount(); i++) {
+            FluidStack l;
+            if ((l = _tanks.getTank(i).getFluid()) != null) {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte("Tank", (byte) i);
 
-                FluidStack l = _tanks[i].getFluid();
                 l.writeToNBT(nbttagcompound1);
                 tanks.appendTag(nbttagcompound1);
             }
@@ -392,17 +356,35 @@ public class TileEntityLiquiCrafter extends TileEntityFactoryInventory implement
         nbttagcompound.setTag("Tanks", tanks);
     }
 
-    public FluidTank[] getTanks() {
-        return _tanks;
+    @Override
+    public boolean canFill(ForgeDirection from, Fluid fluid) {
+        return true;
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        FluidTankInfo[] info = new FluidTankInfo[_tanks.length];
-        for (int i = 0; i < _tanks.length; i++) {
-            if (_tanks[i] != null)
-                info[i] = _tanks[i].getInfo();
+    public boolean canDrain(ForgeDirection from, Fluid fluid) {
+        return true;
+    }
+
+    private class ItemResourceTracker {
+        public boolean isFluid;
+        public FluidStack fluid;
+        public int id;
+        public int meta;
+        public int required;
+        public int found;
+
+        public ItemResourceTracker(int id, int meta, int required) {
+            this.id = id;
+            this.meta = meta;
+            this.required = required;
+            isFluid = false;
         }
-        return info;
+
+        public ItemResourceTracker(FluidStack resource, int required) {
+            this.fluid = resource;
+            this.required = required;
+            isFluid = true;
+        }
     }
 }

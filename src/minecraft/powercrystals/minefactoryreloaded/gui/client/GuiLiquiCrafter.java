@@ -7,13 +7,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import org.lwjgl.opengl.GL11;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
+import powercrystals.minefactoryreloaded.core.FluidUtil;
 import powercrystals.minefactoryreloaded.gui.container.ContainerLiquiCrafter;
 import powercrystals.minefactoryreloaded.tile.machine.TileEntityLiquiCrafter;
 
 public class GuiLiquiCrafter extends GuiFactoryInventory {
     private static ResourceLocation loc = new ResourceLocation(MineFactoryReloadedCore.guiFolder + "liquicrafter.png");
 
-    private ResourceLocation tile_loc;
     private TileEntityLiquiCrafter _crafter;
 
     public GuiLiquiCrafter(ContainerLiquiCrafter container, TileEntityLiquiCrafter router) {
@@ -21,7 +21,20 @@ public class GuiLiquiCrafter extends GuiFactoryInventory {
         _crafter = router;
         xSize = 231;
         ySize = 214;
-        tile_loc = new ResourceLocation(MineFactoryReloadedCore.guiFolder + _tileEntity.getGuiBackground());
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float gameTicks) {
+        super.drawScreen(mouseX, mouseY, gameTicks);
+        FluidUtil tanks = _crafter.getTanks();
+        for (int i = 0; i < tanks.getTankCount(); i++) {
+            FluidTank tank = tanks.getTank(i);
+            FluidStack l = tank.getFluid();
+            if (l != null && isPointInRegion(-50 + (i % 3 * 18), 9 + (i / 3 * 35), 16, 35, mouseX, mouseY)) {
+                drawBarTooltip(l.getFluid().getLocalizedName(),
+                        "mB", tank.getFluidAmount(), tank.getCapacity(), mouseX, mouseY);
+            }
+        }
     }
 
     @Override
@@ -31,25 +44,23 @@ public class GuiLiquiCrafter extends GuiFactoryInventory {
         fontRenderer.drawString("Output", 128, 26, 4210752);
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        FluidTank tank = _crafter.getTank();
-        if (tank != null) {
+        FluidUtil tanks = _crafter.getTanks();
+        for (int i = 0; i < tanks.getTankCount(); i++) {
+            FluidTank tank = tanks.getTank(i);
             FluidStack l = tank.getFluid();
-            if (l != null) {
-                for (int i = 0; i < 9; i++)
-                    drawTank(-50 + (i % 3 * 18), 43 + (i / 3 * 35), l.amount * 33 / _crafter.getTanks()[i].getCapacity(), _crafter.getTank().getFluid());
-            }
+            if (l != null)
+                drawTank(-50 + (i % 3 * 18), 43 + (i / 3 * 35), l.amount * 33 / tank.getCapacity(), l);
         }
-        this.mc.renderEngine.bindTexture(loc);
-        for (int i = 0; i < 8; i++) {
+
+        for (int i = 0; i < 8; i++)
             this.drawTexturedModalRect(-50 + (i % 3 * 18), 10 + (i / 3 * 35), 232, 0, 16, 33);
-        }
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float gameTicks, int mouseX, int mouseY) {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(new ResourceLocation(MineFactoryReloadedCore.guiFolder + _tileEntity.getGuiBackground()));
+        this.mc.renderEngine.bindTexture(loc);
         int x = (width - xSize) / 2 - 56;
         int y = (height - ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
@@ -66,14 +77,16 @@ public class GuiLiquiCrafter extends GuiFactoryInventory {
 
         int vertOffset = 0;
 
-        if (fluid == null) {
+        ResourceLocation fluid;
+        {
             String name = icon.getIconName() + ".png";
             if (name.contains(":")) {
                 String[] split = name.split(":");
                 fluid = new ResourceLocation(split[0] + ":textures/blocks/" + split[1]);
             } else
-                fluid = new ResourceLocation(name);
+                fluid = new ResourceLocation("textures/blocks/" + name);
         }
+        mc.renderEngine.bindTexture(fluid);
 
         while (level > 0) {
             int texHeight;
@@ -90,7 +103,7 @@ public class GuiLiquiCrafter extends GuiFactoryInventory {
             vertOffset = vertOffset + 16;
         }
 
-        this.mc.renderEngine.bindTexture(tile_loc);
+        mc.renderEngine.bindTexture(loc);
         this.drawTexturedModalRect(xOffset, yOffset - 33, 232, 0, 16, 33);
     }
 }
