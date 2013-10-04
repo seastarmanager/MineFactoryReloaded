@@ -6,6 +6,7 @@ import powercrystals.core.random.WeightedRandomItemStack;
 import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.api.*;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetLogicCircuit;
+import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,15 +196,17 @@ public abstract class MFRRegistry {
         return _autoSpawnerBlacklist;
     }
 
-    public static void addLaserPreferredOre(int color, ItemStack ore) {
-        if (color < 0 || 16 <= color) return;
-
-        List<ItemStack> oresForColor = _laserPreferredOres.get(color);
+    public static void addLaserPreferredOre(ItemLaserFocus.Type color, ItemStack ore) {
+        if (color == null)
+            throw new RuntimeException("color is null");
+        if (ore == null)
+            throw new RuntimeException("ore is null");
+        List<ItemStack> oresForColor = _laserPreferredOres.get(color.ordinal());
 
         if (oresForColor == null) {
             List<ItemStack> oresList = new ArrayList<ItemStack>();
             oresList.add(ore);
-            _laserPreferredOres.put(color, oresList);
+            _laserPreferredOres.put(color.ordinal(), oresList);
         } else {
             for (ItemStack registeredOre : oresForColor) {
                 if (InventoryUtil.stacksEqual(registeredOre, ore)) {

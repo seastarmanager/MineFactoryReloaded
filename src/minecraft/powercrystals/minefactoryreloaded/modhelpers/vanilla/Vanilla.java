@@ -37,6 +37,7 @@ import powercrystals.minefactoryreloaded.farmables.safarinethandlers.EntityAgeab
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.EntityLivingHandler;
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.SheepHandler;
 import powercrystals.minefactoryreloaded.farmables.safarinethandlers.SlimeHandler;
+import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
 import powercrystals.minefactoryreloaded.setup.MFRConfig;
 
 @Mod(modid = "MineFactoryReloaded|CompatVanilla", name = "MFR Compat: Vanilla", version = MineFactoryReloadedCore.version, dependencies = "after:MineFactoryReloaded")
@@ -219,14 +220,14 @@ public class Vanilla {
 
         MFRRegistry.registerAutoSpawnerBlacklist("VillagerGolem");
 
-        MFRRegistry.addLaserPreferredOre(15, new ItemStack(Block.oreCoal));
-        MFRRegistry.addLaserPreferredOre(3, new ItemStack(Block.oreDiamond));
-        MFRRegistry.addLaserPreferredOre(5, new ItemStack(Block.oreEmerald));
-        MFRRegistry.addLaserPreferredOre(4, new ItemStack(Block.oreGold));
-        MFRRegistry.addLaserPreferredOre(12, new ItemStack(Block.oreIron));
-        MFRRegistry.addLaserPreferredOre(11, new ItemStack(Block.oreLapis));
-        MFRRegistry.addLaserPreferredOre(14, new ItemStack(Block.oreRedstone));
-        MFRRegistry.addLaserPreferredOre(0, new ItemStack(Block.oreNetherQuartz));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.BLACK, new ItemStack(Block.oreCoal));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.LIGHTBLUE, new ItemStack(Block.oreDiamond));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.LIME, new ItemStack(Block.oreEmerald));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.YELLOW, new ItemStack(Block.oreGold));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.BROWN, new ItemStack(Block.oreIron));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.BLUE, new ItemStack(Block.oreLapis));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.RED, new ItemStack(Block.oreRedstone));
+        MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.WHITE, new ItemStack(Block.oreNetherQuartz));
 
         MFRRegistry.registerNeedleAmmoType(MineFactoryReloadedCore.needlegunAmmoStandardItem.itemID, (INeedleAmmo) MineFactoryReloadedCore.needlegunAmmoStandardItem);
         MFRRegistry.registerNeedleAmmoType(MineFactoryReloadedCore.needlegunAmmoLavaItem.itemID, (INeedleAmmo) MineFactoryReloadedCore.needlegunAmmoLavaItem);

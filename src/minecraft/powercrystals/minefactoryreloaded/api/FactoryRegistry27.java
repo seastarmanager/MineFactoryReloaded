@@ -1,6 +1,7 @@
 package powercrystals.minefactoryreloaded.api;
 
 import net.minecraft.item.ItemStack;
+import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
 
 import java.lang.reflect.Method;
 
@@ -40,7 +41,7 @@ public class FactoryRegistry27 {
      * @param color The color that the preferred ore is being set for. White is 0.
      * @param ore   The ore that will be preferred by the drill when a focus with the specified color is present.
      */
-    public static void addLaserPreferredOre(int color, ItemStack ore) {
+    public static void addLaserPreferredOre(ItemLaserFocus.Type color, ItemStack ore) {
         try {
             Class<?> registry = Class.forName("powercrystals.minefactoryreloaded.MFRRegistry");
             if (registry != null) {

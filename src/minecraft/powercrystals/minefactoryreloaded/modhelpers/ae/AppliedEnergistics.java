@@ -9,6 +9,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 import net.minecraft.item.ItemStack;
 import powercrystals.minefactoryreloaded.MFRRegistry;
 import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
+import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
 
 @Mod(modid = "MineFactoryReloaded|CompatAppliedEnergistics", name = "MFR Compat: Applied Energistics", version = MineFactoryReloadedCore.version, dependencies = "after:MineFactoryReloaded;after:AppliedEnergistics")
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
@@ -24,7 +25,7 @@ public class AppliedEnergistics {
         try {
             ItemStack quartzOre = (ItemStack) Class.forName("appeng.api.Blocks").getField("blkQuartzOre").get(null);
             MFRRegistry.registerLaserOre(60, quartzOre);
-            MFRRegistry.addLaserPreferredOre(0, quartzOre);
+            MFRRegistry.addLaserPreferredOre(ItemLaserFocus.Type.WHITE, quartzOre);
         } catch (Exception x) {
             System.out.println("Last updated for " + lastUpdated);
             x.printStackTrace();
