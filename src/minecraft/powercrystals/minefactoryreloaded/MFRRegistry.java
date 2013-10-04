@@ -7,6 +7,7 @@ import powercrystals.core.util.InventoryUtil;
 import powercrystals.minefactoryreloaded.api.*;
 import powercrystals.minefactoryreloaded.api.rednet.IRedNetLogicCircuit;
 import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
+import powercrystals.minefactoryreloaded.modhelpers.Weights;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,6 +155,15 @@ public abstract class MFRRegistry {
 
     public static List<IRedNetLogicCircuit> getRedNetLogicCircuits() {
         return _redNetLogicCircuits;
+    }
+
+    public static void registerLaserOre(Weights type, ItemStack ore) {
+        registerLaserOre(type.weight, ore, type.colorFocus);
+    }
+
+    public static void registerLaserOre(int weight, ItemStack ore, ItemLaserFocus.Type colorFocus) {
+        registerLaserOre(weight, ore);
+        addLaserPreferredOre(colorFocus, ore);
     }
 
     public static void registerLaserOre(int weight, ItemStack ore) {

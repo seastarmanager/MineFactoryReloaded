@@ -64,7 +64,8 @@ public class Forestry {
                 }
             }
             MFRRegistry.registerFertilizer(new FertilizerForestry(ForestryUtils.getItem("fertilizerCompound")));
-        } catch (Exception x) {
+            ForestryHelper.init();
+        } catch (Throwable x) {
             x.printStackTrace();
         }
     }

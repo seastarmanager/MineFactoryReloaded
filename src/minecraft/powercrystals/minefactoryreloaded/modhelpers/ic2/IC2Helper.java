@@ -16,6 +16,7 @@ import powercrystals.minefactoryreloaded.MineFactoryReloadedCore;
 import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.farmables.fertilizables.FertilizerStandard;
 import powercrystals.minefactoryreloaded.farmables.harvestables.HarvestableTreeLeaves;
+import powercrystals.minefactoryreloaded.item.ItemLaserFocus;
 import powercrystals.minefactoryreloaded.modhelpers.Weights;
 import powercrystals.minefactoryreloaded.tile.base.TileEntityFactoryPowered;
 
@@ -56,10 +57,10 @@ class IC2Helper {
             ItemStack leadOre = Items.getItem("leadOre");
             ItemStack uraniumOre = Items.getItem("uraniumOre");
 
-            MFRRegistry.registerLaserOre(Weights.TIN.weight, tinOre);
-            MFRRegistry.registerLaserOre(Weights.COPPER.weight, copperOre);
-            MFRRegistry.registerLaserOre(Weights.LEAD.weight, leadOre);
-            MFRRegistry.registerLaserOre(15, uraniumOre);
+            MFRRegistry.registerLaserOre(Weights.TIN, tinOre);
+            MFRRegistry.registerLaserOre(Weights.COPPER, copperOre);
+            MFRRegistry.registerLaserOre(Weights.LEAD, leadOre);
+            MFRRegistry.registerLaserOre(15, uraniumOre, ItemLaserFocus.Type.GREEN);
 
             MFRRegistry.registerHarvestable(new HarvestableIC2Crop(crop.itemID));
 
